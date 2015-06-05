@@ -1,0 +1,3391 @@
+cFE SB Unit Test Output File
+
+
+Begin Test App Init
+Start of ES_RegisterApp Failure Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: -1
+  SB:Call to CFE_ES_RegisterApp Failed:RC=0xFFFFFFFF
+
+PASSED  [cFE.SB.01.001] CFE_SB_AppInit - ES_RegisterApp failure
+-----
+Start of EVS_Register Failure Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called: -1
+  SB:Call to CFE_EVS_Register Failed:RC=0xFFFFFFFF
+
+PASSED  [cFE.SB.01.002] CFE_SB_AppInit - EVS register failure
+-----
+Start of EVS_SendEvent Failure Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on SB_CMD_PIPE(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x180b on SB_CMD_PIPE(0),app ut_cfe_sb
+  SB:Error sending init event:RC=0xFFFFFFFF
+
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x180b on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.01.003] CFE_SB_AppInit - EVS SendEvent failure
+-----
+Start of SB_CreatePipe Failure Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on SB_CMD_PIPE(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x180b on SB_CMD_PIPE(0),app ut_cfe_sb
+  CFE_EVS_SendEvent: 1, 2 - cFE SB Initialized
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 4, 3 - CreatePipeErr:OS_QueueCreate returned -15,app ut_cfe_sb.
+  SB:Call to CFE_SB_CreatePipe Failed:RC=0xCA000005
+
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x180b on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.01.004] CFE_SB_AppInit - Create pipe failure
+-----
+Start of Subscription 1 Failure Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 20, 3 - Subscribe Err:Request for Destination Blk failed for Msg 0x10
+  SB:Subscribe to Cmds Failed:RC=0xCA000008
+
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.01.005] CFE_SB_AppInit - Subscription 1 failure
+-----
+Start of Subscription 2 Failure Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on SB_CMD_PIPE(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 20, 3 - Subscribe Err:Request for Destination Blk failed for Msg 0x10
+  SB:Subscribe to HK Request Failed:RC=0xCA000008
+
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.01.006] CFE_SB_AppInit - Subscription 2 failure
+-----
+Start of GetPool Failure Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on SB_CMD_PIPE(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x180b on SB_CMD_PIPE(0),app ut_cfe_sb.
+  SB:Init error, GetPool Failed:RC=0xFFFFFFFF
+
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x180b on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.01.007] CFE_SB_AppInit - GetPool failure
+-----
+Start of PutPool Failure Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on SB_CMD_PIPE(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x180b on SB_CMD_PIPE(0),app ut_cfe_sb.
+  SB:Init error, PutPool Failed:RC=0xFFFFFFFF
+
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x180b on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.01.008] CFE_SB_AppInit - PutPool Failure
+-----
+End Test App Init
+Begin Test for MainRoutine
+Start of Main Loop, Rcv Error Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_PerfLogAdd called: EntryExit = 0
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on SB_CMD_PIPE(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x180b on SB_CMD_PIPE(0),app ut_cfe_sb.
+  CFE_EVS_SendEvent: 1, 2 - cFE SB Initialized
+  CFE_ES_PerfLogAdd called: EntryExit = 1
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 27, 3 - Pipe Read Err,pipe SB_CMD_PIPE,app ut_cfe_sb,stat 0xffffffff
+  CFE_ES_PerfLogAdd called: EntryExit = 0
+  SB:Error reading cmd pipe,RC=0xCA000006
+
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x180b on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.02.001] CFE_SB_TaskMain - Rcv Error failure
+-----
+Start of Main Loop, Init Error Test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_PerfLogAdd called: EntryExit = 0
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on SB_CMD_PIPE(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x180b on SB_CMD_PIPE(0),app ut_cfe_sb
+  SB:Init error, PutPool Failed:RC=0xFFFFFFFF
+
+  SB:Application Init Failed,RC=0xFFFFFFFF
+
+  CFE_ES_PerfLogAdd called: EntryExit = 1
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x180b on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.02.002] CFE_SB_TaskMain - Init Error failure
+-----
+End Test for MainRoutine
+Begin Test for SB Commands
+Begin Test for Cmd - No-op
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 28, 2 - No-op Cmd Rcvd. cFE Version 0.0.0.0
+PASSED  [cFE.SB.03.001] CFE_SB_ProcessCmdPipePkt - No-op command test
+-----
+Begin Test for Cmd - Reset Counters
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 29, 1 - Reset Counters Cmd Rcvd
+PASSED  [cFE.SB.03.002] CFE_SB_ProcessCmdPipePkt - Reset Counters command test
+-----
+Begin Test for Cmd - Send SB Stats
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 14, 2 - No subscribers for MsgId 0x80a,sender ut_cfe_sb
+  CFE_EVS_SendEvent: 32, 1 - Software Bus Statistics packet sent
+PASSED  [cFE.SB.03.003] CFE_SB_ProcessCmdPipePkt - Send SB Stats command test
+-----
+Begin Test for Cmd - Send Routing Info, Using Default Filename
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on SB_CMD_PIPE(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x180b on SB_CMD_PIPE(0),app ut_cfe_sb.
+  CFE_EVS_SendEvent: 1, 2 - cFE SB Initialized
+  OS_creat called: 1; call to open /ram/cfe_sb_route.dat (SUCCESS)
+  CFE_FS_WriteHeader called: 1; SB Routing Information
+  OS_write called: 1 (SUCCESS)
+  OS_write called: 1 (SUCCESS)
+  OS_close called: 1 (SUCCESS)
+  CFE_EVS_SendEvent: 39, 1 - /ram/cfe_sb_route.dat written:Size=156,Entries=2
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x180b on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.03.004] CFE_SB_ProcessCmdPipePkt - Send Routing Info command test
+-----
+Begin Test for Cmd - Send Routing Info2, Using Specified Filename
+  CFE_ES_PoolCreateEx called
+  OS_creat called: 2; call to open RoutingTstFile (SUCCESS)
+  CFE_FS_WriteHeader called: 2; SB Routing Information
+  OS_close called: 2 (SUCCESS)
+  CFE_EVS_SendEvent: 39, 1 - RoutingTstFile written:Size=64,Entries=0
+PASSED  [cFE.SB.03.005] CFE_SB_ProcessCmdPipePkt - Send Routing Info2 command test
+-----
+Begin Test for Cmd - Send Routing Info3, File Create Fails
+  CFE_ES_PoolCreateEx called
+  OS_creat called: 3; call to open RoutingTstFile (FAILURE)
+  OS_close called: -1 (SUCCESS)
+  CFE_EVS_SendEvent: 40, 3 - Error creating file RoutingTstFile, stat=0xffffffff
+PASSED  [cFE.SB.03.006] CFE_SB_ProcessCmdPipePkt - Send Routing Info3 command test
+-----
+Begin Test for Cmd - Send Routing Info4, FileHdrWrite Fails
+  CFE_ES_PoolCreateEx called
+  OS_creat called: 4; call to open RoutingTstFile (SUCCESS)
+  CFE_EVS_SendEvent: 49, 3 - File write,byte cnt err,file RoutingTstFile,request=64,actual=-1
+  OS_close called: 4 (SUCCESS)
+PASSED  [cFE.SB.03.007] CFE_SB_SendRtgInfo - Send Routing Info4 command test
+-----
+Begin Test for Cmd - Send Routing Info5, Second FileWrite Fails
+  CFE_ES_PoolCreateEx called
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_EVS_Register called
+  SB:Registered 4 events for filtering
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SB_CMD_PIPE,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on SB_CMD_PIPE(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x180b on SB_CMD_PIPE(0),app ut_cfe_sb.
+  CFE_EVS_SendEvent: 1, 2 - cFE SB Initialized
+  OS_creat called: 5; call to open RoutingTstFile (SUCCESS)
+  CFE_FS_WriteHeader called: 5; SB Routing Information
+  OS_write called: 5 (SUCCESS)
+  CFE_EVS_SendEvent: 49, 3 - File write,byte cnt err,file RoutingTstFile,request=46,actual=-1
+  OS_close called: 5 (SUCCESS)
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x180b on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.03.008] CFE_SB_SendRtgInfo - Send Routing Info5 command test
+-----
+Begin Test for Cmd - Send Pipe Info, Using Default Filename
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe3,id 2,app ut_cfe_sb.
+  OS_creat called: 6; call to open /ram/cfe_sb_pipe.dat (SUCCESS)
+  CFE_FS_WriteHeader called: 6; SB Pipe Information
+  OS_write called: 6 (SUCCESS)
+  OS_write called: 6 (SUCCESS)
+  OS_write called: 6 (SUCCESS)
+  OS_close called: 6 (SUCCESS)
+  CFE_EVS_SendEvent: 39, 1 - /ram/cfe_sb_pipe.dat written:Size=268,Entries=3
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb
+PASSED  [cFE.SB.03.009] CFE_SB_ProcessCmdPipePkt - Send Pipe Info command test
+-----
+Begin Test for Cmd - Send Pipe Info2, Using Specified Filename
+  CFE_ES_PoolCreateEx called
+  OS_creat called: 7; call to open PipeTstFile (SUCCESS)
+  CFE_FS_WriteHeader called: 7; SB Pipe Information
+  OS_close called: 7 (SUCCESS)
+  CFE_EVS_SendEvent: 39, 1 - PipeTstFile written:Size=64,Entries=0
+PASSED  [cFE.SB.03.010] CFE_SB_ProcessCmdPipePkt - Send Pipe Info2 command test
+-----
+Begin Test for Cmd - Send Pipe Info3, File Create Fails
+  CFE_ES_PoolCreateEx called
+  OS_creat called: 8; call to open PipeTstFile (FAILURE)
+  OS_close called: -1 (SUCCESS)
+  CFE_EVS_SendEvent: 40, 3 - Error creating file PipeTstFile, stat=0xffffffff
+PASSED  [cFE.SB.03.011] CFE_SB_SendPipeInfo - Send Pipe Info3 command test
+-----
+Begin Test for Cmd - Send Pipe Info4, FileHdrWrite Fails
+  CFE_ES_PoolCreateEx called
+  OS_creat called: 9; call to open PipeTstFile (SUCCESS)
+  CFE_EVS_SendEvent: 49, 3 - File write,byte cnt err,file PipeTstFile,request=64,actual=-1
+  OS_close called: 9 (SUCCESS)
+PASSED  [cFE.SB.03.012] CFE_SB_SendPipeInfo - Send Pipe Info4 command test
+-----
+Begin Test for Cmd - Send Pipe Info5, Second FileWrite fails
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe3,id 2,app ut_cfe_sb.
+  OS_creat called: 10; call to open PipeTstFile (SUCCESS)
+  CFE_FS_WriteHeader called: 10; SB Pipe Information
+  OS_write called: 10 (SUCCESS)
+  CFE_EVS_SendEvent: 49, 3 - File write,byte cnt err,file PipeTstFile,request=68,actual=-1
+  OS_close called: 10 (SUCCESS)
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb
+PASSED  [cFE.SB.03.013] CFE_SB_SendPipeInfo - Send Pipe Info5 command test
+-----
+Begin Test for Cmd - Send Map Info, Using Default Filename
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe3,id 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on TestPipe2(1),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80a on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80b on TestPipe3(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80c on TestPipe3(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80d on TestPipe3(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80e on TestPipe2(1),app ut_cfe_sb
+  OS_creat called: 11; call to open /ram/cfe_sb_msgmap.dat (SUCCESS)
+  CFE_FS_WriteHeader called: 11; SB Message Map Information
+  OS_write called: 11 (SUCCESS)
+  OS_write called: 11 (SUCCESS)
+  OS_write called: 11 (SUCCESS)
+  OS_write called: 11 (SUCCESS)
+  OS_write called: 11 (SUCCESS)
+  OS_write called: 11 (SUCCESS)
+  OS_close called: 11 (SUCCESS)
+  CFE_EVS_SendEvent: 39, 1 - /ram/cfe_sb_msgmap.dat written:Size=88,Entries=6
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80a on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80e on pipe 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb
+PASSED  [cFE.SB.03.014] CFE_SB_ProcessCmdPipePkt - Send Map Info command test
+-----
+Begin Test for Cmd - Send Map Info2, Using Specified Filename
+  CFE_ES_PoolCreateEx called
+  OS_creat called: 12; call to open MapTstFile (SUCCESS)
+  CFE_FS_WriteHeader called: 12; SB Message Map Information
+  OS_close called: 12 (SUCCESS)
+  CFE_EVS_SendEvent: 39, 1 - MapTstFile written:Size=64,Entries=0
+PASSED  [cFE.SB.03.015] CFE_SB_ProcessCmdPipePkt - Send Map Info2 command test
+-----
+Begin Test for Cmd - Send Map Info3, File Create Fails
+  CFE_ES_PoolCreateEx called
+  OS_creat called: 13; call to open MapTstFile (FAILURE)
+  OS_close called: -1 (SUCCESS)
+  CFE_EVS_SendEvent: 40, 3 - Error creating file MapTstFile, stat=0xffffffff
+PASSED  [cFE.SB.03.016] CFE_SB_SendMapInfo - Send Map Info3 command test
+-----
+Begin Test for Cmd - Send Map Info4, FileHdrWrite Fails
+  CFE_ES_PoolCreateEx called
+  OS_creat called: 14; call to open MapTstFile (SUCCESS)
+  CFE_EVS_SendEvent: 49, 3 - File write,byte cnt err,file MapTstFile,request=64,actual=-1
+  OS_close called: 14 (SUCCESS)
+PASSED  [cFE.SB.03.017] CFE_SB_SendMapInfo - Send Map Info4 command test
+-----
+Begin Test for Cmd - Send Map Info5, Second FileWrite Fails
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe3,id 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on TestPipe2(1),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80a on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80b on TestPipe3(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80c on TestPipe3(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80d on TestPipe3(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80e on TestPipe2(1),app ut_cfe_sb
+  OS_creat called: 15; call to open MapTstFile (SUCCESS)
+  CFE_FS_WriteHeader called: 15; SB Message Map Information
+  OS_write called: 15 (SUCCESS)
+  CFE_EVS_SendEvent: 49, 3 - File write,byte cnt err,file MapTstFile,request=4,actual=-1
+  OS_close called: 15 (SUCCESS)
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80a on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80e on pipe 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb
+PASSED  [cFE.SB.03.018] CFE_SB_SendMapInfo - Send Map Info5 command test
+-----
+Begin Test for Cmd - Enable Route, Valid Param
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name EnRouteTestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x829 on EnRouteTestPipe(0),app ut_cfe_sb
+  CFE_EVS_SendEvent: 34, 1 - Enabling Route,Msg 0x829,Pipe 0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x829 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.03.019] CFE_SB_ProcessCmdPipePkt - Enable Route, valid parameter test
+-----
+Begin Test for Cmd - Enable Route, Non Exist
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name EnRouteTestPipe1,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name EnRouteTestPipe2,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x829 on EnRouteTestPipe1(0),app ut_cfe_sb.
+  CFE_EVS_SendEvent: 33, 3 - Enbl Route Cmd:Route does not exist.Msg 0x829,Pipe 1
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x829 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb
+PASSED  [cFE.SB.03.020] CFE_SB_ProcessCmdPipePkt - Enable Route, non-existent route test
+-----
+Begin Test for Cmd - Enable Route, Invalid Pipe ID
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 35, 3 - Enbl Route Cmd:Invalid Param.Msg 0x1fff,Pipe 3
+PASSED  [cFE.SB.03.021] CFE_SB_ProcessCmdPipePkt - Enable Route, invalid pipe ID test
+-----
+Begin Test for Cmd - Enable Route, Invalid Msg ID
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 35, 3 - Enbl Route Cmd:Invalid Param.Msg 0xffff,Pipe 3
+PASSED  [cFE.SB.03.022] CFE_SB_ProcessCmdPipePkt - Enable Route, invalid msg ID test
+-----
+Begin Test for Cmd - Enable Route, Msg ID Too Large
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 35, 3 - Enbl Route Cmd:Invalid Param.Msg 0x2000,Pipe 0
+PASSED  [cFE.SB.03.023] CFE_SB_ProcessCmdPipePkt - Enable Route, msg ID too large test
+-----
+Begin Test for Cmd - Disable Route, Valid Param
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name DisRouteTestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x829 on DisRouteTestPipe(0),app ut_cfe_sb
+  CFE_EVS_SendEvent: 37, 1 - Route Disabled,Msg 0x829,Pipe 0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x829 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.03.024] CFE_SB_ProcessCmdPipePkt - Disable Route, valid parameter test
+-----
+Begin Test for Cmd - Disable Route, Non Exist
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name DisRouteTestPipe1,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name DisRouteTestPipe2,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x829 on DisRouteTestPipe1(0),app ut_cfe_sb.
+  CFE_EVS_SendEvent: 36, 3 - Disable Route Cmd:Route does not exist,Msg 0x829,Pipe 1
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x829 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb
+PASSED  [cFE.SB.03.025] CFE_SB_ProcessCmdPipePkt - Disable Route, non-existent route test
+-----
+Begin Test for Cmd - Disable Route, Invalid Pipe ID
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 38, 3 - Disable Route Cmd:Invalid Param.Msg 0x1fff,Pipe 3
+PASSED  [cFE.SB.03.026] CFE_SB_ProcessCmdPipePkt - Disable Route, invalid pipe ID test
+-----
+Begin Test for Cmd - Disable Route, Invalid Param2
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 38, 3 - Disable Route Cmd:Invalid Param.Msg 0xffff,Pipe 3
+PASSED  [cFE.SB.03.027] CFE_SB_ProcessCmdPipePkt - Disable Route, invalid msg ID test
+-----
+Begin Test for Cmd - Disable Route, Msg ID Too Large
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 38, 3 - Disable Route Cmd:Invalid Param.Msg 0x2000,Pipe 0
+PASSED  [cFE.SB.03.028] CFE_SB_ProcessCmdPipePkt - Disable Route, msg ID too large test
+-----
+Begin Test for Cmd - Send Housekeeping Info
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 14, 2 - No subscribers for MsgId 0x803,sender ut_cfe_sb.
+PASSED  [cFE.SB.03.029] CFE_SB_ProcessCmdPipePkt - Send Housekeeping Info command test
+-----
+Begin Test for Cmd - Send Previous Subscriptions
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x0 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x3 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x4 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x5 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x6 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x7 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x9 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x10 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x11 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x12 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x13 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x14 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x15 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x16 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x17 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x18 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x19 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1a on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1b on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1c on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1d on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1e on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1f on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x20 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x21 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x22 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x23 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x24 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x25 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x26 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x27 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x28 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x29 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2a on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2b on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2c on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x3 on TestPipe2(1),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 14, 2 - No subscribers for MsgId 0x80d,sender ut_cfe_sb
+  CFE_EVS_SendEvent: 44, 1 - Full Sub Pkt 1 Sent,Entries=20,Stat=0x0
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 14, 2 - No subscribers for MsgId 0x80d,sender ut_cfe_sb.
+  CFE_EVS_SendEvent: 44, 1 - Full Sub Pkt 2 Sent,Entries=20,Stat=0x0
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 14, 2 - No subscribers for MsgId 0x80d,sender ut_cfe_sb
+  CFE_EVS_SendEvent: 45, 1 - Partial Sub Pkt 3 Sent,Entries=5,Stat=0x0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x0 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x3 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x4 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x5 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x6 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x7 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x9 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x10 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x11 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x12 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x13 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x14 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x15 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x16 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x17 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x18 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x19 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1a on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1b on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1c on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1d on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1e on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1f on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x20 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x21 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x22 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x23 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x24 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x25 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x26 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x27 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x28 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x29 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2a on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2b on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2c on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x3 on pipe 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb
+PASSED  [cFE.SB.03.030] CFE_SB_ProcessCmdPipePkt - Send previous subscriptions test
+-----
+Begin Test for Cmd - Subscription Reporting On
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.03.031] CFE_SB_ProcessCmdPipePkt - Subscription Reporting On test
+-----
+Begin Test for Cmd - Subscription Reporting Off
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.03.032] CFE_SB_ProcessCmdPipePkt - Subscription Reporting Off test
+-----
+Begin Test for Cmd - Unexpected Command Code
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 42, 3 - Invalid Cmd, Unexpected Command Code 99
+PASSED  [cFE.SB.03.033] CFE_SB_ProcessCmdPipePkt - Unexpected command code test
+-----
+Begin Test for Cmd - Unexpected MsgId on SB Command Pipe
+  CFE_ES_PoolCreateEx called
+  CFE_EVS_SendEvent: 43, 3 - Invalid Cmd, Unexpected Msg Id: 0x0865
+PASSED  [cFE.SB.03.034] CFE_SB_ProcessCmdPipePkt - Unexpected MsgId on SB command pipe test
+-----
+End CFE_SB_ProcessCmdPipePkt
+Begin Test EarlyInit
+Begin Sem Create Error Logic test
+  CFE_ES_PoolCreateEx called
+  SB shared data mutex creation failed! RC=0xfffffff2
+
+PASSED  [cFE.SB.04.001] CFE_SB_EarlyInit - Sem Create error logic
+-----
+Begin PoolCreateEx Error Logic test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_PoolCreateEx called
+  PoolCreate failed for SB Buffers, gave adr 0x80e3a10,size 524288,stat=0xc400000a
+
+PASSED  [cFE.SB.04.002] CFE_SB_EarlyInit - PoolCreateEx error logic
+-----
+Begin EarlyInit No Errors test
+  CFE_ES_PoolCreateEx called
+  CFE_ES_PoolCreateEx called
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.04.003] CFE_SB_EarlyInit - No errors test
+-----
+End Test EarlyInit
+
+Begin Test_CreatePipe_API
+Begin Test for Null Pointer
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 2, 3 - CreatePipeErr:Bad Input Arg:app=ut_cfe_sb.,ptr=0x0,depth=10,maxdepth=256
+PASSED  [cFE.SB.05.001] Test_CreatePipe_API - Null pointer test
+-----
+Begin Test for Valid Pipe Depth
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe99,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe255,id 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipeMaxDepth,id 2,app ut_cfe_sb
+PASSED  [cFE.SB.05.002] Test_CreatePipe_API - Valid pipe depth test
+-----
+Begin Test for Invalid Pipe Depth
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 2, 3 - CreatePipeErr:Bad Input Arg:app=ut_cfe_sb.,ptr=0xbff6fb81,depth=0,maxdepth=256
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 2, 3 - CreatePipeErr:Bad Input Arg:app=ut_cfe_sb,ptr=0xbff6fb82,depth=257,maxdepth=256
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 2, 3 - CreatePipeErr:Bad Input Arg:app=ut_cfe_sb.,ptr=0xbff6fb83,depth=65535,maxdepth=256
+PASSED  [cFE.SB.05.003] Test_CreatePipe_API - Invalid pipe depth test
+-----
+Begin Test for Empty Pipe Name
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 4, 3 - CreatePipeErr:OS_QueueCreate returned -15,app ut_cfe_sb
+PASSED  [cFE.SB.05.004] Test_CreatePipe_API - Empty pipe name test
+-----
+Begin Test for Long Pipe Name
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 4, 3 - CreatePipeErr:OS_QueueCreate returned -13,app ut_cfe_sb.
+PASSED  [cFE.SB.05.005] Test_CreatePipe_API - Long PipeName Test
+-----
+Begin Test for Same Pipe Name
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SamePipeName,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 4, 3 - CreatePipeErr:OS_QueueCreate returned -15,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.05.006] Test_CreatePipe_API - Same pipe name test
+-----
+Begin Test for Max Pipes
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe0,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe3,id 3,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe4,id 4,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe5,id 5,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe6,id 6,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe7,id 7,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe8,id 8,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe9,id 9,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe10,id 10,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe11,id 11,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe12,id 12,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe13,id 13,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe14,id 14,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe15,id 15,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe16,id 16,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe17,id 17,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe18,id 18,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe19,id 19,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe20,id 20,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe21,id 21,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe22,id 22,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe23,id 23,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe24,id 24,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe25,id 25,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe26,id 26,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe27,id 27,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe28,id 28,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe29,id 29,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe30,id 30,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe31,id 31,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe32,id 32,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe33,id 33,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe34,id 34,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe35,id 35,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe36,id 36,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe37,id 37,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe38,id 38,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe39,id 39,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe40,id 40,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe41,id 41,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe42,id 42,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe43,id 43,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe44,id 44,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe45,id 45,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe46,id 46,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe47,id 47,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe48,id 48,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe49,id 49,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe50,id 50,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe51,id 51,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe52,id 52,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe53,id 53,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe54,id 54,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe55,id 55,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe56,id 56,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe57,id 57,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe58,id 58,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe59,id 59,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe60,id 60,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe61,id 61,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe62,id 62,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe63,id 63,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 3, 3 - CreatePipeErr:Max Pipes(64)In Use.app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 3,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 4,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 5,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 6,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 7,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 8,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 9,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 10,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 11,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 12,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 13,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 14,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 15,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 16,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 17,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 18,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 19,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 20,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 21,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 22,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 23,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 24,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 25,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 26,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 27,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 28,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 29,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 30,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 31,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 32,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 33,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 34,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 35,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 36,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 37,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 38,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 39,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 40,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 41,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 42,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 43,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 44,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 45,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 46,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 47,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 48,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 49,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 50,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 51,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 52,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 53,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 54,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 55,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 56,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 57,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 58,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 59,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 60,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 61,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 62,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 63,owner ut_cfe_sb.
+PASSED  [cFE.SB.05.007] Test_CreatePipe_API - Max pipes test
+-----
+End Test_CreatePipe_API
+
+Begin Test_DeletePipe_API
+Begin Test for No Subscriptions
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.06.001] Test_DeletePipe_API - No subscriptions test
+-----
+Begin Test With Subscriptions
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1801 on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1802 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1804 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1801 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1802 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1804 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.06.002] Test_DeletePipe_API - With subscriptions test
+-----
+Begin Test for Invalid Pipe ID
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 46, 3 - Pipe Delete Error:Bad Argument,PipedId 30,Requestor ut_cfe_sb,Idx 255,Stat 1
+PASSED  [cFE.SB.06.003] Test_DeletePipe_API - Invalid pipe ID test
+-----
+Begin Test for Invalid Pipe Owner
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 54, 3 - Pipe Delete Error:Caller(ut_cfe_sb) is not the owner of pipe 0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.06.004] Test_DeletePipe_API - Invalid pipe owner test
+-----
+Begin Test DeletePipeWithAppId API
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1801 on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1802 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1803 on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1804 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1801 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1802 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1803 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1804 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.06.005] Test_DeletePipe_API - With app ID test
+-----
+End Test_DeletePipe_API
+
+Begin Test_Subscribe_API
+
+Begin Test for SubscribeEx
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1806 on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1806 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.07.001] Test_Subscribe_API - SubscribeEx test
+-----
+Begin Test for Invalid Pipe ID
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 50, 3 - Subscribe Err:Invalid Pipe Id,Msg=0x2000,PipeId=2,App ut_cfe_sb
+PASSED  [cFE.SB.07.002] Test_Subscribe_API - Invalid pipe ID test
+-----
+Begin Test for Invalid Message Id
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 6, 3 - Subscribe Err:Bad Arg,MsgId 0x2000,PipeId 0,app ut_cfe_sb,scope 0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.07.003] Test_Subscribe_API - Invalid message ID test
+-----
+Begin Test for Maximum Message Limit
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.07.004] Test_Subscribe_API - Maximum message limit test
+-----
+Begin Test for Duplicate Subscription
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 7, 2 - Duplicate Subscription,MsgId 0x1805 on TestPipe pipe,app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.07.005] Test_Subscribe_API - Duplicate subscription test
+-----
+Begin Test for Local Subscription
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.07.006] Test_Subscribe_API - Local subscription test
+-----
+Begin Test for Maximum Destination Count
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe0,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe3,id 3,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe4,id 4,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe5,id 5,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe6,id 6,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe7,id 7,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe8,id 8,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe9,id 9,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe10,id 10,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe11,id 11,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe12,id 12,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe13,id 13,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe14,id 14,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe15,id 15,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe16,id 16,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe0(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe1(1),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe3(3),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe4(4),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe5(5),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe6(6),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe7(7),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe8(8),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe9(9),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe10(10),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe11(11),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe12(12),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe13(13),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe14(14),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe15(15),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 9, 3 - Subscribe Err:Max Dests(16)In Use For Msg 0x811,pipe TestPipe16,app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 3,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 3,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 4,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 4,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 5,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 5,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 6,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 6,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 7,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 7,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 8,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 8,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 9,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 9,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 10,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 10,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 11,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 11,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 12,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 12,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 13,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 13,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 14,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 14,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 15,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 15,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 16,owner ut_cfe_sb.
+PASSED  [cFE.SB.07.007] Test_Subscribe_API - Maximum destination count test
+-----
+Begin Test for Maximum Message ID Count
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe0,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x0 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x3 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x4 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x5 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x6 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x7 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x9 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x10 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x11 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x12 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x13 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x14 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x15 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x16 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x17 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x18 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x19 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1a on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1b on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1c on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1d on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1e on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1f on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x20 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x21 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x22 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x23 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x24 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x25 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x26 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x27 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x28 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x29 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2a on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2b on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2c on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2d on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2e on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x2f on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x30 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x31 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x32 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x33 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x34 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x35 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x36 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x37 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x38 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x39 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x3a on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x3b on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x3c on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x3d on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x3e on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x3f on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x40 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x41 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x42 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x43 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x44 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x45 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x46 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x47 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x48 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x49 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x4a on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x4b on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x4c on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x4d on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x4e on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x4f on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x50 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x51 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x52 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x53 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x54 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x55 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x56 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x57 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x58 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x59 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x5a on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x5b on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x5c on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x5d on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x5e on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x5f on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x60 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x61 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x62 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x63 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x64 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x65 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x66 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x67 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x68 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x69 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x6a on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x6b on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x6c on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x6d on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x6e on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x6f on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x70 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x71 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x72 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x73 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x74 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x75 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x76 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x77 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x78 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x79 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x7a on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x7b on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x7c on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x7d on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x7e on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x7f on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x80 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x81 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x82 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x83 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x84 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x85 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x86 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x87 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x88 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x89 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8a on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8b on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8c on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8d on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8e on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8f on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x90 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x91 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x92 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x93 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x94 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x95 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x96 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x97 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x98 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x99 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x9a on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x9b on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x9c on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x9d on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x9e on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x9f on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa0 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa1 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa2 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa3 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa4 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa5 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa6 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa7 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa8 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xa9 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xaa on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xab on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xac on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xad on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xae on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xaf on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb0 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb1 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb2 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb3 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb4 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb5 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb6 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb7 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb8 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xb9 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xba on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xbb on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xbc on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xbd on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xbe on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xbf on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc0 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc1 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc2 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc3 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc4 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc5 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc6 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc7 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc8 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xc9 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xca on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xcb on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xcc on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xcd on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xce on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xcf on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd0 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd1 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd2 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd3 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd4 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd5 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd6 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd7 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd8 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xd9 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xda on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xdb on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xdc on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xdd on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xde on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xdf on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe0 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe1 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe2 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe3 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe4 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe5 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe6 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe7 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe8 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xe9 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xea on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xeb on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xec on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xed on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xee on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xef on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf0 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf1 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf2 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf3 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf4 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf5 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf6 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf7 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf8 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xf9 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xfa on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xfb on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xfc on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xfd on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xfe on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0xff on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 8, 3 - Subscribe Err:Max Msgs(256)In Use,MsgId 0x100,pipe TestPipe2,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x0 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x3 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x4 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x5 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x6 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x7 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x9 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x10 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x11 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x12 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x13 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x14 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x15 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x16 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x17 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x18 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x19 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1a on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1e on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1f on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x20 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x21 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x22 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x23 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x24 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x25 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x26 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x27 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x28 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x29 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2a on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2e on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x2f on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x30 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x31 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x32 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x33 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x34 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x35 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x36 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x37 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x38 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x39 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x3a on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x3b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x3c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x3d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x3e on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x3f on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x40 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x41 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x42 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x43 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x44 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x45 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x46 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x47 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x48 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x49 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x4a on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x4b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x4c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x4d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x4e on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x4f on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x50 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x51 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x52 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x53 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x54 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x55 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x56 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x57 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x58 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x59 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x5a on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x5b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x5c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x5d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x5e on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x5f on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x60 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x61 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x62 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x63 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x64 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x65 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x66 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x67 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x68 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x69 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x6a on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x6b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x6c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x6d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x6e on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x6f on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x70 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x71 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x72 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x73 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x74 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x75 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x76 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x77 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x78 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x79 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x7a on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x7b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x7c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x7d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x7e on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x7f on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x80 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x81 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x82 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x83 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x84 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x85 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x86 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x87 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x88 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x89 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8a on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8e on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8f on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x90 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x91 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x92 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x93 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x94 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x95 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x96 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x97 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x98 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x99 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x9a on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x9b on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x9c on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x9d on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x9e on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x9f on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa0 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa1 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa2 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa3 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa4 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa5 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa6 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa7 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa8 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xa9 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xaa on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xab on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xac on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xad on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xae on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xaf on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb0 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb1 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb2 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb3 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb4 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb5 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb6 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb7 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb8 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xb9 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xba on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xbb on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xbc on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xbd on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xbe on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xbf on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc0 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc1 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc2 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc3 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc4 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc5 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc6 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc7 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc8 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xc9 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xca on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xcb on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xcc on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xcd on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xce on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xcf on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd0 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd1 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd2 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd3 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd4 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd5 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd6 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd7 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd8 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xd9 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xda on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xdb on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xdc on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xdd on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xde on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xdf on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe0 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe1 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe2 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe3 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe4 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe5 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe6 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe7 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe8 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xe9 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xea on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xeb on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xec on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xed on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xee on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xef on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf0 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf1 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf2 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf3 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf4 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf5 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf6 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf7 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf8 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xf9 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xfa on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xfb on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xfc on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xfd on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xfe on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0xff on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb
+PASSED  [cFE.SB.07.008] Test_Subscribe_API - Maximum message ID count test
+-----
+Begin Test for Send Previous Subscriptions
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe0,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe0(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x812 on TestPipe0(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x813 on TestPipe0(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe1(1),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x812 on TestPipe1(1),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x813 on TestPipe1(1),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe2(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 14, 2 - No subscribers for MsgId 0x80d,sender ut_cfe_sb.
+  CFE_EVS_SendEvent: 45, 1 - Partial Sub Pkt 1 Sent,Entries=3,Stat=0x0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x812 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x813 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x812 on pipe 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x813 on pipe 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb.
+PASSED  [cFE.SB.07.009] Test_Subscribe_API - Send previous subscriptions test
+-----
+Begin Test for Find Global Message ID Count
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe0,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe0(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x812 on TestPipe0(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x813 on TestPipe0(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe1(1),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x812 on TestPipe1(1),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x813 on TestPipe1(1),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on TestPipe2(2),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x812 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x813 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x812 on pipe 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x813 on pipe 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 2,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb.
+PASSED  [cFE.SB.07.010] Test_Subscribe_API - Find global message ID count test
+-----
+Begin Test for Pipe Nonexistent
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 50, 3 - Subscribe Err:Invalid Pipe Id,Msg=0x800,PipeId=55,App ut_cfe_sb
+PASSED  [cFE.SB.07.011] Test_Subscribe_API - Pipe nonexistent test
+-----
+Begin Test SubscribeFull, Subscription Reporting
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 14, 2 - No subscribers for MsgId 0x80e,sender ut_cfe_sb
+  CFE_EVS_SendEvent from app 0: 22, 1 - Sending Subscription Report Msg=0x8fd,Pipe=0,Stat=0x0
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8fd on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8fd on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.07.012] Test_Subscribe_API - Subscription reporting test
+-----
+Begin Test for Invalid Pipe Owner
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 51, 3 - Subscribe Err:Caller(ut_cfe_sb.) is not the owner of pipe 0,Msg=0x877
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.07.013] Test_Subscribe_API - Invalid pipe owner test
+-----
+End Test_Subscribe_API
+
+Begin Test_Unsubscribe_API
+Begin Test for Unsubscribe Basic
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1000 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1000 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.08.001] Test_Unsubscribe_API - Unsubscribe basic
+-----
+Begin Test for Local Unsubscribe
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x801 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 12, 2 - Unsubscribe Err:No subs for Msg 0x1fff on TestPipe,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x801 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.08.002] Test_Unsubscribe_API - Local unsubscribe test
+-----
+Begin Test for Invalid Param, Unsubscribe
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 11, 3 - UnSubscribe Err:Bad Arg,MsgId 0x2000,PipeId 0,app ut_cfe_sb.,scope 0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.08.003] Test_Unsubscribe_API - Invalid param, unsubscribe test
+-----
+Begin Test for No Match
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 12, 2 - Unsubscribe Err:No subs for Msg 0x2 on TestPipe,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.08.004] Test_Unsubscribe_API - No match test
+-----
+Begin Test Unsubscribe Subscription Reporting
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8fd on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 14, 2 - No subscribers for MsgId 0x80e,sender ut_cfe_sb
+  CFE_EVS_SendEvent from app 0: 24, 1 - Sending Unsubscription Report Msg=0x8fd,Pipe=0,Stat=0x0
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8fd on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.08.005] Test_Unsubscribe_API - Subscription reporting test
+-----
+Begin Test Unsubscribe, Invalid Pipe
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x8fd on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 52, 3 - Unsubscribe Err:Invalid Pipe Id Msg=0x8fd,Pipe=1,app=ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x8fd on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.08.006] Test_Unsubscribe_API - Invalid pipe test
+-----
+Begin Test for Invalid Pipe Owner
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x877 on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 53, 3 - Unsubscribe Err:Caller(ut_cfe_sb) is not the owner of pipe 0,Msg=0x877
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x877 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.08.007] Test_Unsubscribe_API - Invalid pipe owner test
+-----
+Begin Test for Unsubscribe First Destination With Many
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe3,id 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe2(1),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe3(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb
+PASSED  [cFE.SB.08.008] Test_Unsubscribe_API - Unsubscribe first destination with many
+-----
+Begin Test for Unsubscribe Middle Destination With Many
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe3,id 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe1(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe2(1),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe3(2),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 2,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 2,owner ut_cfe_sb
+PASSED  [cFE.SB.08.009] Test_Unsubscribe_API - Unsubscribe middle destination with many
+-----
+Begin Test for Unsubscribe, Get Destination Pointer
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe1,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe2,id 1,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe1(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1805 on TestPipe2(1),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 1,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1805 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 1,owner ut_cfe_sb
+PASSED  [cFE.SB.08.010] Test_Unsubscribe_API - Get destination pointer
+-----
+End Test_Unsubscribe_API
+
+Begin Test_SendMsg_API
+Begin Test for Null Pointer
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 13, 3 - Send Err:Bad input argument,Arg 0x0,App ut_cfe_sb.
+PASSED  [cFE.SB.09.001] Test_SendMsg_API - Null pointer test
+-----
+Begin Test for Invalid Message Id
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 21, 3 - Send Err:Invalid MsgId(0x2000)in msg,App ut_cfe_sb
+PASSED  [cFE.SB.09.002] Test_SendMsg_API - Invalid message ID test
+-----
+Begin Test for No Subscribers
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 14, 2 - No subscribers for MsgId 0x815,sender ut_cfe_sb.
+PASSED  [cFE.SB.09.003] Test_SendMsg_API - No subscribers test
+-----
+Begin Test for Maximum Message Size Plus One
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 15, 3 - Send Err:Msg Too Big MsgId=0x808,app=ut_cfe_sb,size=32769,MaxSz=32768
+PASSED  [cFE.SB.09.004] Test_SendMsg_API - Maximum message size plus one test
+-----
+Begin Test for Basic Send
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x816 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x816 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.09.005] Test_SendMsg_API - Basic send test
+-----
+Begin Test for Telemetry Sequence Count
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name SeqCntTestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x817 on SeqCntTestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x817 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.09.006] Test_SendMsg_API - Telemetry sequence count test
+-----
+Begin Test for QueuePut Error
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x818 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 26, 3 - Pipe Write Err,MsgId 0x818,pipe TestPipe,sender ut_cfe_sb,stat 0xfffffff0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x818 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.09.007] Test_SendMsg_API - QueuePut error test
+-----
+Begin Test for Pipe Full
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name PipeFullTestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x812 on PipeFullTestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_ES_PerfLogAdd called: EntryExit = 0
+  CFE_ES_PerfLogAdd called: EntryExit = 1
+  CFE_EVS_SendEvent from app 0: 25, 3 - Pipe Overflow,MsgId 0x812,pipe PipeFullTestPipe,sender ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x812 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.09.008] Test_SendMsg_API - Pipe full test
+-----
+Begin Test for Msg Limit Exceeded
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name MsgLimTestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x811 on MsgLimTestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_ES_PerfLogAdd called: EntryExit = 0
+  CFE_ES_PerfLogAdd called: EntryExit = 1
+  CFE_EVS_SendEvent from app 0: 17, 3 - Msg Limit Err,MsgId 0x811,pipe MsgLimTestPipe,sender ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x811 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.09.009] Test_SendMsg_API - Msg Limit Exceeded test
+-----
+Begin Test for GetPoolBufErr
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name GetPoolErrPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on GetPoolErrPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 16, 3 - Send Err:Request for Buffer Failed. MsgId 0x809,app ut_cfe_sb.,size 24
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.09.010] Test_SendMsg_API - GetPoolBufErr test
+-----
+Begin Test for ZeroCopyGetPtr
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.09.011] Test_SendMsg_API - ZeroCopyGetPtr test
+-----
+Begin Test for CFE_SB_ZeroCopySend
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name ZeroCpyTestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on ZeroCpyTestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.09.012] Test_SendMsg_API - CFE_SB_ZeroCopySend test
+-----
+Begin Test for CFE_SB_ZeroCopyPass
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name ZeroCpyPassTestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on ZeroCpyPassTestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.09.013] Test_SendMsg_API - CFE_SB_ZeroCopyPass test
+-----
+Begin Test for ZeroCopyReleasePtr
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.09.014] Test_SendMsg_API - ZeroCopyReleasePtr test
+-----
+Begin Test for Send w/Disabled Destination
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on TestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.09.015] Test_SendMsg_API - Disabled destination test
+-----
+Begin Test for Send with Metadata
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 0,app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.09.016] Test_SendMsg_API - Send with metadata test
+-----
+End Test_SendMsg_API
+
+Begin Test_RcvMsg_API
+Begin Test for Rcv - Invalid PipeId Rcv
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 19, 3 - Rcv Err:PipeId 20 does not exist,app ut_cfe_sb
+PASSED  [cFE.SB.10.001] Test_RcvMsg_API - Invalid pipe ID test
+-----
+Begin Test for Rcv - Invalid Timeout Rcv
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name RcvMsgTestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 18, 3 - Rcv Err:Bad Input Arg:BufPtr 0xbff6fb78,pipe 0,t/o -5,app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.10.002] Test_RcvMsg_API - Invalid timeout test
+-----
+Begin Test for Poll Receive
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name RcvMsgTestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.10.003] Test_RcvMsg_API - Poll receive test
+-----
+Begin Test for GetLastSender Null Ptr
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name RcvMsgTestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 30, 3 - SB GetLastSender Err:Rcvd Null Ptr,Pipe=0,App=ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.10.004] Test_RcvMsg_API - GetLastSenderId null pointer test
+-----
+Begin Test for GetLastSender Invalid Pipe
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name RcvMsgTestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 31, 3 - SB GetLastSender Err:Rcvd Invalid Pipe=250,App=ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.10.005] Test_RcvMsg_API - GetLastSenderId invalid pipe test
+-----
+Begin Test for GetLastSender Invalid Caller
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name RcvMsgTestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 41, 3 - SB GetLastSender Err:Caller(ut_cfe_sb.) is not the owner of pipe 0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.10.006] Test_RcvMsg_API - GetLastSenderId invalid caller test
+-----
+Begin Test for GetLastSender Success
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name RcvMsgTestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.10.007] Test_RcvMsg_API - GetLastSenderId Success Test
+-----
+Begin Test for Timeout Rcv
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name RcvMsgTestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.10.008] Test_RcvMsg_API - Timeout receive test
+-----
+Begin Test for Pipe Read Error
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name RcvMsgTestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 27, 3 - Pipe Read Err,pipe RcvMsgTestPipe,app ut_cfe_sb,stat 0xfffffff0
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb.
+PASSED  [cFE.SB.10.009] Test_RcvMsg_API - Pipe read error test
+-----
+Begin Test for Pend Forever
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name RcvMsgTestPipe,id 0,app ut_cfe_sb
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x809 on RcvMsgTestPipe(0),app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+Received Msg 0x809
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x809 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.10.010] Test_RcvMsg_API - Pend forever test
+-----
+End Test_RcvMsg_API
+
+Begin Test for CleanupApp
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.10.011] Test_CleanupApp_API - CleanupApp test
+-----
+Begin Test for SB Utils
+Begin Test_CFE_SB_InitMsg
+Begin SB_TestInitMsg_True
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.001] SB_TestInitMsg_True - Clear message content
+-----
+Begin SB_TestInitMsg_False
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.002] SB_TestInitMsg_False - Leave message content
+-----
+End Test_CFE_SB_InitMsg
+
+Begin Test_CFE_SB_MsgHdrSize
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.003] Test_CFE_SB_MsgHdrSize - Commands with secondary header
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.004] Test_CFE_SB_MsgHdrSize - Commands without secondary header
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.005] Test_CFE_SB_MsgHdrSize - Telemetry with secondary header
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.006] Test_CFE_SB_MsgHdrSize - Telemetry without secondary header
+-----
+Begin Test_CFE_SB_GetUserData
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.007] Test_CFE_SB_GetUserData - Command packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.008] Test_CFE_SB_GetUserData - Command packet without secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.009] Test_CFE_SB_GetUserData - Telemetry packets with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.010] Test_CFE_SB_GetUserData - Telemetry packets without secondary header test
+-----
+Begin Test_CFE_SB_SetGetMsgId
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.011] Test_CFE_SB_SetGetMsgId - Get the set message ID test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.012] Test_CFE_SB_SetGetMsgId - Loop test
+-----
+Begin Test_CFE_SB_SetGetUserDataLength
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.013] Test_CFE_SB_SetGetUserDataLength - Command packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.014] Test_CFE_SB_SetGetUserDataLength - Command packet without secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.015] Test_CFE_SB_SetGetUserDataLength - Telemetry packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.016] Test_CFE_SB_SetGetUserDataLength - Telemetry packet without secondary header test
+-----
+Begin Test_CFE_SB_SetGetTotalMsgLength
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.017] Test_CFE_SB_SetGetTotalMsgLength - Command packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.018] Test_CFE_SB_SetGetTotalMsgLength - Command packet without secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.019] Test_CFE_SB_SetGetTotalMsgLength - Telemetry packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.020] Test_CFE_SB_SetGetTotalMsgLength - Telemetry packet without secondary header test
+-----
+Begin Test_CFE_SB_SetGetMsgTime
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.021] Test_CFE_SB_SetGetMsgTime - Command packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.022] Test_CFE_SB_SetGetMsgTime - Command packet without secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.023] Test_CFE_SB_SetGetMsgTime - Telemetry packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.024] Test_CFE_SB_SetGetMsgTime - Telemetry packet without secondary header test
+-----
+Begin Test_CFE_SB_TimeStampMsg
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.025] Test_CFE_SB_SetGetMsgTime - Telemetry packet with secondary header test
+-----
+Begin Test_CFE_SB_SetGetCmdCode
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.026] Test_CFE_SB_SetGetCmdCode - Command packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.027] Test_CFE_SB_SetGetCmdCode - Command packet without secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.028] Test_CFE_SB_SetGetCmdCode - Telemetry packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.029] Test_CFE_SB_SetGetCmdCode - Telemetry packet without secondary header test
+-----
+Begin Test_CFE_SB_ChecksumUtils
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.030] Test_CFE_SB_ChecksumUtils - Command packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.031] Test_CFE_SB_ChecksumUtils - Command packet without secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.032] Test_CFE_SB_ChecksumUtils - Telemetry packet with secondary header test
+-----
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.11.033] Test_CFE_SB_ChecksumUtils - Telemetry packet without secondary header test
+-----
+End Test for SB Utils
+
+Begin Test Special Cases
+Begin Test Shared Semaphore Give/Take Failure
+  CFE_ES_PoolCreateEx called
+  SB SharedData Mutex Take Err Stat=0xfffffffa,App=0,Func=CFE_SB_CreatePipe,Line=180
+
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  SB SharedData Mutex Give Err Stat=0xfffffffa,App=0,Func=CFE_SB_SubscribeFull,Line=755
+
+  CFE_EVS_SendEvent from app 0: 10, 1 - Subscription Rcvd:MsgId 0x1801 on TestPipe(0),app ut_cfe_sb
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 48, 1 - Subscription Removed:Msg 0x1801 on pipe 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.12.001] CFE_SB_(Un)LockSharedData - Semaphore give/take failure test
+-----
+Begin Test GetPipeName Error
+  CFE_ES_PoolCreateEx called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 5, 1 - Pipe Created:name TestPipe,id 0,app ut_cfe_sb.
+  OS_TaskGetId called
+  OS_TaskGetId called
+  CFE_EVS_SendEvent from app 0: 47, 1 - Pipe Deleted:id 0,owner ut_cfe_sb
+PASSED  [cFE.SB.12.002] CFE_SB_GetPipeName - Get pipe name error test
+-----
+Begin Test ReqToSendEvent Error
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.12.003] CFE_SB_RequestToSendEvent - Request to send event error test
+-----
+Begin Test PutDestBlk Error
+  CFE_ES_PoolCreateEx called
+PASSED  [cFE.SB.12.004] CFE_SB_PutDestinationBlk - PutDestBlk error test
+-----
+End Test Special Cases
+
+ut_cfe_sb PASSED 146 tests.
+ut_cfe_sb FAILED 0 tests.
+
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/sb/ccsds.c' 100.00%  21
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/sb/cfe_sb_task.c' 99.46%  370
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/sb/cfe_sb_init.c' 100.00%  45
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/sb/cfe_sb_api.c' 98.72%  549
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/sb/cfe_sb_buf.c' 100.00%  51
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/sb/cfe_sb_priv.c' 98.58%  141
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/sb/cfe_sb_util.c' 100.00%  86

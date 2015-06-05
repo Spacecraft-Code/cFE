@@ -1,0 +1,1252 @@
+        -:    0:Source:/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/fs/cfe_fs_decompress.c
+        -:    0:Programs:3
+        -:    1:/*
+        -:    2:** $Id: cfe_fs_decompress.c.gcov 1.2 2014/09/08 11:45:34GMT-05:00 rmcgraw Exp  $
+        -:    3:**
+        -:    4:**   File: CFE_FS_decompress.c
+        -:    5:**
+        -:    6:**
+        -:    7:**      Copyright (c) 2004-2012, United States government as represented by the
+        -:    8:**      administrator of the National Aeronautics Space Administration.
+        -:    9:**      All rights reserved. This software(cFE) was created at NASA's Goddard
+        -:   10:**      Space Flight Center pursuant to government contracts.
+        -:   11:**
+        -:   12:**      This is governed by the NASA Open Source Agreement and may be used,
+        -:   13:**      distributed and modified only pursuant to the terms of that agreement.
+        -:   14:**
+        -:   15:**
+        -:   16:**
+        -:   17:**   Author:   A. Cudmore,    NASA/GSFC Code 582
+        -:   18:**             Ported from JWST, which was ported from Swift/BAT,
+        -:   19:**             which was ported from the GNU zip sources.
+        -:   20:**
+        -:   21:**   Purpose: cFE Port of the gzunzip software ported from Triana->Swift->JWST
+        -:   22:**
+        -:   23:** $Log: cfe_fs_decompress.c.gcov  $
+        -:   23:** Revision 1.2 2014/09/08 11:45:34GMT-05:00 rmcgraw 
+        -:   23:** DCR22107:24 Baseline for cFE 6.4.0 release
+        -:   24:** Revision 1.14 2014/04/14 16:21:52EDT lwalling
+        -:   25:** Delete unsuccessful decompression output file
+        -:   26:** Revision 1.13 2012/02/08 14:09:20EST lwalling
+        -:   27:** Remove unused variable
+        -:   28:** Revision 1.12 2012/01/13 12:11:28EST acudmore
+        -:   29:** Changed license text to reflect open source
+        -:   30:** Revision 1.11 2012/01/10 18:37:46EST aschoeni
+        -:   31:** CFE return codes set directly; FS_gz_huft_build return code is now properly redefined
+        -:   32:** Revision 1.10 2011/09/02 14:59:15EDT jmdagost
+        -:   33:** Added new-line characters where missing in syslog calls.
+        -:   34:** Revision 1.9 2011/07/13 18:24:32EDT lwalling
+        -:   35:** Initialized local variables r.b, r.e, r.v.n and r.v.t
+        -:   36:** Revision 1.8 2011/07/13 17:42:22EDT lwalling
+        -:   37:** Initialized local variable huft_index_t
+        -:   38:** Revision 1.7 2011/01/19 18:00:59EST lwalling
+        -:   39:** Restore use of heritage error codes
+        -:   40:** Revision 1.6 2011/01/19 15:09:17EST lwalling
+        -:   41:** Change calls from memset() to CFE_PSP_MemSet()
+        -:   42:** Revision 1.5 2010/10/25 18:26:06EDT jmdagost
+        -:   43:** Added test to while-loop to make sure array index does not go negative.
+        -:   44:**
+        -:   45:*/
+        -:   46:
+        -:   47:/* Original Credit:
+        -:   48: *
+        -:   49: * inflate.c -- Not copyrighted 1992 by Mark Adler version c10p1, 10 January
+        -:   50: * 1993
+        -:   51: *
+        -:   52: * You can do whatever you like with this source file, though I would prefer
+        -:   53: * that if you modify it and redistribute it that you include comments to
+        -:   54: * that effect with your name and the date.  Thank you. [The history has been
+        -:   55: * moved to the file ChangeLog.]
+        -:   56: */
+        -:   57:
+        -:   58:/*
+        -:   59:** Includes
+        -:   60:*/
+        -:   61:#include "cfe_fs_decompress.h"
+        -:   62:
+        -:   63:/*
+        -:   64:** Global data -- Note: The following Global Data should be removed. The CFE_FS_Decompress API is not
+        -:   65:**                re-entrant! In order to make sure that two apps will not corrupt the data
+        -:   66:**                the API is guarded with a Mutex. This will have serious implications on
+        -:   67:**                real time performance if an application blocks while another is in the API.
+        -:   68:**
+        -:   69:*/
+        -:   70:int        srcFile_fd;
+        -:   71:int        dstFile_fd;
+        -:   72:
+        -:   73:uint32     gz_bb;
+        -:   74:uint32     gz_bk;
+        -:   75:uint32     gz_outcnt;
+        -:   76:uint32     gz_insize;
+        -:   77:uint32     gz_inptr;
+        -:   78:int32      gz_bytes_in;
+        -:   79:int32      gz_bytes_out;
+        -:   80:
+        -:   81:int32      gGuzError;
+        -:   82:
+        -:   83:uint8      gz_inbuf[ INBUFSIZ_EXTRA ];
+        -:   84:uint8      gz_outbuf[ OUTBUFSIZ_EXTRA ];
+        -:   85:uint8      gz_window[ WSIZE_X2 ];
+        -:   86:uint32     gz_hufts;
+        -:   87:uint32     gz_max_hufts;
+        -:   88:uint32     trace[ 3 ];
+        -:   89:
+        -:   90:HufTable   hufTable[ MAX_HUF_TABLES ];
+        -:   91:
+        -:   92:/*
+        -:   93:** Code
+        -:   94:*/
+        -:   95:
+        4:   96:int32 CFE_FS_Decompress( char * srcFileName, char * dstFileName )
+        -:   97:{
+        -:   98:
+        -:   99:   int32 guzerror;
+        -:  100:
+        -:  101:   /*
+        -:  102:   ** Lock the API with the FS Mutex
+        -:  103:   */
+        4:  104:   CFE_FS_LockSharedData(__func__);
+        -:  105:
+        4:  106:   gGuzError = CFE_SUCCESS; /*Initialize this variable.  */
+        -:  107:
+        -:  108:   /*
+        -:  109:   ** initialize max number of Huffman tables allocated to zero
+        -:  110:   */
+        4:  111:   gz_max_hufts = 0;
+        -:  112:
+        -:  113:   /*
+        -:  114:   ** Open input file
+        -:  115:   */
+        4:  116:   srcFile_fd = OS_open( srcFileName, OS_READ_ONLY, 0 );
+        -:  117:
+        -:  118:   /*
+        -:  119:   ** if input file could not be opened, return cFE error code
+        -:  120:   */
+        4:  121:   if ( srcFile_fd < 0 )
+        -:  122:   {
+        1:  123:      CFE_ES_WriteToSysLog("CFE_FS_Decompress: Cannot open source file: %s\n",
+        -:  124:                            srcFileName);
+        1:  125:      CFE_FS_UnlockSharedData(__func__);
+        1:  126:      return (CFE_FS_GZIP_OPEN_INPUT);
+        -:  127:   }
+        -:  128:
+        -:  129:   /*
+        -:  130:   ** open output file
+        -:  131:   */
+        3:  132:   dstFile_fd = OS_creat( dstFileName, OS_WRITE_ONLY);
+        -:  133:
+        -:  134:   /*
+        -:  135:   ** if output file could not be opened, return cFE error code
+        -:  136:   */
+        3:  137:   if ( dstFile_fd < 0 )
+        -:  138:   {
+        1:  139:      CFE_ES_WriteToSysLog("CFE_FS_Decompress: Cannot open destination file: %s\n",
+        -:  140:                            dstFileName);
+        -:  141:
+        -:  142:      /* close the source file before bailing out */
+        1:  143:      OS_close( srcFile_fd );
+        -:  144:
+        1:  145:      CFE_FS_UnlockSharedData(__func__);
+        1:  146:      return (CFE_FS_GZIP_OPEN_OUTPUT);
+        -:  147:   }
+        -:  148:
+        2:  149:   CFE_PSP_MemSet( hufTable,  0, MAX_HUF_TABLES * sizeof(HufTable) );
+        2:  150:   CFE_PSP_MemSet( gz_window, 0, WSIZE_X2 );
+        2:  151:   CFE_PSP_MemSet( trace,     0, 3 * sizeof(uint32) );
+        -:  152:
+        -:  153:   /*
+        -:  154:   ** uncompress the file
+        -:  155:   */
+        2:  156:   guzerror = FS_gz_unzip();
+        -:  157:
+        -:  158:   /*
+        -:  159:   ** close input and output files
+        -:  160:   */
+        2:  161:   OS_close( dstFile_fd );
+        2:  162:   OS_close( srcFile_fd );
+        -:  163:
+        -:  164:   /*
+        -:  165:   ** delete output file after error
+        -:  166:   */
+        2:  167:   if (guzerror != CFE_SUCCESS)
+        -:  168:   {
+        1:  169:      OS_remove(dstFileName);
+        -:  170:   }
+        -:  171:
+        -:  172:   /*
+        -:  173:   ** Unlock FS Shared data mutex
+        -:  174:   */
+        2:  175:   CFE_FS_UnlockSharedData(__func__);
+        -:  176:
+        -:  177:   /*
+        -:  178:   ** return cFE error code
+        -:  179:   */
+        2:  180:   return(guzerror);
+        -:  181:}
+        -:  182:
+        -:  183:
+        2:  184:void FS_gz_clear_bufs( void )
+        -:  185:{
+        2:  186:	gz_outcnt = 0;
+        2:  187:	gz_insize = 0;
+        2:  188:	gz_inptr  = 0;
+        -:  189:
+        2:  190:	gz_bytes_in  = 0L;
+        2:  191:	gz_bytes_out = 0L;
+        2:  192:}
+        -:  193:
+        -:  194:
+        2:  195:int32 FS_gz_eat_header( void )
+        -:  196:{
+        -:  197:	uint8   flags;                  /* compression flags */
+        -:  198:	int8    magic[2];               /* magic header      */
+        -:  199:	int8    thisByte;				     /* temporary holder for current byte in a string read */
+        -:  200:	uint32  stamp;                  /* time stamp        */
+        -:  201:	boolean keep_going;
+        -:  202:
+        -:  203:	/*  read input buffer (check for read error) */
+        2:  204:	magic[0] = (int8)NEXTBYTE();
+        2:  205:	if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  206:
+        2:  207:	magic[1] = (int8)NEXTBYTE();
+        2:  208:	if ( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  209:
+        3:  210:	if ( memcmp( magic, GZIP_MAGIC, 2 ) == 0 || memcmp( magic, OLD_GZIP_MAGIC, 2 ) == 0 )
+        -:  211:   {
+        -:  212:
+        1:  213:		NEXTBYTE();
+        1:  214:		if ( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  215:
+        1:  216:		flags = NEXTBYTE();
+        1:  217:		if ( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  218:
+        1:  219:		stamp  = (uint32)NEXTBYTE();
+        1:  220:		if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        1:  221:		stamp |= (uint32)NEXTBYTE() <<  8;
+        1:  222:		if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        1:  223:		stamp |= (uint32)NEXTBYTE() << 16;
+        1:  224:		if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        1:  225:		stamp |= (uint32)NEXTBYTE() << 24;
+        1:  226:		if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  227:
+        1:  228:		NEXTBYTE();		/* Ignore extra flags for the moment */
+        1:  229:		if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        1:  230:		NEXTBYTE();		/* Ignore OS type for the moment */
+        1:  231:		if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  232:
+        1:  233:		if ( (flags & CONTINUATION) != 0 ) {
+    #####:  234:			NEXTBYTE();
+    #####:  235:			if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+    #####:  236:			NEXTBYTE();
+    #####:  237:			if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  238:		}
+        -:  239:
+        1:  240:		if ( (flags & EXTRA_FIELD) != 0 ) {
+        -:  241:			uint32 len;
+    #####:  242:			len  = NEXTBYTE();
+    #####:  243:			if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+    #####:  244:			len |= NEXTBYTE() << 8;
+    #####:  245:			if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+    #####:  246:			while (len--) {
+    #####:  247:				NEXTBYTE();
+    #####:  248:				if( gGuzError != CFE_SUCCESS ) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  249:			}
+        -:  250:		}
+        -:  251:
+        -:  252:		/* Get original file name if it was truncated */
+        1:  253:		if ( (flags & ORIG_NAME) != 0 ) {
+        1:  254:			keep_going = TRUE;
+        8:  255:			while ( keep_going ) {
+        -:  256:
+        -:  257:				/* Get the next byte */
+        6:  258:				thisByte = NEXTBYTE();
+        -:  259:
+        -:  260:				/* Header failure when end of file is reached or a read failure occurs */
+        6:  261:				if ((thisByte == EOF) || (gGuzError != CFE_SUCCESS)) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  262:
+        -:  263:				/* End of string was found */
+        6:  264:				if (thisByte == 0) keep_going = FALSE;
+        -:  265:			}
+        -:  266:		}
+        -:  267:
+        -:  268:		/*  Discard file comment if any  */
+        1:  269:		if ( (flags & COMMENT) != 0 ) {
+    #####:  270:			keep_going = TRUE;
+    #####:  271:			while ( keep_going ) {
+        -:  272:
+        -:  273:				/* Get the next byte */
+    #####:  274:				thisByte = NEXTBYTE();
+        -:  275:
+        -:  276:				/* Header failure when end of file is reached or a read failure occurs */
+    #####:  277:				if ((thisByte == EOF) || (gGuzError != CFE_SUCCESS)) return CFE_FS_GZIP_READ_ERROR_HEADER;
+        -:  278:
+        -:  279:				/* End of string was found */
+    #####:  280:				if (thisByte == 0) keep_going = FALSE;
+        -:  281:			}
+        -:  282:		}
+        -:  283:	}
+        -:  284:	else
+        -:  285:	{
+        1:  286:		gGuzError = CFE_FS_GZIP_NON_ZIP_FILE;
+        -:  287:	}
+        -:  288:
+        2:  289:	return gGuzError;
+        -:  290:}
+        -:  291:
+        -:  292:/*
+        -:  293:** Fill the input buffer. This is called only when the buffer is empty.
+        -:  294:*/
+        4:  295:int16 FS_gz_fill_inbuf( void )
+        -:  296:{
+        -:  297:	int32 len;
+        -:  298:
+        -:  299:	/*  Read as much as possible */
+        4:  300:	gz_insize = 0;
+        -:  301:
+        -:  302:	do
+        -:  303:   {
+        5:  304:		len = OS_read( srcFile_fd, (int8*)gz_inbuf + gz_insize, INBUFSIZ - gz_insize );
+        -:  305:
+        5:  306:		if ( len == 0 || len == EOF || len == OS_FS_ERROR ) break;
+        -:  307:
+        4:  308:		gz_insize += len;
+        -:  309:
+        4:  310:	} while ( gz_insize < INBUFSIZ );
+        -:  311:
+        -:  312:
+        4:  313:	if ( gz_insize == 0 ) return EOF;
+        -:  314:
+        4:  315:	if ( len == OS_FS_ERROR )
+        -:  316:   {
+        1:  317:		gGuzError = CFE_FS_GZIP_READ_ERROR;
+        1:  318:		return EOF;
+        -:  319:	}
+        -:  320:
+        3:  321:	gz_bytes_in += (uint32)gz_insize;
+        3:  322:	gz_inptr = 1;
+        -:  323:
+        3:  324:	return gz_inbuf[0];
+        -:  325:}
+        -:  326:
+        -:  327:
+        -:  328:/*  Write the output window window[0..gz_outcnt-1] and update crc and */
+        -:  329:/*   gz_bytes_out. (Used for the decompressed data only.) */
+        -:  330:/*  merged original gz_flush_window & gz_write_buf together - glw */
+        -:  331:/* fix for infinite loop when file store is full -dds */
+        5:  332:void FS_gz_flush_window( void )
+        -:  333:{
+        -:  334:
+        -:  335:	int  n;
+        -:  336:	uint32  cnt;
+        -:  337:	uint8   *gz_window_position;
+        -:  338:
+        5:  339:	if ( gz_outcnt == 0 ) return;
+        -:  340:
+        5:  341:	FS_gz_updcrc( gz_window, gz_outcnt );
+        -:  342:
+        5:  343:	cnt = gz_outcnt;
+        5:  344:	gz_window_position = gz_window;
+        -:  345:
+       21:  346:	while ( gGuzError != CFE_FS_GZIP_WRITE_ERROR  &&
+       10:  347:		    ( n = OS_write(dstFile_fd, (int8 *)gz_window_position, cnt) ) != cnt )
+        -:  348:	{
+        1:  349:		if ( n <= 0 ) gGuzError = CFE_FS_GZIP_WRITE_ERROR;
+        -:  350:
+        1:  351:		cnt -= n;
+        1:  352:		gz_window_position += n;
+        -:  353:	}
+        -:  354:
+        5:  355:	gz_bytes_out += (uint32)gz_outcnt;
+        -:  356:
+        5:  357:	gz_outcnt = 0;
+        -:  358:}
+        -:  359:
+        -:  360:
+        -:  361:/*  Given a list of code lengths and a maximum table size, make a set of */
+        -:  362:/*  tables to decode that set of codes.  Return zero on success, one if the */
+        -:  363:/*  given code set is incomplete (the tables are still built in this case), */
+        -:  364:/*  two if the input is invalid (all zero length codes or an oversubscribed */
+        -:  365:/*  set of lengths), and three if not enough memory. */
+        -:  366:
+        -:  367:/*  INPUT:  */
+        -:  368:/*	uint32    *b;      */             /* code lengths in bits (all assumed <= BMAX) */
+        -:  369:/*	uint32     n;      */             /* number of codes (assumed <= N_MAX)         */
+        -:  370:/*	uint32     s;       */            /* number of simple-valued codes (0..s-1)     */
+        -:  371:/*	uint16    *d;       */            /* list of base values for non-simple codes   */
+        -:  372:/*	uint16    *e;       */            /* list of extra bits for non-simple codes    */
+        -:  373:/*	int32     *m;       */            /* maximum lookup bits, returns actual        */
+        -:  374:
+       20:  375:int32 FS_gz_huft_build( uint32 * b, uint32 n, uint32 s, uint16 * d, uint16 * e, int32 * m )
+        -:  376:{
+        -:  377:
+        -:  378:	uint32  a;              /* counter for codes of length k        */
+        -:  379:	uint32  c[BMAX + 1];    /* bit length count table               */
+        -:  380:	uint32  f;              /* i repeats in table every f entries   */
+        -:  381:	int32   g;              /* maximum code length                  */
+        -:  382:	int32   h;              /* table level                          */
+        -:  383:	register uint32 i;      /* counter, current code                */
+        -:  384:	register uint32 j;      /* counter                              */
+        -:  385:	register int32  k;      /* number of bits in current code       */
+        -:  386:	int32  l;               /* bits per table (returned in m)       */
+        -:  387:	uint32 lu;              /* l unsigned                           */
+        -:  388:	register uint32 *p;     /* pointer into c[], b[], or v[]        */
+        -:  389:	register HufTable *q;   /* points to current table              */
+        -:  390:	HufTable r;             /* table entry for structure assignment */
+        -:  391:	HufTable *u[BMAX];      /* table stack                          */
+        -:  392:	uint32 v[N_MAX];        /* values in order of bit length        */
+        -:  393:	register int32 w;       /* bits before this table == (l * h)    */
+        -:  394:	uint32 x[BMAX + 1];     /* bit offsets, then code stack         */
+        -:  395:	uint32 *xp;             /* pointer into x                       */
+        -:  396:	int32 y;                /* number of dummy codes added          */
+        -:  397:	uint32 z;               /* number of entries in current table   */
+        -:  398:
+        -:  399:	uint32 huft_index_q;
+       20:  400:	uint32 huft_index_t = 0;
+       20:  401:	boolean   not_first_table = FALSE;
+        -:  402:
+        -:  403:	/*  Generate counts for each bit length  */
+       20:  404:	CFE_PSP_MemSet( (void*)(c), 0, sizeof(c) );
+       20:  405:	r.b=0;
+       20:  406:	r.e=0;
+       20:  407:	r.v.n=0;
+       20:  408:	r.v.t=0;
+       20:  409:	p = b;
+       20:  410:	i = n;
+        -:  411:	do
+        -:  412:   {
+     2309:  413:		c[*p]++;
+     2309:  414:		p++;
+     2309:  415:	} while (--i);
+        -:  416:
+       20:  417:   if (c[0] == n)
+        -:  418:   {			/* null input--all zero length codes */
+    #####:  419:		*m = 0;
+    #####:  420:		return CFE_SUCCESS;
+        -:  421:	}
+        -:  422:
+        -:  423:
+        -:  424:	/*  Find minimum and maximum length, bound *m by those */
+       20:  425:	l = *m;
+       20:  426:	for ( j = 1; j <= BMAX; j++ ) if ( c[j] ) break;
+       20:  427:	k = j;
+       20:  428:	lu = (uint32)l;				   		               /* minimum code length */
+       20:  429:	if ( lu < j ) { l = j; lu = (uint32)l; }
+       20:  430:	for ( i = BMAX; i; i-- ) if (c[i]) break;
+       20:  431:	g = i;						                       /* maximum code length */
+       20:  432:	if ( lu > i ) { l = i; lu = (uint32)l; }
+       20:  433:	*m = l;
+        -:  434:
+        -:  435:
+        -:  436:	/*  Adjust last length count to fill out codes, if needed */
+      132:  437:	for ( y = 1 << j; j < i; j++, y <<= 1 )
+      112:  438:	if ( ( y -= c[j] ) < 0 )  return CFE_FS_GZIP_BAD_CODE_BLOCK;    /* bad input: more codes than bits */
+       20:  439:	if ( (y -= c[i] ) < 0 )  return CFE_FS_GZIP_BAD_CODE_BLOCK;
+       20:  440:	c[i] += y;
+        -:  441:
+        -:  442:
+        -:  443:	/*  Generate starting offsets into the value table for each length */
+       20:  444:	x[1] = j = 0;
+       20:  445:	p = c + 1;
+       20:  446:	xp = x + 2;
+      197:  447:	while (--i) {					/* note that i == g from above */
+      157:  448:		j += *p++;
+      157:  449:		*xp++ = j;
+        -:  450:	}
+        -:  451:
+        -:  452:
+        -:  453:	/*  Make a table of values in order of bit lengths */
+       20:  454:	p = b;
+       20:  455:	i = 0;
+        -:  456:	do {
+     2309:  457:		if ( (j = *p++) != 0 ) v[x[j]++] = i;
+     2309:  458:	} while ( ++i < n );
+        -:  459:
+        -:  460:
+        -:  461:	/*  Generate the Huffman codes and for each, make the table entries  */
+       20:  462:	x[0] = i = 0;				  /* first Huffman code is zero   */
+       20:  463:	p = v;						  /* grab values in bit order     */
+       20:  464:	h = -1;						  /* no tables yet--level -1      */
+       20:  465:	w = -l;						  /* bits decoded == (l * h)      */
+       20:  466:	u[0] = (HufTable *)NULL;      /* just to keep compilers happy */
+       20:  467:	q = (HufTable *)NULL;         /* ditto */
+       20:  468:	z = 0;                        /* ditto */
+        -:  469:
+        -:  470:
+        -:  471:	/*  go through the bit lengths (k already is bits in shortest code) */
+      152:  472:	for (; k <= g; k++) {
+      132:  473:		a = c[k];
+     2461:  474:		while (a--) {
+        -:  475:
+        -:  476:			/*      here i is the Huffman code of length k bits for value *p */
+        -:  477:			/*      make tables up to required level */
+     4794:  478:	        while (k > w + l) {
+      400:  479:				h++;
+      400:  480:				w += l;			/* previous table always l bits */
+        -:  481:
+        -:  482:				/*        compute minimum size table less than or equal to l bits */
+      400:  483:				z = g - w;
+      400:  484:				z = ( z > lu ? l : z );                        /* upper limit on table size */
+      400:  485:				j = k - w;
+      400:  486:				f = 1<<j;
+      400:  487:				if ( f > a + 1 )  {                            /* try a k-w bit table */
+        -:  488:
+        -:  489:					/*          too few codes for k-w bit table  */
+       30:  490:					f -= a + 1;                         /* deduct codes from patterns left */
+       30:  491:					xp = c + k;
+      121:  492:					while ( ++j < z )  {                /* try smaller tables up to z bits */
+       63:  493:						f <<= 1;
+       63:  494:						if ( f <= *++xp ) break;	        /* enough codes to use up j bits   */
+       61:  495:						f -= *xp;                         /* else deduct codes from patterns */
+        -:  496:					}
+        -:  497:
+        -:  498:				}
+      400:  499:				z = 1 << j;                           /* table entries for j-bit table   */
+        -:  500:
+        -:  501:				/*        if space remains in the Huffman table memory array, "allocate" and link in new table */
+      400:  502:				if ( gz_hufts + (z + 1) > MAX_HUF_TABLES ) return CFE_FS_GZIP_NO_MEMORY;
+        -:  503:
+      400:  504:				q = &hufTable[gz_hufts];
+      400:  505:				huft_index_q = gz_hufts;
+      400:  506:				gz_hufts += z + 1;
+      400:  507:				if ( gz_hufts > gz_max_hufts ) gz_max_hufts = gz_hufts;
+        -:  508:
+      400:  509:				if ( not_first_table ) hufTable[huft_index_t].v.t = huft_index_q + 1;
+       20:  510:				else                   not_first_table = TRUE;
+        -:  511:
+      400:  512:				huft_index_t = huft_index_q;
+      400:  513:				hufTable[huft_index_t].v.t = 0xffff;               /* stand-in for NULL */
+        -:  514:
+      400:  515:				u[h] = ++q;		                        /* table starts after link */
+      400:  516:				huft_index_q++;
+        -:  517:
+        -:  518:				/*        connect to last table, if there is one */
+      400:  519:				if ( h ) {
+      380:  520:					x[h] = i;                /* save pattern for backing up    */
+      380:  521:					r.b = (uint8)l;     	  /* bits to dump before this table */
+      380:  522:					r.e = (uint8)(16 + j);	  /* bits in this table             */
+        -:  523:					/*             r.t = q;  */               /* pointer to this table          */
+      380:  524:					r.v.t = huft_index_q;    /* pointer to this table          */
+      380:  525:					j = i >> (w - l);        /* (get around Turbo C bug)       */
+      380:  526:					u[h - 1][j] = r;         /* connect to last table          */
+        -:  527:				}
+        -:  528:
+        -:  529:	        }
+        -:  530:
+        -:  531:			/*      set up table entry in r */
+     2197:  532:	        r.b = (uint8)(k - w);
+     2197:  533:	        if (p >= v + n) {
+        2:  534:				r.e = 99;                             /* out of values--invalid code     */
+     2195:  535:	        } else if ( *p < s ) {
+     1837:  536:				r.e = (uint8)( *p < 256 ? 16 : 15 );	/* 256 is end-of-block code        */
+     1837:  537:				r.v.n = *p;          	                /* simple code is just the value   */
+     1837:  538:				p++;                                  /* one compiler does not like *p++ */
+        -:  539:	        } else {
+      358:  540:				r.e = (uint8)( e[*p - s] );           /* non-simple--look up in lists */
+      358:  541:				r.v.n = d[*p++ - s];
+        -:  542:	        }
+        -:  543:
+        -:  544:			/*      fill code-like entries with r */
+     2197:  545:	        f = 1 << (k - w);
+     2197:  546:			j = i >> w;
+        -:  547:
+     2197:  548:			if( (q == (HufTable *)NULL) && (j < z) )
+        -:  549:			{
+    #####:  550:				return CFE_FS_GZIP_BAD_CODE_BLOCK;
+        -:  551:			}
+        -:  552:			else
+        -:  553:			{
+     2197:  554:	        	for ( j = i >> w; j < z; j += f ) q[j] = r;
+        -:  555:			}
+        -:  556:
+        -:  557:			/*      backwards increment the k-bit code i */
+     2197:  558:	        for ( j = 1 << (k - 1); i & j; j >>= 1 ) i ^= j;
+     2197:  559:	        i ^= j;
+        -:  560:
+        -:  561:			/*      backup over finished tables */
+     4774:  562:	        while (( h >= 0 ) && ( ( i & ((1 << w) - 1) ) != x[h] )) {
+      380:  563:				h--;                                       /* don't need to update q */
+      380:  564:				w -= l;
+        -:  565:	        }
+        -:  566:
+        -:  567:		}
+        -:  568:
+        -:  569:	}
+        -:  570:
+        -:  571:	/*  Return true (1) if we were given an incomplete table  */
+       20:  572:	if((y != 0 && g != 1))
+        -:  573:	{
+        1:  574:		return CFE_FS_GZIP_BAD_DATA;
+        -:  575:	}
+        -:  576:
+       19:  577:	return CFE_SUCCESS;
+        -:  578:
+        -:  579:}
+        -:  580:
+        -:  581:
+        -:  582:
+        1:  583:int32 FS_gz_inflate( void )
+        -:  584:{
+        -:  585:
+        -:  586:	int32           e;        /* last block flag */
+        -:  587:	int32   r;        /* result code     */
+        -:  588:
+        -:  589:	/*  initialize window, bit buffer */
+        1:  590:	gz_outcnt = 0;
+        1:  591:	gz_bk     = 0;
+        1:  592:	gz_bb     = 0;
+        -:  593:
+        -:  594:	/*  decompress until the last block */
+        -:  595:	do {
+        6:  596:		r = FS_gz_inflate_block(&e);
+        6:  597:		if ( r != CFE_SUCCESS ) return r;
+        6:  598:	} while (!e);
+        -:  599:
+        -:  600:	/*  Undo too much lookahead. The next read will be byte aligned so we can */
+        -:  601:	/*  discard unused bits in the last meaningful byte. */
+        2:  602:	while ( gz_bk >= 8 ) {
+    #####:  603:		gz_bk -= 8;
+    #####:  604:		gz_inptr--;
+        -:  605:	}
+        -:  606:
+        -:  607:	/*  flush out sliding window */
+        1:  608:	FS_gz_flush_window();
+        -:  609:
+        -:  610:	/*  return success */
+        1:  611:	return CFE_SUCCESS;
+        -:  612:
+        -:  613:}
+        -:  614:
+        -:  615:
+        -:  616:/*
+        -:  617:** decompress an inflated block
+        -:  618:*/
+        6:  619:int32 FS_gz_inflate_block( int32 * e )
+        -:  620:{
+        -:  621:
+        -:  622:	uint32  t;          /* block type */
+        -:  623:	uint32  b;          /* bit buffer */
+        -:  624:	uint32  k;          /* number of bits in bit buffer */
+        -:  625:
+        -:  626:	int32 res;
+        -:  627:
+        -:  628:	/*  make local bit buffer */
+        6:  629:	b = gz_bb;
+        6:  630:	k = gz_bk;
+        -:  631:
+        -:  632:	/*  read in last block bit */
+        6:  633:	NEEDBITS(1)
+        6:  634:	*e = (int32)b & 1;
+        6:  635:	DUMPBITS(1)
+        -:  636:
+        -:  637:
+        -:  638:	/*  read in block type */
+        6:  639:	NEEDBITS(2)
+        6:  640:	t = (uint32)b & 3;
+        6:  641:	DUMPBITS(2)
+        -:  642:
+        -:  643:
+        -:  644:	/*  restore the global bit buffer */
+        6:  645:	gz_bb = b;
+        6:  646:	gz_bk = k;
+        -:  647:
+        -:  648:
+        -:  649:	/*  inflate that block type */
+        6:  650:	if      ( t == 0 ) { res = FS_gz_inflate_stored();  trace[0]++; }
+        6:  651:	else if ( t == 1 ) { res = FS_gz_inflate_fixed();   trace[1]++; }
+        6:  652:	else if ( t == 2 ) { res = FS_gz_inflate_dynamic(); trace[2]++; }
+        -:  653:
+    #####:  654:	else               res = CFE_FS_GZIP_BAD_CODE_BLOCK;
+        -:  655:
+        6:  656:	return res;
+        -:  657:
+        -:  658:}
+        -:  659:
+        -:  660:/* Inflate (decompress) the codes in a deflated (compressed) block.  */
+        -:  661:/* Return an error code or zero if it all goes ok. */
+        7:  662:int32 FS_gz_inflate_codes( HufTable * tl, HufTable * td, int32 bl, int32 bd )
+        -:  663:{
+        -:  664:
+        -:  665:	static uint16 mask_bits[] = {
+        -:  666:		0x0000,
+        -:  667:			0x0001, 0x0003, 0x0007, 0x000f, 0x001f, 0x003f, 0x007f, 0x00ff,
+        -:  668:			0x01ff, 0x03ff, 0x07ff, 0x0fff, 0x1fff, 0x3fff, 0x7fff, 0xffff
+        -:  669:	};
+        -:  670:
+        -:  671:
+        -:  672:	uint32      e;          /* table entry flag/number of extra bits  */
+        -:  673:	uint32      n, d;       /* length and index for copy              */
+        -:  674:	uint32      w;          /* current window position                */
+        -:  675:	HufTable   *t;          /* pointer to table entry                 */
+        -:  676:	uint32      ml, md;     /* masks for bl and bd bits               */
+        -:  677:	uint32      b;          /* bit buffer                             */
+        -:  678:	uint32      k;          /* number of bits in bit buffer           */
+        -:  679:
+        -:  680:	uint32 index;
+        -:  681:
+        -:  682:	/*  make local copies of globals  */
+        7:  683:	b = gz_bb;					/* initialize bit buffer */
+        7:  684:	k = gz_bk;
+        7:  685:	w = gz_outcnt;				/* initialize window position */
+        -:  686:
+        -:  687:	/*  inflate the coded data */
+        7:  688:	ml = mask_bits[bl];			/* precompute masks for speed */
+        7:  689:	md = mask_bits[bd];
+        -:  690:
+        -:  691:	for (;;)
+        -:  692:   {					/* do until end of block */
+        -:  693:
+    24135:  694:		NEEDBITS((uint32)bl);
+    24135:  695:      t = tl + ((uint32)b & ml);
+    24135:  696:		e = t->e;
+    24135:  697:		if ( e > 16 )
+        -:  698:      {
+        -:  699:	        do
+        -:  700:           {
+     2079:  701:              if (e == 99) return CFE_FS_GZIP_BAD_DATA;
+     2079:  702:              DUMPBITS(t->b);
+     2079:  703:              e -= 16;
+     2079:  704:				  NEEDBITS(e);
+     2079:  705:              index = t->v.t + ( (uint32)b & mask_bits[e] );
+     2079:  706:				  if ( index >= 0  &&  index < gz_hufts )
+     2079:  707:                 t = &( hufTable[index] );
+        -:  708:				  else
+    #####:  709:                 return CFE_FS_GZIP_INDEX_ERROR;
+     2079:  710:				  e = t->e;
+     2079:  711:	        } while ( e > 16 );
+        -:  712:		}
+        -:  713:
+    24135:  714:		DUMPBITS(t->b);
+        -:  715:
+    24135:  716:      if ( e == 16 )
+        -:  717:      {                 /* then it's a literal */
+        -:  718:
+        -:  719:         /* gz_window[w++] = (uint8)(t->n); */
+    14203:  720:         gz_window[w++] = (uint8)(t->v.n);
+    14203:  721:         if ( w == WSIZE )
+        -:  722:         {
+    #####:  723:            gz_outcnt = w;
+    #####:  724:            FS_gz_flush_window();
+    #####:  725:            w = 0;
+        -:  726:         }
+        -:  727:
+        -:  728:      }
+        -:  729:      else
+        -:  730:      {                        /* it's an EOB or a length */
+        -:  731:
+        -:  732:         /*  exit if end of block  */
+     9932:  733:         if ( e == 15 ) break;
+        -:  734:
+        -:  735:         /*  get length of block to copy */
+     9925:  736:         NEEDBITS(e);
+     9925:  737:         n = t->v.n + ( (uint32)b & mask_bits[e] );
+     9925:  738:         DUMPBITS(e);
+        -:  739:
+        -:  740:         /*  decode distance of block to copy  */
+     9925:  741:         NEEDBITS((uint32)bd);
+     9925:  742:         t = td + ((uint32)b & md);
+     9925:  743:         e = t->e;
+     9925:  744:         if ( e > 16 )
+        -:  745:         {
+        -:  746:            do
+        -:  747:            {
+      337:  748:               if (e == 99) return CFE_FS_GZIP_BAD_DATA;
+      337:  749:               DUMPBITS(t->b);
+      337:  750:               e -= 16;
+      337:  751:               NEEDBITS(e);
+      337:  752:               index = t->v.t + ( (uint32)b & mask_bits[e] );
+      337:  753:               if ( index >= 0  &&  index < gz_hufts )
+      337:  754:                  t = &( hufTable[index] );
+        -:  755:               else
+    #####:  756:                  return CFE_FS_GZIP_INDEX_ERROR;
+      337:  757:               e = t->e;
+      337:  758:            } while ( e > 16 );
+        -:  759:         }
+     9925:  760:         DUMPBITS(t->b);
+        -:  761:
+     9925:  762:         NEEDBITS(e);
+     9925:  763:         d = w - t->v.n - ((uint32)b & mask_bits[e]);
+     9925:  764:         DUMPBITS(e);
+        -:  765:
+        -:  766:         /* do the copy */
+        -:  767:         do
+        -:  768:         {
+        -:  769:
+     9935:  770:            d &= WSIZE - 1;
+     9935:  771:            e = WSIZE - ( d > w ? d : w);
+     9935:  772:            e = ( e > n ? n : e );
+     9935:  773:            n -= e;
+        -:  774:
+     9935:  775:            if ( w - d >= e )
+        -:  776:            { /* (this test assumes unsigned comparison) */
+        -:  777:
+     9854:  778:               memcpy( gz_window + w, gz_window + d, e );
+     9854:  779:               w += e;
+     9854:  780:               d += e;
+        -:  781:
+        -:  782:            }
+        -:  783:            else
+        -:  784:            { /* do it slow to avoid memcpy() overlap */
+        -:  785:
+        -:  786:               do
+        -:  787:               {
+     8124:  788:                  gz_window[w++] = gz_window[d++];
+     8124:  789:               } while (--e);
+        -:  790:
+        -:  791:            }
+        -:  792:
+     9935:  793:            if ( w == WSIZE )
+        -:  794:            {
+        3:  795:               gz_outcnt = w;
+        3:  796:               FS_gz_flush_window();
+        3:  797:               w = 0;
+        -:  798:            }
+        -:  799:
+     9935:  800:         } while (n);
+        -:  801:
+        -:  802:      }
+        -:  803:
+    24128:  804:   }
+        -:  805:
+        -:  806:	/*  restore the globals from the locals */
+        7:  807:	gz_outcnt = w;				/* restore global window pointer */
+        7:  808:	gz_bb = b;					/* restore global bit buffer */
+        7:  809:	gz_bk = k;
+        -:  810:
+        7:  811:	return CFE_SUCCESS;
+        -:  812:}
+        -:  813:
+        -:  814:/*
+        -:  815:** removed gz_huft_free, no longer needed - glw
+        -:  816:** -- decompress an inflated type 2 (dynamic Huffman codes) block.
+        -:  817:*/
+        6:  818:int32 FS_gz_inflate_dynamic( void )
+        -:  819:{
+        -:  820:
+        -:  821:	static int32 lbits = 9;      /* bits in base literal/length lookup table */
+        -:  822:	static int32 dbits = 6;      /* bits in base distance lookup table */
+        -:  823:
+        -:  824:	/*  Order of the bit length code lengths */
+        -:  825:	static uint32 border[] = {
+        -:  826:		16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
+        -:  827:	};
+        -:  828:
+        -:  829:	/*  Copy lengths for literal codes 257..285 */
+        -:  830:	static uint16 cplens[] = {
+        -:  831:		3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
+        -:  832:			35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0
+        -:  833:	};
+        -:  834:
+        -:  835:	/*  Extra bits for literal codes 257..285    ( 99==invalid ) */
+        -:  836:	static uint16 cplext[] = {
+        -:  837:		0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
+        -:  838:			3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 99, 99
+        -:  839:	};
+        -:  840:
+        -:  841:	/*  Copy offsets for distance codes 0..29 */
+        -:  842:	static uint16 cpdist[] = {
+        -:  843:		1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
+        -:  844:			257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
+        -:  845:			8193, 12289, 16385, 24577
+        -:  846:	};
+        -:  847:
+        -:  848:	/*  Extra bits for distance codes */
+        -:  849:	static uint16 cpdext[] = {
+        -:  850:		0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
+        -:  851:			7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13
+        -:  852:	};
+        -:  853:
+        -:  854:	static uint16 mask_bits[] = {
+        -:  855:		0x0000,
+        -:  856:			0x0001, 0x0003, 0x0007, 0x000f, 0x001f, 0x003f, 0x007f, 0x00ff,
+        -:  857:			0x01ff, 0x03ff, 0x07ff, 0x0fff, 0x1fff, 0x3fff, 0x7fff, 0xffff
+        -:  858:	};
+        -:  859:
+        -:  860:
+        -:  861:	int32      i;               /* temporary variables                      */
+        -:  862:	uint32     j;
+        -:  863:	uint32     l;               /* last length                              */
+        -:  864:	uint32     m;               /* mask for bit lengths table               */
+        -:  865:	uint32     n;               /* number of lengths to get                 */
+        -:  866:	HufTable  *tl;              /* literal/length code table                */
+        -:  867:	HufTable  *td;              /* distance code table                      */
+        -:  868:	int32      bl;              /* lookup bits for tl                       */
+        -:  869:	int32      bd;              /* lookup bits for td                       */
+        -:  870:	uint32     nb;              /* number of bit length codes               */
+        -:  871:	uint32     nl;              /* number of literal/length codes           */
+        -:  872:	uint32     nd;              /* number of distance codes                 */
+        -:  873:	uint32     ll[286 + 30];    /* literal/length and distance code lengths */
+        -:  874:
+        -:  875:	uint32     b;               /* bit buffer                   */
+        -:  876:	uint32     k;               /* number of bits in bit buffer */
+        -:  877:
+        -:  878:	int32 error_code;
+        -:  879:
+        -:  880:	/*  make local bit buffer */
+        6:  881:	b = gz_bb;
+        6:  882:	k = gz_bk;
+        -:  883:
+        -:  884:	/*  read in table lengths */
+        6:  885:	NEEDBITS(5);
+        6:  886:	nl = 257 + ((uint32)b & 0x1f);	/* number of literal/length codes */
+        6:  887:	DUMPBITS(5);
+        -:  888:
+        6:  889:	NEEDBITS(5);
+        6:  890:	nd = 1 + ((uint32) b & 0x1f);	/* number of distance codes */
+        6:  891:	DUMPBITS(5);
+        -:  892:
+        6:  893:	NEEDBITS(4);
+        6:  894:	nb = 4 + ((uint32) b & 0xf);	/* number of bit length codes */
+        6:  895:	DUMPBITS(4);
+        -:  896:
+        6:  897:	if (nl > 286 || nd > 30)  return CFE_FS_GZIP_BAD_DATA;				/* bad lengths */
+        -:  898:
+        -:  899:	/*  read in bit-length-code lengths */
+       91:  900:	for (j = 0; j < nb; j++) {
+       85:  901:		NEEDBITS(3);
+       85:  902:			ll[border[j]] = (uint32)b & 7;
+       85:  903:		DUMPBITS(3);
+        -:  904:	}
+        6:  905:	for (; j < 19; j++) ll[border[j]] = 0;
+        -:  906:
+        -:  907:	/*  build decoding table for trees--single level, 7 bit lookup  */
+        6:  908:	bl = 7;
+        6:  909:	gz_hufts = 0;             /* initialize Huff Table memory */
+        6:  910:	tl = &hufTable[1];        /* set known position given alloc removed - glw */
+        6:  911:	error_code = FS_gz_huft_build( ll, 19, 19, (uint16 *)NULL, (uint16 *)NULL, &bl );
+        6:  912:	if ( error_code != CFE_SUCCESS )  return error_code;
+        -:  913:
+        -:  914:	/*  read in literal and distance code lengths */
+        6:  915:	n = nl + nd;
+        6:  916:	m = mask_bits[bl];
+        6:  917:	i = l = 0;
+     1694:  918:	while ( (uint32)i < n )
+        -:  919:   {
+     1682:  920:		NEEDBITS((uint32)bl);
+     1682:  921:      td = tl + ((uint32)b & m);
+     1682:  922:		j = td->b;
+     1682:  923:		DUMPBITS(j);
+     1682:  924:      j = td->v.n;
+     1682:  925:		if ( j < 16 )
+        -:  926:      {            /* length of code in bits (0..15) */
+     1617:  927:         ll[i++] = l = j;         /* save last length in l */
+        -:  928:		}
+       65:  929:      else if ( j == 16 )
+        -:  930:      {    /* repeat last length 3 to 6 times */
+       59:  931:         NEEDBITS(2);
+       59:  932:         j = 3 + ( (uint32)b & 3 );
+       59:  933:         DUMPBITS(2);
+       59:  934:         if ( (uint32)i + j > n ) return CFE_FS_GZIP_BAD_DATA;
+       59:  935:         while (j--) ll[i++] = l;
+        -:  936:		}
+        6:  937:      else if (j == 17)
+        -:  938:      {    /* 3 to 10 zero length codes */
+        6:  939:         NEEDBITS(3);
+        6:  940:         j = 3 + ( (uint32)b & 7 );
+        6:  941:         DUMPBITS(3);
+        6:  942:         if ( (uint32)i + j > n ) return CFE_FS_GZIP_BAD_DATA;
+        6:  943:         while (j--) ll[i++] = 0;
+        6:  944:         l = 0;
+        -:  945:		}
+        -:  946:      else
+        -:  947:      {                 /* j == 18: 11 to 138 zero length codes */
+    #####:  948:         NEEDBITS(7);
+    #####:  949:         j = 11 + ( (uint32)b & 0x7f );
+    #####:  950:         DUMPBITS(7);
+    #####:  951:         if ( (uint32)i + j > n ) return CFE_FS_GZIP_BAD_DATA;
+    #####:  952:         while (j--) ll[i++] = 0;
+    #####:  953:         l = 0;
+        -:  954:		}
+        -:  955:	}
+        -:  956:
+        -:  957:	/*  restore the global bit buffer  */
+        6:  958:	gz_bb = b;
+        6:  959:	gz_bk = k;
+        -:  960:
+        -:  961:	/*  build the decoding tables for literal/length and distance codes */
+        6:  962:	bl = lbits;
+        6:  963:	gz_hufts = 0;                 /* initialize Huff Table memory */
+        6:  964:	tl = &hufTable[1];            /* set known position given alloc removed - glw */
+        6:  965:	error_code = FS_gz_huft_build( ll, nl, 257, cplens, cplext, &bl );
+        6:  966:	if ( error_code != CFE_SUCCESS ) return error_code;
+        -:  967:
+        6:  968:	bd = dbits;
+        6:  969:	td = &hufTable[gz_hufts+1];   /* set known position given alloc removed - glw */
+        6:  970:	error_code = FS_gz_huft_build( ll + nl, nd, 0, cpdist, cpdext, &bd );
+        6:  971:	if ( error_code != CFE_SUCCESS ) return error_code;
+        -:  972:
+        -:  973:	/*  decompress until an end-of-block code */
+        6:  974:	error_code = FS_gz_inflate_codes( tl, td, bl, bd );
+        -:  975:
+        6:  976:	return error_code;
+        -:  977:}
+        -:  978:
+        -:  979:
+        -:  980:/* Decompress an inflated type 1 (fixed Huffman codes) block.   */
+        -:  981:/*  We should either replace this with a custom decoder,  */
+        -:  982:/*  or at least precompute the Huffman tables. */
+        -:  983:
+        -:  984:/* removed gz_huft_free, no longer needed - glw */
+        1:  985:int32 FS_gz_inflate_fixed( void )
+        -:  986:{
+        -:  987:	/*  Copy lengths for literal codes 257..285 */
+        -:  988:	static uint16 cplens[] = {
+        -:  989:		3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
+        -:  990:			35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0
+        -:  991:	};
+        -:  992:
+        -:  993:	/*  Extra bits for literal codes 257..285    ( 99==invalid ) */
+        -:  994:	static uint16 cplext[] = {
+        -:  995:		0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
+        -:  996:			3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 99, 99
+        -:  997:	};
+        -:  998:
+        -:  999:	/*  Copy offsets for distance codes 0..29 */
+        -: 1000:	static uint16 cpdist[] = {
+        -: 1001:		1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
+        -: 1002:			257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
+        -: 1003:			8193, 12289, 16385, 24577
+        -: 1004:	};
+        -: 1005:
+        -: 1006:	/*  Extra bits for distance codes */
+        -: 1007:	static uint16 cpdext[] = {
+        -: 1008:		0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
+        -: 1009:			7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13
+        -: 1010:	};
+        -: 1011:
+        -: 1012:	int32     i;            /* temporary variable            */
+        -: 1013:	HufTable *tl;           /* literal/length code table     */
+        -: 1014:	HufTable *td;           /* distance code table           */
+        -: 1015:	int32     bl;           /* lookup bits for tl            */
+        -: 1016:	int32     bd;           /* lookup bits for td            */
+        -: 1017:	uint32    l[288];       /* length list for gz_huft_build */
+        -: 1018:
+        -: 1019:	int32 error_code;
+        -: 1020:
+        -: 1021:	/*  set up literal table */
+        1: 1022:	for (i = 0; i < 144; i++) l[i] = 8;
+        1: 1023:	for (; i < 256; i++)      l[i] = 9;
+        1: 1024:	for (; i < 280; i++)      l[i] = 7;
+        1: 1025:	for (; i < 288; i++)      l[i] = 8;       /* make a complete, but wrong code set */
+        -: 1026:
+        1: 1027:	bl = 7;
+        1: 1028:	gz_hufts = 0;              /* initialize huff table "allocation" position  */
+        1: 1029:	tl = &hufTable[1];         /* set known position given alloc removed - glw */
+        1: 1030:	error_code = FS_gz_huft_build( l, 288, 257, cplens, cplext, &bl );
+        -: 1031:
+        1: 1032:	if ( error_code != CFE_SUCCESS ) return error_code;
+        -: 1033:
+        -: 1034:	/*  set up distance table */
+        1: 1035:	for ( i = 0; i < 30; i++ ) l[i] = 5;      /* make an incomplete code set */
+        1: 1036:	bd = 5;
+        1: 1037:	td = &hufTable[gz_hufts+1];               /* set known position given alloc removed - glw */
+        1: 1038:	error_code = FS_gz_huft_build( l, 30, 0, cpdist, cpdext, &bd );
+        -: 1039:
+        1: 1040:	if ( error_code != CFE_SUCCESS && error_code != CFE_FS_GZIP_BAD_DATA ) return error_code;
+        -: 1041:	/*  --- seems odd that BAD DATA is let through, but original did so --- */
+        -: 1042:	/*  decompress until an end-of-block code  */
+        1: 1043:	error_code = FS_gz_inflate_codes( tl, td, bl, bd );
+        -: 1044:
+        1: 1045:	return error_code;
+        -: 1046:
+        -: 1047:}
+        -: 1048:
+        -: 1049:/*
+        -: 1050:** "decompress" an inflated type 0 (stored) block.
+        -: 1051:*/
+        1: 1052:int32 FS_gz_inflate_stored( void )
+        -: 1053:{
+        -: 1054:
+        -: 1055:	uint32          n;     /* number of bytes in block */
+        -: 1056:	uint32          w;     /* current window position */
+        -: 1057:	register uint32 b;     /* bit buffer */
+        -: 1058:	register uint16 k;     /* number of bits in bit buffer */
+        -: 1059:
+        -: 1060:
+        -: 1061:	/*  make local copies of globals */
+        1: 1062:	b = gz_bb;             /* initialize bit buffer */
+        1: 1063:	k = gz_bk;
+        1: 1064:	w = gz_outcnt;         /* initialize window position */
+        -: 1065:
+        -: 1066:
+        -: 1067:	/*  go to byte boundary */
+        1: 1068:	n = k & 7;
+        1: 1069:	DUMPBITS(n);
+        -: 1070:
+        -: 1071:	/*  get the length and its complement */
+        1: 1072:	NEEDBITS(16);
+    #####: 1073:	n = ( (uint32)b & 0xffff );
+    #####: 1074:	DUMPBITS(16);
+        -: 1075:
+    #####: 1076:	NEEDBITS(16);
+    #####: 1077:	if ( n != (uint32)( (~b) & 0xffff) )  return CFE_FS_GZIP_BAD_DATA;    /* error in compressed data */
+    #####: 1078:	DUMPBITS(16);
+        -: 1079:
+        -: 1080:
+        -: 1081:	/*  read and output the compressed data */
+    #####: 1082:	while (n--)
+        -: 1083:   {
+    #####: 1084:		NEEDBITS(8);
+    #####: 1085:      gz_window[w++] = (uint8)b;
+    #####: 1086:		if ( w == WSIZE )
+        -: 1087:      {
+    #####: 1088:	        gz_outcnt = w;
+    #####: 1089:	        FS_gz_flush_window();
+    #####: 1090:	        w = 0;
+        -: 1091:		}
+    #####: 1092:		DUMPBITS(8);
+        -: 1093:	}
+        -: 1094:
+        -: 1095:	/*  restore the globals from the locals */
+    #####: 1096:	gz_outcnt = w;					/* restore global window pointer */
+    #####: 1097:	gz_bb     = b;					/* restore global bit buffer */
+    #####: 1098:	gz_bk     = k;
+        -: 1099:
+    #####: 1100:	return CFE_SUCCESS;
+        -: 1101:
+        -: 1102:}
+        -: 1103:
+        -: 1104:
+        -: 1105:/* > merged original gunzip & unzip into a single routine */
+        -: 1106:/* > replaced Read & Write indirection */
+        -: 1107:
+        2: 1108:int32 FS_gz_unzip( void )
+        -: 1109:{
+        -: 1110:	/*  -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+        -: 1111:	/*  Unzip in to out.  This routine works on both gzip files. */
+        -: 1112:
+        -: 1113:	/*  IN assertions: the buffer gz_inbuf contains already the beginning of the */
+        -: 1114:	/*   compressed data, from offsets gz_inptr to gz_insize-1 included. The magic */
+        -: 1115:	/*   header has already been checked. The output buffer is cleared. */
+        -: 1116:
+        -: 1117:	int32          guzerror;
+        2: 1118:	uint32         orig_crc = 0;        /* original crc */
+        2: 1119:	uint32         orig_len = 0;        /* original uncompressed length */
+        -: 1120:	int32          n;
+        -: 1121:	uint8          buf[EXTHDR];         /* extended local header */
+        -: 1122:	int32          res;
+        -: 1123:
+        2: 1124:	FS_gz_clear_bufs();
+        -: 1125:
+        -: 1126:	/*  Snarf up the header for the zip file, check for read error */
+        2: 1127:	guzerror = FS_gz_eat_header();
+        -: 1128:
+        2: 1129:	if( guzerror != CFE_SUCCESS ) return guzerror;
+        -: 1130:
+        1: 1131:	FS_gz_updcrc(NULL, 0);	                /* initialize crc */
+        -: 1132:
+        1: 1133:	res = FS_gz_inflate();
+        -: 1134:
+        1: 1135:	if ( res != CFE_SUCCESS ) return res;
+        -: 1136:
+        -: 1137:	/*  Get the crc and original length */
+        -: 1138:	/*    crc32  (see algorithm.doc) uncompressed input size modulo 2^32 */
+        9: 1139:	for ( n = 0; n < 8; n++ )
+        -: 1140:   {
+        8: 1141:		buf[n] = NEXTBYTE();
+        8: 1142:		if ( gGuzError != CFE_SUCCESS ) return gGuzError;
+        -: 1143:	}
+        1: 1144:	orig_crc = LG(buf);
+        1: 1145:	orig_len = LG(buf + 4);
+        -: 1146:
+        -: 1147:	/*  Validate decompression */
+        1: 1148:	if ( orig_crc != FS_gz_updcrc( gz_outbuf, 0 ) ) return CFE_FS_GZIP_CRC_ERROR;
+        1: 1149:	if ( orig_len != (uint32)gz_bytes_out )      return CFE_FS_GZIP_LENGTH_ERROR;
+        -: 1150:
+        1: 1151:	return CFE_SUCCESS;
+        -: 1152:
+        -: 1153:}
+        -: 1154:
+        -: 1155:
+        -: 1156:/*  Run a set of bytes through the crc shift register.  If s is a NULL */
+        -: 1157:/*   pointer, then initialize the crc shift register contents instead. */
+        -: 1158:/*   Return the current crc in either case. */
+        -: 1159:
+        -: 1160:/*  input: */
+        -: 1161:/*	  s  pointer to bytes to pump through */
+        -: 1162:/*	  n	 number of bytes in s[] */
+        7: 1163:uint32 FS_gz_updcrc( uint8 * s, uint32 n )
+        -: 1164:{
+        -: 1165:	static uint32 crc_32_tab[] = {
+        -: 1166:			0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
+        -: 1167:			0x706af48fL, 0xe963a535L, 0x9e6495a3L, 0x0edb8832L, 0x79dcb8a4L,
+        -: 1168:			0xe0d5e91eL, 0x97d2d988L, 0x09b64c2bL, 0x7eb17cbdL, 0xe7b82d07L,
+        -: 1169:			0x90bf1d91L, 0x1db71064L, 0x6ab020f2L, 0xf3b97148L, 0x84be41deL,
+        -: 1170:			0x1adad47dL, 0x6ddde4ebL, 0xf4d4b551L, 0x83d385c7L, 0x136c9856L,
+        -: 1171:			0x646ba8c0L, 0xfd62f97aL, 0x8a65c9ecL, 0x14015c4fL, 0x63066cd9L,
+        -: 1172:			0xfa0f3d63L, 0x8d080df5L, 0x3b6e20c8L, 0x4c69105eL, 0xd56041e4L,
+        -: 1173:			0xa2677172L, 0x3c03e4d1L, 0x4b04d447L, 0xd20d85fdL, 0xa50ab56bL,
+        -: 1174:			0x35b5a8faL, 0x42b2986cL, 0xdbbbc9d6L, 0xacbcf940L, 0x32d86ce3L,
+        -: 1175:			0x45df5c75L, 0xdcd60dcfL, 0xabd13d59L, 0x26d930acL, 0x51de003aL,
+        -: 1176:			0xc8d75180L, 0xbfd06116L, 0x21b4f4b5L, 0x56b3c423L, 0xcfba9599L,
+        -: 1177:			0xb8bda50fL, 0x2802b89eL, 0x5f058808L, 0xc60cd9b2L, 0xb10be924L,
+        -: 1178:			0x2f6f7c87L, 0x58684c11L, 0xc1611dabL, 0xb6662d3dL, 0x76dc4190L,
+        -: 1179:			0x01db7106L, 0x98d220bcL, 0xefd5102aL, 0x71b18589L, 0x06b6b51fL,
+        -: 1180:			0x9fbfe4a5L, 0xe8b8d433L, 0x7807c9a2L, 0x0f00f934L, 0x9609a88eL,
+        -: 1181:			0xe10e9818L, 0x7f6a0dbbL, 0x086d3d2dL, 0x91646c97L, 0xe6635c01L,
+        -: 1182:			0x6b6b51f4L, 0x1c6c6162L, 0x856530d8L, 0xf262004eL, 0x6c0695edL,
+        -: 1183:			0x1b01a57bL, 0x8208f4c1L, 0xf50fc457L, 0x65b0d9c6L, 0x12b7e950L,
+        -: 1184:			0x8bbeb8eaL, 0xfcb9887cL, 0x62dd1ddfL, 0x15da2d49L, 0x8cd37cf3L,
+        -: 1185:			0xfbd44c65L, 0x4db26158L, 0x3ab551ceL, 0xa3bc0074L, 0xd4bb30e2L,
+        -: 1186:			0x4adfa541L, 0x3dd895d7L, 0xa4d1c46dL, 0xd3d6f4fbL, 0x4369e96aL,
+        -: 1187:			0x346ed9fcL, 0xad678846L, 0xda60b8d0L, 0x44042d73L, 0x33031de5L,
+        -: 1188:			0xaa0a4c5fL, 0xdd0d7cc9L, 0x5005713cL, 0x270241aaL, 0xbe0b1010L,
+        -: 1189:			0xc90c2086L, 0x5768b525L, 0x206f85b3L, 0xb966d409L, 0xce61e49fL,
+        -: 1190:			0x5edef90eL, 0x29d9c998L, 0xb0d09822L, 0xc7d7a8b4L, 0x59b33d17L,
+        -: 1191:			0x2eb40d81L, 0xb7bd5c3bL, 0xc0ba6cadL, 0xedb88320L, 0x9abfb3b6L,
+        -: 1192:			0x03b6e20cL, 0x74b1d29aL, 0xead54739L, 0x9dd277afL, 0x04db2615L,
+        -: 1193:			0x73dc1683L, 0xe3630b12L, 0x94643b84L, 0x0d6d6a3eL, 0x7a6a5aa8L,
+        -: 1194:			0xe40ecf0bL, 0x9309ff9dL, 0x0a00ae27L, 0x7d079eb1L, 0xf00f9344L,
+        -: 1195:			0x8708a3d2L, 0x1e01f268L, 0x6906c2feL, 0xf762575dL, 0x806567cbL,
+        -: 1196:			0x196c3671L, 0x6e6b06e7L, 0xfed41b76L, 0x89d32be0L, 0x10da7a5aL,
+        -: 1197:			0x67dd4accL, 0xf9b9df6fL, 0x8ebeeff9L, 0x17b7be43L, 0x60b08ed5L,
+        -: 1198:			0xd6d6a3e8L, 0xa1d1937eL, 0x38d8c2c4L, 0x4fdff252L, 0xd1bb67f1L,
+        -: 1199:			0xa6bc5767L, 0x3fb506ddL, 0x48b2364bL, 0xd80d2bdaL, 0xaf0a1b4cL,
+        -: 1200:			0x36034af6L, 0x41047a60L, 0xdf60efc3L, 0xa867df55L, 0x316e8eefL,
+        -: 1201:			0x4669be79L, 0xcb61b38cL, 0xbc66831aL, 0x256fd2a0L, 0x5268e236L,
+        -: 1202:			0xcc0c7795L, 0xbb0b4703L, 0x220216b9L, 0x5505262fL, 0xc5ba3bbeL,
+        -: 1203:			0xb2bd0b28L, 0x2bb45a92L, 0x5cb36a04L, 0xc2d7ffa7L, 0xb5d0cf31L,
+        -: 1204:			0x2cd99e8bL, 0x5bdeae1dL, 0x9b64c2b0L, 0xec63f226L, 0x756aa39cL,
+        -: 1205:			0x026d930aL, 0x9c0906a9L, 0xeb0e363fL, 0x72076785L, 0x05005713L,
+        -: 1206:			0x95bf4a82L, 0xe2b87a14L, 0x7bb12baeL, 0x0cb61b38L, 0x92d28e9bL,
+        -: 1207:			0xe5d5be0dL, 0x7cdcefb7L, 0x0bdbdf21L, 0x86d3d2d4L, 0xf1d4e242L,
+        -: 1208:			0x68ddb3f8L, 0x1fda836eL, 0x81be16cdL, 0xf6b9265bL, 0x6fb077e1L,
+        -: 1209:			0x18b74777L, 0x88085ae6L, 0xff0f6a70L, 0x66063bcaL, 0x11010b5cL,
+        -: 1210:			0x8f659effL, 0xf862ae69L, 0x616bffd3L, 0x166ccf45L, 0xa00ae278L,
+        -: 1211:			0xd70dd2eeL, 0x4e048354L, 0x3903b3c2L, 0xa7672661L, 0xd06016f7L,
+        -: 1212:			0x4969474dL, 0x3e6e77dbL, 0xaed16a4aL, 0xd9d65adcL, 0x40df0b66L,
+        -: 1213:			0x37d83bf0L, 0xa9bcae53L, 0xdebb9ec5L, 0x47b2cf7fL, 0x30b5ffe9L,
+        -: 1214:			0xbdbdf21cL, 0xcabac28aL, 0x53b39330L, 0x24b4a3a6L, 0xbad03605L,
+        -: 1215:			0xcdd70693L, 0x54de5729L, 0x23d967bfL, 0xb3667a2eL, 0xc4614ab8L,
+        -: 1216:			0x5d681b02L, 0x2a6f2b94L, 0xb40bbe37L, 0xc30c8ea1L, 0x5a05df1bL,
+        -: 1217:			0x2d02ef8dL
+        -: 1218:	};
+        -: 1219:
+        -: 1220:	register uint32 c;                           /* temporary variable      */
+        -: 1221:
+        -: 1222:	static uint32 crc = (uint32)0xffffffffL;     /* shift register contents */
+        -: 1223:
+        7: 1224:	if (s == NULL)
+        -: 1225:   {
+        1: 1226:		c = 0xffffffffL;
+        -: 1227:	}
+        -: 1228:   else
+        -: 1229:   {
+        -: 1230:
+        6: 1231:		c = crc;
+        6: 1232:		if (n)
+        -: 1233:      {
+        -: 1234:         do
+        -: 1235:         {
+   112727: 1236:				c = crc_32_tab[ ( (int16)c ^ (*s++) ) & 0xff ] ^ (c >> 8);
+        -: 1237:
+   112727: 1238:         } while (--n);
+        -: 1239:		}
+        -: 1240:	}
+        -: 1241:
+        7: 1242:	crc = c;
+        -: 1243:
+        7: 1244:	return c ^ 0xffffffffL;      /* (instead of ~c for 64-bit machines) */
+        -: 1245:
+        -: 1246:}
+        -: 1247:
+        -: 1248:

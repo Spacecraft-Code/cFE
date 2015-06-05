@@ -1,0 +1,143 @@
+cFE FS Unit Test Output File
+
+
+Begin Test API
+
+Begin Test Read Header
+
+PASSED  [cFE.FS.01.001] CFE_FS_ReadHeader - Header read lseek failed
+-----
+PASSED  [cFE.FS.01.002] CFE_FS_ReadHeader - Header read - successful
+-----
+Begin Test Write Header
+
+PASSED  [cFE.FS.02.001] CFE_FS_WriteHeader - Header write lseek failed
+-----
+PASSED  [cFE.FS.02.002] CFE_FS_WriteHeader - Header write - successful
+-----
+Begin Test Set Time Stamp
+
+  CFE_FS:SetTime-Failed to lseek time fields (Status=0xFFFFFFFF)
+
+PASSED  [cFE.FS.03.001] CFE_FS_SetTimestamp - Failed to lseek time fields
+-----
+  OS_write called: 0 (FAILURE)
+  CFE_FS:SetTime-Failed to write Seconds (Status=0xFFFFFFFF)
+
+PASSED  [cFE.FS.03.002] CFE_FS_SetTimestamp - Failed to write seconds
+-----
+  OS_write called: 0 (SUCCESS)
+  CFE_FS:SetTime-Failed to write Subseconds (Status=0x00000000)
+
+PASSED  [cFE.FS.03.003] CFE_FS_SetTimestamp - Failed to write subseconds
+-----
+  OS_write called: 0 (SUCCESS)
+  OS_write called: 0 (SUCCESS)
+PASSED  [cFE.FS.03.004] CFE_FS_SetTimestamp - Write time stamp - successful
+-----
+Begin Test Byte Swap cFE Header
+
+PASSED  [cFE.FS.04.001] CFE_FS_ByteSwapUint32 - Byte swap header - successful
+-----
+Begin Test Byte Swap uint32
+
+PASSED  [cFE.FS.05.001] CFE_FS_ByteSwapUint32 - Byte swap - successful
+-----
+Begin Test Is .gz File
+
+PASSED  [cFE.FS.06.001] CFE_FS_IsGzFile - File name too short
+-----
+PASSED  [cFE.FS.06.002] CFE_FS_IsGzFile - File name missing .gz extension
+-----
+PASSED  [cFE.FS.06.003] CFE_FS_IsGzFile - Null file name
+-----
+PASSED  [cFE.FS.06.004] CFE_FS_IsGzFile - .gz file name check - successful
+-----
+Begin Test Extract File Name from Path
+
+PASSED  [cFE.FS.07.001] CFE_FS_ExtractFilenameFromPath - Missing file path
+-----
+PASSED  [cFE.FS.07.002] CFE_FS_ExtractFilenameFromPath - Null path/file name
+-----
+PASSED  [cFE.FS.07.003] CFE_FS_ExtractFilenameFromPath - Path/file name too long
+-----
+PASSED  [cFE.FS.07.004] CFE_FS_ExtractFilenameFromPath - Extract path name - successful
+-----
+End Test API
+
+
+Begin Test Private
+
+PASSED  [cFE.FS.08.001] CFE_FS_EarlyInit - FS initialization - successful
+-----
+  OS_MutSemCreate called: (FAILURE)
+  FS Shared Data Mutex creation failed! RC=0xffffffff
+
+PASSED  [cFE.FS.08.002] CFE_FS_EarlyInit - Mutex creation failure
+-----
+PASSED  [cFE.FS.08.003] CFE_FS_LockSharedData - Lock shared data - successful
+-----
+  FS SharedData Mutex Take Err Stat=0xffffffff,App=0,Function=FunctionName
+
+PASSED  [cFE.FS.08.004] CFE_FS_LockSharedData - Shared data mutex take error
+-----
+PASSED  [cFE.FS.08.005] CFE_FS_UnlockSharedData - Unlock shared data - successful
+-----
+  FS SharedData Mutex Give Err Stat=0xffffffff,App=0,Function=FunctionName
+
+PASSED  [cFE.FS.08.006] CFE_FS_UnlockSharedData - SharedData mutex give error
+-----
+End Test Private
+
+
+Begin Test Decompress
+
+  OS_open called: (FAILURE)
+  CFE_FS_Decompress: Cannot open source file: Filename.gz
+
+PASSED  [cFE.FS.09.001] CFE_FS_Decompress - Open failed
+-----
+  OS_open called: (SUCCESS)
+  OS_creat called: 1; call to open Output (FAILURE)
+  CFE_FS_Decompress: Cannot open destination file: Output
+
+  OS_close called: 1 (SUCCESS)
+PASSED  [cFE.FS.09.002] CFE_FS_Decompress - Create failed
+-----
+  OS_open called: (SUCCESS)
+  OS_creat called: 2; call to open Output (SUCCESS)
+  OS_write called: 2 (SUCCESS)
+  OS_write called: 2 (SUCCESS)
+  OS_write called: 2 (SUCCESS)
+  OS_write called: 2 (SUCCESS)
+  OS_close called: 2 (SUCCESS)
+  OS_close called: 2 (SUCCESS)
+PASSED  [cFE.FS.09.003] CFE_FS_Decompress - Decompress file - successful
+-----
+  OS_open called: (SUCCESS)
+  OS_creat called: 3; call to open Output (SUCCESS)
+  OS_close called: 3 (SUCCESS)
+  OS_close called: 3 (SUCCESS)
+  OS_remove called: Output
+PASSED  [cFE.FS.09.004] CFE_FS_Decompress - File does not exist
+-----
+PASSED  [cFE.FS.09.005] FS_gz_inflate_fixed - Inflated type 1 decompression - successful
+-----
+PASSED  [cFE.FS.09.006] FS_gz_inflate_stored - Failed
+-----
+PASSED  [cFE.FS.09.007] FS_gz_fill_inbuf - gzip read error
+-----
+PASSED  [cFE.FS.09.008] FS_gz_flush_window - Write output - successful
+-----
+End Test Decompress
+
+
+
+ut_cfe_fs PASSED 32 tests.
+ut_cfe_fs FAILED 0 tests.
+
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/fs/cfe_fs_decompress.c' 88.64%  440
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/fs/cfe_fs_api.c' 100.00%  95
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/fs/cfe_fs_priv.c' 100.00%  21
+
+

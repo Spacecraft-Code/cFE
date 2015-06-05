@@ -1,0 +1,11 @@
+# 
+# Subsystem Command Definition file for Event Services
+# 
+#  The following comma delimted fields must be present:
+#  Description,     Command Code, Arg1, Arg2, Arg3, Arg4, Arg5, Arg6
+#  
+#  Note(1): If a command argument is not needed, use NULL for the argument. 
+#  Note(2): Lines starting with a # will be skipped
+#  Note(3): Please do not leave a blank line at the end of the file!
+# 
+Event Services No-Op,     0,     NULL, NULL,   NULL, NULL, NULL, NULL

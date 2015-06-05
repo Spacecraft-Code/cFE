@@ -1,0 +1,1744 @@
+        -:    0:Source:/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/tbl/cfe_tbl_api.c
+        -:    0:Programs:4
+        -:    1:/*
+        -:    2:** $Id: cfe_tbl_api.c.gcov 1.9 2014/09/08 13:14:32GMT-05:00 rmcgraw Exp  $
+        -:    3:**
+        -:    4:**      Copyright (c) 2004-2012, United States government as represented by the
+        -:    5:**      administrator of the National Aeronautics Space Administration.
+        -:    6:**      All rights reserved. This software(cFE) was created at NASA's Goddard
+        -:    7:**      Space Flight Center pursuant to government contracts.
+        -:    8:**
+        -:    9:**      This is governed by the NASA Open Source Agreement and may be used,
+        -:   10:**      distributed and modified only pursuant to the terms of that agreement.
+        -:   11:**
+        -:   12:**
+        -:   13:** Purpose:  cFE Table Services (TBL) library API source file
+        -:   14:**
+        -:   15:** Author:   D. Kobe/the Hammers Company, Inc.
+        -:   16:**
+        -:   17:** Notes:
+        -:   18:**
+        -:   19:** $Log: cfe_tbl_api.c.gcov  $
+        -:   19:** Revision 1.9 2014/09/08 13:14:32GMT-05:00 rmcgraw 
+        -:   19:** DCR22107:25 Baselined TBL unit test for cFE6.4.0
+        -:   20:** Revision 1.21 2012/04/18 15:38:20EDT lwalling
+        -:   21:** Test result from CFE_TBL_GetWorkingBuffer() to avoid null pointer
+        -:   22:** Revision 1.20 2012/01/13 12:17:39EST acudmore
+        -:   23:** Changed license text to reflect open source
+        -:   24:** Revision 1.19 2012/01/06 14:48:07EST lwalling
+        -:   25:** Modify table load status before updating CDS
+        -:   26:** Revision 1.18 2010/11/24 06:53:39EST wmoleski
+        -:   27:** Added fix to allow Critical Tables to be restored after a Processor Reset
+        -:   28:** Revision 1.17 2010/11/03 15:03:50EDT jmdagost
+        -:   29:** Added cfe.h include file.
+        -:   30:** Revision 1.16 2010/10/27 17:53:02EDT dkobe
+        -:   31:** Added logic to CFE_TBL_Registry to only consider Critical Tables recovered if associated registry data indicates that it had been previously loaded.
+        -:   32:** Revision 1.15 2010/10/27 17:10:57EDT dkobe
+        -:   33:** Modified CFE_TBL_Modified to NOT notify calling application of table changes.
+        -:   34:** Revision 1.14 2010/10/27 16:35:39EDT dkobe
+        -:   35:** Added computation of Table CRC to API calls which can result in modified table contents.
+        -:   36:** Revision 1.13 2010/10/27 13:55:40EDT dkobe
+        -:   37:** Added TBL Notification API implementation
+        -:   38:** Revision 1.12 2010/10/25 15:00:33EDT jmdagost
+        -:   39:** Corrected bad apostrophe in prologue.
+        -:   40:** Revision 1.11 2010/10/04 15:18:51EDT jmdagost
+        -:   41:** Cleaned up copyright symbol.
+        -:   42:** Revision 1.10 2009/06/10 09:19:55EDT acudmore
+        -:   43:** Changed OS_Mem* and OS_BSP* calls to CFE_PSP_* calls
+        -:   44:** Revision 1.9 2009/05/01 16:36:21EDT dkobe
+        -:   45:** Added tests/syslog messages for positive return codes from Validation functions
+        -:   46:** Revision 1.8 2009/05/01 15:12:41EDT dkobe
+        -:   47:** Corrected SysLog format string
+        -:   48:** Revision 1.7 2009/05/01 13:41:38EDT dkobe
+        -:   49:** Modified SysLog Msg for zero length table name
+        -:   50:** Revision 1.6 2008/07/29 18:32:16EDT dkobe
+        -:   51:** Added CFE_TBL_Modified API
+        -:   52:** Revision 1.5 2008/07/29 15:55:17EDT dkobe
+        -:   53:** Moved CFE_TBL_DumpToBuffer from cfe_tbl_internal.c to cfe_tbl_api.c
+        -:   54:** Revision 1.4 2008/07/29 14:05:37EDT dkobe
+        -:   55:** Removed redundant FileCreateTimeSecs and FileCreateTimeSubSecs fields
+        -:   56:** Revision 1.3 2008/07/21 14:58:07EDT dkobe
+        -:   57:** Added check in CFE_TBL_Manage function that forces the CFE_TBL_INFO_UPDATED
+        -:   58:** return status code when a CFE_TBL_Update call is made successfully.
+        -:   59:** Revision 1.2 2008/07/21 14:49:55EDT dkobe
+        -:   60:** Corrected temporary code with proper assignment statement in CFE_TBL_GetInfo
+        -:   61:** Revision 1.1 2008/04/17 08:05:34EDT ruperera
+        -:   62:** Initial revision
+        -:   63:**
+        -:   64:**
+        -:   65:*/
+        -:   66:
+        -:   67:
+        -:   68:/*
+        -:   69:** Required header files...
+        -:   70:*/
+        -:   71:#include <string.h>
+        -:   72:#include "cfe.h"
+        -:   73:#include "cfe_es.h"
+        -:   74:#include "cfe_tbl.h"
+        -:   75:#include "cfe_error.h"
+        -:   76:#include "cfe_tbl_internal.h"
+        -:   77:#include "cfe_psp.h"
+        -:   78:
+        -:   79:
+        -:   80:/*
+        -:   81:** External Globals
+        -:   82:*/
+        -:   83:extern CFE_TBL_TaskData_t CFE_TBL_TaskData;
+        -:   84:
+        -:   85:/*******************************************************************
+        -:   86:**
+        -:   87:** CFE_ES_RegisterCDSEx
+        -:   88:**
+        -:   89:** NOTE: For complete prolog information, see 'cfe_es_cds.h'
+        -:   90:********************************************************************/
+        -:   91:int32 CFE_ES_RegisterCDSEx(CFE_ES_CDSHandle_t *HandlePtr, int32 BlockSize, const char *Name, boolean CriticalTbl);
+        -:   92:
+        -:   93:/*
+        -:   94:** Local Macros
+        -:   95:*/
+        -:   96:
+        -:   97:/*******************************************************************
+        -:   98:**
+        -:   99:** CFE_TBL_Register() -- Register a table with cFE to obtain
+        -:  100:**                       Table Management Services
+        -:  101:**
+        -:  102:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -:  103:********************************************************************/
+      168:  104:int32 CFE_TBL_Register( CFE_TBL_Handle_t *TblHandlePtr,
+        -:  105:                        const char *Name,
+        -:  106:                        uint32  Size,
+        -:  107:                        uint16  TblOptionFlags,
+        -:  108:                        CFE_TBL_CallbackFuncPtr_t TblValidationFuncPtr )
+        -:  109:{
+      168:  110:    CFE_TBL_AccessDescriptor_t *AccessDescPtr = NULL;
+      168:  111:    CFE_TBL_RegistryRec_t      *RegRecPtr = NULL;
+        -:  112:    CFE_TBL_LoadBuff_t         *WorkingBufferPtr;
+      168:  113:    CFE_TBL_CritRegRec_t       *CritRegRecPtr = NULL;
+      168:  114:    int32                       Status = CFE_SUCCESS;
+      168:  115:    int32                       NameLen = 0;
+      168:  116:    int16                       RegIndx = -1;
+        -:  117:    uint32                      ThisAppId;
+      168:  118:    char                        AppName[OS_MAX_API_NAME] = {"UNKNOWN"};
+      168:  119:    char                        TblName[CFE_TBL_MAX_FULL_NAME_LEN] = {""};
+        -:  120:    char                        LogMsg[128];
+        -:  121:    CFE_TBL_Handle_t            AccessIndex;
+        -:  122:
+        -:  123:    /* Check to make sure calling application is legit */
+      168:  124:    Status = CFE_TBL_ValidateAppID(&ThisAppId);
+        -:  125:
+      168:  126:    if (Status == CFE_SUCCESS)
+        -:  127:    {
+        -:  128:        /* Assume we can't make a table and return a bad handle for now */
+      166:  129:        *TblHandlePtr = CFE_TBL_BAD_TABLE_HANDLE;
+        -:  130:
+        -:  131:        /* Make sure specified table name is not too long or too short */
+      166:  132:        NameLen = strlen(Name);
+      168:  133:        if ((NameLen > CFE_TBL_MAX_NAME_LENGTH) || (NameLen == 0))
+        -:  134:        {
+        2:  135:            Status = CFE_TBL_ERR_INVALID_NAME;
+        -:  136:
+        -:  137:            /* Perform a buffer overrun safe copy of name for debug log message */
+        2:  138:            strncpy(LogMsg, "CFE_TBL:Register-Table Name (", 29);
+        2:  139:            strncpy(&LogMsg[29], Name, 70);
+        2:  140:            if (NameLen == 0)
+        -:  141:            {
+        1:  142:                strcat(LogMsg, ") is zero length\n");
+        -:  143:            }
+        -:  144:            else
+        -:  145:            {
+        1:  146:                strcat(LogMsg, ") is too long\n");
+        -:  147:            }
+        2:  148:            CFE_ES_WriteToSysLog(LogMsg);
+        -:  149:
+        2:  150:            strncpy(TblName, Name, CFE_TBL_MAX_NAME_LENGTH);
+        2:  151:            TblName[CFE_TBL_MAX_NAME_LENGTH-1] = '\0';
+        -:  152:        }
+        -:  153:        else
+        -:  154:        {
+        -:  155:            /* Modify specified name to be processor specific name */
+        -:  156:            /* of the form "AppName.TableName"                     */
+      164:  157:            CFE_TBL_FormTableName(TblName, Name, ThisAppId);
+        -:  158:
+        -:  159:           /* Make sure the specified size is acceptable */
+        -:  160:            /* Single buffered tables are allowed to be up to CFE_TBL_MAX_SNGL_TABLE_SIZE */
+        -:  161:            /* Double buffered tables are allowed to be up to CFE_TBL_MAX_DBL_TABLE_SIZE  */
+      164:  162:            if (Size == 0)
+        -:  163:            {
+        1:  164:                Status = CFE_TBL_ERR_INVALID_SIZE;
+        -:  165:
+        1:  166:                CFE_ES_WriteToSysLog("CFE_TBL:Register-Table %s has size of zero\n", Name);
+        -:  167:            }
+      166:  168:            else if ((Size > CFE_TBL_MAX_SNGL_TABLE_SIZE) &&
+        2:  169:                     ((TblOptionFlags & CFE_TBL_OPT_BUFFER_MSK) == CFE_TBL_OPT_SNGL_BUFFER))
+        -:  170:            {
+        1:  171:                Status = CFE_TBL_ERR_INVALID_SIZE;
+        -:  172:
+        1:  173:                CFE_ES_WriteToSysLog("CFE_TBL:Register-Single Buffered Table '%s' has size %d > %d\n",
+        -:  174:                                     Name, Size, CFE_TBL_MAX_SNGL_TABLE_SIZE);
+        -:  175:            }
+      163:  176:            else if ((Size > CFE_TBL_MAX_DBL_TABLE_SIZE) &&
+        1:  177:                     ((TblOptionFlags & CFE_TBL_OPT_BUFFER_MSK) == CFE_TBL_OPT_DBL_BUFFER))
+        -:  178:            {
+        1:  179:                Status = CFE_TBL_ERR_INVALID_SIZE;
+        -:  180:
+        1:  181:                CFE_ES_WriteToSysLog("CFE_TBL:Register-Dbl Buffered Table '%s' has size %d > %d\n",
+        -:  182:                                     Name, Size, CFE_TBL_MAX_DBL_TABLE_SIZE);
+        -:  183:            }
+        -:  184:
+        -:  185:            /* Verify Table Option settings are legal */
+        -:  186:            /* User defined table addresses are only legal for single buffered, dump-only, non-critical tables */
+      164:  187:            if ((TblOptionFlags & CFE_TBL_OPT_USR_DEF_MSK) == (CFE_TBL_OPT_USR_DEF_ADDR & CFE_TBL_OPT_USR_DEF_MSK))
+        -:  188:            {
+       11:  189:                if (((TblOptionFlags & CFE_TBL_OPT_BUFFER_MSK) == CFE_TBL_OPT_DBL_BUFFER) ||
+        4:  190:                    ((TblOptionFlags & CFE_TBL_OPT_LD_DMP_MSK) == CFE_TBL_OPT_LOAD_DUMP) ||
+        2:  191:                    ((TblOptionFlags & CFE_TBL_OPT_CRITICAL_MSK) == CFE_TBL_OPT_CRITICAL))
+        -:  192:                {
+        3:  193:                    Status = CFE_TBL_ERR_INVALID_OPTIONS;
+        -:  194:
+        3:  195:                    CFE_ES_WriteToSysLog("CFE_TBL:Register-User Def tbl '%s' cannot be dbl buff, load/dump or critical\n",
+        -:  196:                                         Name);
+        -:  197:                }
+        -:  198:            }
+      159:  199:            else if ((TblOptionFlags & CFE_TBL_OPT_LD_DMP_MSK) == CFE_TBL_OPT_DUMP_ONLY)
+        -:  200:            {
+        -:  201:                /* Dump Only tables cannot be double buffered, nor critical */
+        5:  202:                if (((TblOptionFlags & CFE_TBL_OPT_BUFFER_MSK) == CFE_TBL_OPT_DBL_BUFFER) ||
+        2:  203:                    ((TblOptionFlags & CFE_TBL_OPT_CRITICAL_MSK) == CFE_TBL_OPT_CRITICAL))
+        -:  204:                {
+        1:  205:                    Status = CFE_TBL_ERR_INVALID_OPTIONS;
+        -:  206:
+        1:  207:                    CFE_ES_WriteToSysLog("CFE_TBL:Register-Dump Only tbl '%s' cannot be double buffered or critical\n",
+        -:  208:                                         Name);
+        -:  209:                }
+        -:  210:            }
+        -:  211:        }
+        -:  212:    }
+        -:  213:    else  /* Application ID was invalid */
+        -:  214:    {
+        2:  215:        CFE_ES_WriteToSysLog("CFE_TBL:Register-Bad AppId(%d)\n", ThisAppId);
+        -:  216:    }
+        -:  217:
+        -:  218:    /* If input parameters appear acceptable, register the table */
+      168:  219:    if (Status == CFE_SUCCESS)
+        -:  220:    {
+        -:  221:        /* Lock Registry for update.  This prevents two applications from        */
+        -:  222:        /* trying to register/share tables at the same location at the same time */
+      157:  223:        CFE_TBL_LockRegistry();
+        -:  224:
+        -:  225:        /* Check for duplicate table name */
+      157:  226:        RegIndx = CFE_TBL_FindTableInRegistry(TblName);
+        -:  227:
+        -:  228:        /* Check to see if table is already in the registry */
+      157:  229:        if (RegIndx != CFE_TBL_NOT_FOUND)
+        -:  230:        {
+        -:  231:            /* Get pointer to Registry Record Entry to speed up processing */
+        3:  232:            RegRecPtr = &CFE_TBL_TaskData.Registry[RegIndx];
+        -:  233:
+        -:  234:            /* If this app previously owned the table, then allow them to re-register */
+        3:  235:            if (RegRecPtr->OwnerAppId == ThisAppId)
+        -:  236:            {
+        -:  237:                /* If the new table is the same size as the old, then no need to reallocate memory */
+        2:  238:                if (Size != RegRecPtr->Size)
+        -:  239:                {
+        -:  240:                    /* If the new size is different, the old table must deleted      */
+        -:  241:                    /* but this function can't do that because it is probably shared */
+        -:  242:                    /* and is probably still being accessed.  Someone else will need */
+        -:  243:                    /* to clean up this mess.                                        */
+        1:  244:                    Status = CFE_TBL_ERR_DUPLICATE_DIFF_SIZE;
+        -:  245:
+        1:  246:                    CFE_ES_WriteToSysLog("CFE_TBL:Register-Attempt to register existing table ('%s') with different size(%d!=%d)\n",
+        -:  247:                                         TblName, Size, RegRecPtr->Size);
+        -:  248:                }
+        -:  249:                else
+        -:  250:                {
+        -:  251:                    /* Warn calling application that this is a duplicate registration */
+        1:  252:                    Status = CFE_TBL_WARN_DUPLICATE;
+        -:  253:
+        -:  254:                    /* Find the existing access descriptor for the table       */
+        -:  255:                    /* and return the same handle that was returned previously */
+        1:  256:                    AccessIndex = RegRecPtr->HeadOfAccessList;
+        4:  257:                    while ((AccessIndex != CFE_TBL_END_OF_LIST) && (*TblHandlePtr == CFE_TBL_BAD_TABLE_HANDLE))
+        -:  258:                    {
+        6:  259:                        if ((CFE_TBL_TaskData.Handles[AccessIndex].UsedFlag == TRUE) &&
+        2:  260:                            (CFE_TBL_TaskData.Handles[AccessIndex].AppId == ThisAppId) &&
+        1:  261:                            (CFE_TBL_TaskData.Handles[AccessIndex].RegIndex == RegIndx))
+        -:  262:                        {
+        1:  263:                            *TblHandlePtr = AccessIndex;
+        -:  264:                        }
+        -:  265:                        else
+        -:  266:                        {
+        1:  267:                            AccessIndex = CFE_TBL_TaskData.Handles[AccessIndex].NextLink;
+        -:  268:                        }
+        -:  269:                    }
+        -:  270:                }
+        -:  271:            }
+        -:  272:            else /* Duplicate named table owned by another Application */
+        -:  273:            {
+        1:  274:                Status = CFE_TBL_ERR_DUPLICATE_NOT_OWNED;
+        -:  275:
+        1:  276:                CFE_ES_WriteToSysLog("CFE_TBL:Register-App(%d) Registering Duplicate Table '%s' owned by App(%d)\n",
+        -:  277:                                     ThisAppId, TblName, RegRecPtr->OwnerAppId);
+        -:  278:            }
+        -:  279:        }
+        -:  280:        else  /* Table not already in registry */
+        -:  281:        {
+        -:  282:            /* Locate empty slot in table registry */
+      154:  283:            RegIndx = CFE_TBL_FindFreeRegistryEntry();
+        -:  284:        }
+        -:  285:
+        -:  286:        /* Check to make sure we found a free entry in registry */
+      157:  287:        if (RegIndx == CFE_TBL_NOT_FOUND)
+        -:  288:        {
+        1:  289:            Status = CFE_TBL_ERR_REGISTRY_FULL;
+        1:  290:            CFE_ES_WriteToSysLog("CFE_TBL:Register-Registry full\n");
+        -:  291:        }
+        -:  292:
+        -:  293:        /* If this is a duplicate registration, no other work is required */
+      157:  294:        if (Status != CFE_TBL_WARN_DUPLICATE)
+        -:  295:        {
+        -:  296:            /* Search Access Descriptor Array for free Descriptor */
+      156:  297:            *TblHandlePtr = CFE_TBL_FindFreeHandle();
+        -:  298:
+        -:  299:            /* Check to make sure there was a handle available */
+      156:  300:            if (*TblHandlePtr == CFE_TBL_END_OF_LIST)
+        -:  301:            {
+        1:  302:                Status = CFE_TBL_ERR_HANDLES_FULL;
+        1:  303:                CFE_ES_WriteToSysLog("CFE_TBL:Register-No more free handles\n");
+        -:  304:            }
+        -:  305:
+        -:  306:            /* If no errors, then initialize the table registry entry     */
+        -:  307:            /* and return the registry index to the caller as the handle  */
+      156:  308:            if ((Status & CFE_SEVERITY_BITMASK) != CFE_SEVERITY_ERROR)
+        -:  309:            {
+        -:  310:                /* Get pointer to Registry Record Entry to speed up processing */
+      152:  311:                RegRecPtr = &CFE_TBL_TaskData.Registry[RegIndx];
+        -:  312:
+        -:  313:                /* Initialize Registry Record to default settings */
+      152:  314:                CFE_TBL_InitRegistryRecord(RegRecPtr);
+        -:  315:
+      152:  316:                if ((TblOptionFlags & CFE_TBL_OPT_USR_DEF_MSK) != (CFE_TBL_OPT_USR_DEF_ADDR & CFE_TBL_OPT_USR_DEF_MSK))
+        -:  317:                {
+      150:  318:                    RegRecPtr->UserDefAddr = FALSE;
+        -:  319:
+        -:  320:                    /* Allocate the memory buffer(s) for the table and inactive table, if necessary */
+      150:  321:                    Status = CFE_ES_GetPoolBuf((uint32 **)&RegRecPtr->Buffers[0].BufferPtr,
+        -:  322:                                               CFE_TBL_TaskData.Buf.PoolHdl,
+        -:  323:                                               Size);
+      150:  324:                    if(Status < 0)
+        -:  325:                    {
+        2:  326:                        CFE_ES_WriteToSysLog("CFE_TBL:Register-1st Buf Alloc GetPool fail Stat=0x%08X MemPoolHndl=0x%08X\n",
+        -:  327:                                             Status, CFE_TBL_TaskData.Buf.PoolHdl);
+        -:  328:                    }
+        -:  329:                    else
+        -:  330:                    {
+        -:  331:                        /* Zero the memory buffer */
+      148:  332:                        Status = CFE_SUCCESS;
+      148:  333:                        CFE_PSP_MemSet(RegRecPtr->Buffers[0].BufferPtr, 0x0, Size);
+        -:  334:                    }
+        -:  335:                }
+        -:  336:                else
+        -:  337:                {
+        -:  338:                    /* Set buffer pointer to NULL for user defined address tables */
+        2:  339:                    RegRecPtr->Buffers[0].BufferPtr = NULL;
+        2:  340:                    RegRecPtr->UserDefAddr = TRUE;
+        -:  341:                }
+        -:  342:
+      162:  343:                if (((TblOptionFlags & CFE_TBL_OPT_DBL_BUFFER) == CFE_TBL_OPT_DBL_BUFFER) &&
+        5:  344:                    ((Status & CFE_SEVERITY_BITMASK) != CFE_SEVERITY_ERROR))
+        -:  345:                {
+        -:  346:                    /* Allocate memory for the dedicated secondary buffer */
+        5:  347:                    Status = CFE_ES_GetPoolBuf((uint32 **)&RegRecPtr->Buffers[1].BufferPtr,
+        -:  348:                                               CFE_TBL_TaskData.Buf.PoolHdl,
+        -:  349:                                               Size);
+        5:  350:                    if(Status < 0)
+        -:  351:                    {
+        1:  352:                        CFE_ES_WriteToSysLog("CFE_TBL:Register-2nd Buf Alloc GetPool fail Stat=0x%08X MemPoolHndl=0x%08X\n",
+        -:  353:                                             Status, CFE_TBL_TaskData.Buf.PoolHdl);
+        -:  354:                    }
+        -:  355:                    else
+        -:  356:                    {
+        -:  357:                        /* Zero the dedicated secondary buffer */
+        4:  358:                        Status = CFE_SUCCESS;
+        4:  359:                        CFE_PSP_MemSet(RegRecPtr->Buffers[1].BufferPtr, 0x0, Size);
+        -:  360:                    }
+        -:  361:
+        5:  362:                    RegRecPtr->ActiveBufferIndex = 0;
+        5:  363:                    RegRecPtr->DblBuffered = TRUE;
+        -:  364:                }
+        -:  365:                else  /* Single Buffered Table */
+        -:  366:                {
+      147:  367:                    RegRecPtr->DblBuffered = FALSE;
+      147:  368:                    RegRecPtr->ActiveBufferIndex = 0;
+        -:  369:                }
+        -:  370:
+      152:  371:                if ((Status & CFE_SEVERITY_BITMASK) != CFE_SEVERITY_ERROR)
+        -:  372:                {
+        -:  373:                    /* Save the size of the table */
+      149:  374:                    RegRecPtr->Size = Size;
+        -:  375:
+        -:  376:                    /* Save the Callback function pointer */
+      149:  377:                    RegRecPtr->ValidationFuncPtr = TblValidationFuncPtr;
+        -:  378:
+        -:  379:                    /* Save Table Name in Registry */
+      149:  380:                    strncpy(RegRecPtr->Name, TblName, CFE_TBL_MAX_FULL_NAME_LEN);
+        -:  381:
+        -:  382:                    /* Set the "Dump Only" flag to value based upon selected option */
+      149:  383:                    if ((TblOptionFlags & CFE_TBL_OPT_LD_DMP_MSK) == CFE_TBL_OPT_DUMP_ONLY)
+        -:  384:                    {
+        4:  385:                        RegRecPtr->DumpOnly = TRUE;
+        -:  386:                    }
+        -:  387:                    else
+        -:  388:                    {
+      145:  389:                        RegRecPtr->DumpOnly = FALSE;
+        -:  390:                    }
+        -:  391:
+        -:  392:                    /* Initialize the Table Access Descriptor */
+      149:  393:                    AccessDescPtr = &CFE_TBL_TaskData.Handles[*TblHandlePtr];
+        -:  394:
+      149:  395:                    AccessDescPtr->AppId = ThisAppId;
+      149:  396:                    AccessDescPtr->LockFlag = FALSE;
+      149:  397:                    AccessDescPtr->Updated = FALSE;
+        -:  398:
+      149:  399:                    if ((RegRecPtr->DumpOnly) && (!RegRecPtr->UserDefAddr))
+        -:  400:                    {
+        -:  401:                        /* Dump Only Tables are assumed to be loaded at all times    */
+        -:  402:                        /* unless the address is specified by the application. In    */
+        -:  403:                        /* that case, it isn't loaded until the address is specified */
+        2:  404:                        RegRecPtr->TableLoadedOnce = TRUE;
+        -:  405:                    }
+        -:  406:
+      149:  407:                    AccessDescPtr->RegIndex = RegIndx;
+        -:  408:
+      149:  409:                    AccessDescPtr->PrevLink = CFE_TBL_END_OF_LIST;         /* We are the head of the list */
+      149:  410:                    AccessDescPtr->NextLink = CFE_TBL_END_OF_LIST;         /* We are the end of the list */
+        -:  411:
+      149:  412:                    AccessDescPtr->UsedFlag = TRUE;
+        -:  413:
+        -:  414:                    /* Make sure the Table Registry entry points to First Access Descriptor */
+      149:  415:                    RegRecPtr->HeadOfAccessList = *TblHandlePtr;
+        -:  416:
+        -:  417:                    /* If the table is a critical table, allocate space for it in the Critical Data Store */
+        -:  418:                    /* OR locate its previous incarnation there and extract its previous contents */
+      149:  419:                    if ((TblOptionFlags & CFE_TBL_OPT_CRITICAL_MSK) == CFE_TBL_OPT_CRITICAL)
+        -:  420:                    {
+        -:  421:                        /* Register a CDS under the table name and determine if the table already exists there */
+       10:  422:                        Status = CFE_ES_RegisterCDSEx(&RegRecPtr->CDSHandle, Size, TblName, TRUE);
+        -:  423:
+       10:  424:                        if (Status == CFE_ES_CDS_ALREADY_EXISTS)
+        -:  425:                        {
+        3:  426:                            Status = CFE_TBL_GetWorkingBuffer(&WorkingBufferPtr, RegRecPtr, TRUE);
+        -:  427:
+        3:  428:                            if (Status != CFE_SUCCESS)
+        -:  429:                            {
+        -:  430:                                /* Unable to get a working buffer - this error is not really */
+        -:  431:                                /* possible at this point during table registration.  But we */
+        -:  432:                                /* do need to handle the error case because if the function */
+        -:  433:                                /* call did fail, WorkingBufferPtr would be a NULL pointer. */
+    #####:  434:                                CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
+    #####:  435:                                CFE_ES_WriteToSysLog("CFE_TBL:Register-Failed to get work buffer for '%s.%s' (ErrCode=0x%08X)\n",
+        -:  436:                                                     AppName, Name, Status);
+        -:  437:                            }
+        -:  438:                            else
+        -:  439:                            {
+        -:  440:                                /* CDS exists for this table - try to restore the data */
+        3:  441:                                Status = CFE_ES_RestoreFromCDS(WorkingBufferPtr->BufferPtr, RegRecPtr->CDSHandle);
+        -:  442:
+        3:  443:                                if (Status != CFE_SUCCESS)
+        -:  444:                                {
+        1:  445:                                    CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
+        1:  446:                                    CFE_ES_WriteToSysLog("CFE_TBL:Register-Failed to recover '%s.%s' from CDS (ErrCode=0x%08X)\n",
+        -:  447:                                                     AppName, Name, Status);
+        -:  448:                                }
+        -:  449:                            }
+        -:  450:
+        3:  451:                            if (Status != CFE_SUCCESS)
+        -:  452:                            {
+        -:  453:                                /* Treat a restore from existing CDS error the same as */
+        -:  454:                                /* after a power-on reset (CDS was created but is empty) */
+        1:  455:                                Status = CFE_SUCCESS;
+        -:  456:                            }
+        -:  457:                            else
+        -:  458:                            {
+        -:  459:                                /* Try to locate the associated information in the Critical Table Registry */
+        2:  460:                                CFE_TBL_FindCriticalTblInfo(&CritRegRecPtr, RegRecPtr->CDSHandle);
+        -:  461:
+        3:  462:                                if ((CritRegRecPtr != NULL) && (CritRegRecPtr->TableLoadedOnce))
+        -:  463:                                {
+        1:  464:                                    strncpy(WorkingBufferPtr->DataSource, CritRegRecPtr->LastFileLoaded, OS_MAX_PATH_LEN);
+        1:  465:                                    WorkingBufferPtr->FileCreateTimeSecs = CritRegRecPtr->FileCreateTimeSecs;
+        1:  466:                                    WorkingBufferPtr->FileCreateTimeSubSecs = CritRegRecPtr->FileCreateTimeSubSecs;
+        1:  467:                                    RegRecPtr->TimeOfLastUpdate.Seconds = CritRegRecPtr->TimeOfLastUpdate.Seconds;
+        1:  468:                                    RegRecPtr->TimeOfLastUpdate.Subseconds = CritRegRecPtr->TimeOfLastUpdate.Subseconds;
+        1:  469:                                    RegRecPtr->TableLoadedOnce = CritRegRecPtr->TableLoadedOnce;
+        -:  470:
+        -:  471:                                    /* Compute the CRC on the specified table buffer */
+        1:  472:                                    WorkingBufferPtr->Crc = CFE_ES_CalculateCRC(WorkingBufferPtr->BufferPtr,
+        -:  473:                                                                                RegRecPtr->Size,
+        -:  474:                                                                                0,
+        -:  475:                                                                                CFE_ES_DEFAULT_CRC);
+        -:  476:
+        -:  477:                                    /* Make sure everyone who sees the table knows that it has been updated */
+        1:  478:                                    CFE_TBL_NotifyTblUsersOfUpdate(RegRecPtr);
+        -:  479:
+        -:  480:                                    /* Make sure the caller realizes the contents have been initialized */
+        1:  481:                                    Status = CFE_TBL_INFO_RECOVERED_TBL;
+        -:  482:                                }
+        -:  483:                                else
+        -:  484:                                {
+        -:  485:                                    /* If an error occurred while trying to get the previous contents registry info, */
+        -:  486:                                    /* Log the error in the System Log and pretend like we created a new CDS */
+        1:  487:                                    CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
+        1:  488:                                    CFE_ES_WriteToSysLog("CFE_TBL:Register-Failed to recover '%s.%s' info from CDS TblReg\n",
+        -:  489:                                                         AppName, Name);
+        1:  490:                                    Status = CFE_SUCCESS;
+        -:  491:                                }
+        -:  492:                            }
+        -:  493:
+        -:  494:                            /* Mark the table as critical for future reference */
+        3:  495:                            RegRecPtr->CriticalTable = TRUE;
+        -:  496:                        }
+        -:  497:
+       10:  498:                        if (Status == CFE_SUCCESS)
+        -:  499:                        {
+        -:  500:                            /* Find and initialize a free entry in the Critical Table Registry */
+        8:  501:                            CFE_TBL_FindCriticalTblInfo(&CritRegRecPtr, CFE_ES_CDS_BAD_HANDLE);
+        -:  502:
+        8:  503:                            if (CritRegRecPtr != NULL)
+        -:  504:                            {
+        7:  505:                                CritRegRecPtr->CDSHandle = RegRecPtr->CDSHandle;
+        7:  506:                                strncpy(CritRegRecPtr->Name, TblName, CFE_TBL_MAX_FULL_NAME_LEN);
+        7:  507:                                CritRegRecPtr->FileCreateTimeSecs = 0;
+        7:  508:                                CritRegRecPtr->FileCreateTimeSubSecs = 0;
+        7:  509:                                CritRegRecPtr->LastFileLoaded[0] = '\0';
+        7:  510:                                CritRegRecPtr->TimeOfLastUpdate.Seconds = 0;
+        7:  511:                                CritRegRecPtr->TimeOfLastUpdate.Subseconds = 0;
+        7:  512:                                CritRegRecPtr->TableLoadedOnce = FALSE;
+        -:  513:
+        7:  514:                                CFE_ES_CopyToCDS(CFE_TBL_TaskData.CritRegHandle, CFE_TBL_TaskData.CritReg);
+        -:  515:                            }
+        -:  516:                            else
+        -:  517:                            {
+        1:  518:                                CFE_ES_WriteToSysLog("CFE_TBL:Register-Failed to find a free Crit Tbl Reg Rec for '%s'\n",
+        -:  519:                                                     RegRecPtr->Name);
+        -:  520:                            }
+        -:  521:
+        -:  522:                            /* Mark the table as critical for future reference */
+        8:  523:                            RegRecPtr->CriticalTable = TRUE;
+        -:  524:                        }
+        2:  525:                        else if (Status != CFE_TBL_INFO_RECOVERED_TBL)
+        -:  526:                        {
+        1:  527:                            CFE_ES_WriteToSysLog("CFE_TBL:Register-Failed to register '%s.%s' as a CDS (ErrCode=0x%08X)\n",
+        -:  528:                                                 AppName, Name, Status);
+        -:  529:
+        -:  530:                            /* Notify caller that although they asked for it to be critical, it isn't */
+        1:  531:                            Status = CFE_TBL_WARN_NOT_CRITICAL;
+        -:  532:                        }
+        -:  533:                    }
+        -:  534:
+        -:  535:                    /* The last step of the registration process is claiming ownership.    */
+        -:  536:                    /* By making it the last step, other APIs do not have to lock registry */
+        -:  537:                    /* to share the table or get its address because registry entries that */
+        -:  538:                    /* are unowned are not checked to see if they match names, etc.        */
+      149:  539:                    RegRecPtr->OwnerAppId = ThisAppId;
+        -:  540:                }
+        -:  541:            }
+        -:  542:        }
+        -:  543:
+        -:  544:        /* Unlock Registry for update */
+      157:  545:        CFE_TBL_UnlockRegistry();
+        -:  546:    }
+        -:  547:
+        -:  548:    /* On Error conditions, notify ground of screw up */
+      168:  549:    if (Status < 0)
+        -:  550:    {
+        -:  551:        /* Make sure the returned handle is invalid when an error occurs */
+       18:  552:        *TblHandlePtr = CFE_TBL_BAD_TABLE_HANDLE;
+        -:  553:
+        -:  554:        /* Translate AppID of caller into App Name */
+       18:  555:        CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
+        -:  556:
+       18:  557:        CFE_EVS_SendEventWithAppID(CFE_TBL_REGISTER_ERR_EID,
+        -:  558:                                   CFE_EVS_ERROR,
+        -:  559:                                   CFE_TBL_TaskData.TableTaskAppId,
+        -:  560:                                   "%s Failed to Register '%s', Status=0x%08X",
+        -:  561:                                   AppName, TblName, Status);
+        -:  562:    }
+        -:  563:
+      168:  564:    return Status;
+        -:  565:}   /* End of CFE_TBL_Register() */
+        -:  566:
+        -:  567:
+        -:  568:/*******************************************************************
+        -:  569:**
+        -:  570:** CFE_TBL_Share() -- Obtain handle of table registered by another
+        -:  571:**                    application
+        -:  572:**
+        -:  573:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -:  574:********************************************************************/
+        -:  575:
+      139:  576:int32 CFE_TBL_Share( CFE_TBL_Handle_t *TblHandlePtr,
+        -:  577:                     const char *TblName )
+        -:  578:{
+      139:  579:    int32   Status = CFE_SUCCESS;
+        -:  580:    uint32  ThisAppId;
+      139:  581:    int16   RegIndx = CFE_TBL_NOT_FOUND;
+      139:  582:    CFE_TBL_AccessDescriptor_t *AccessDescPtr = NULL;
+      139:  583:    CFE_TBL_RegistryRec_t      *RegRecPtr = NULL;
+      139:  584:    char    AppName[OS_MAX_API_NAME] = {"UNKNOWN"};
+        -:  585:
+        -:  586:    /* Get a valid Application ID for calling App */
+      139:  587:    Status = CFE_TBL_ValidateAppID(&ThisAppId);
+        -:  588:
+      139:  589:    if (Status == CFE_SUCCESS)
+        -:  590:    {
+        -:  591:        /* Lock Registry for update.  This prevents two applications from        */
+        -:  592:        /* trying to register/share tables at the same location at the same time */
+      137:  593:        CFE_TBL_LockRegistry();
+        -:  594:
+      137:  595:        RegIndx = CFE_TBL_FindTableInRegistry(TblName);
+        -:  596:
+        -:  597:        /* If we found the table, then get a new Access Descriptor and initialize it */
+      137:  598:        if (RegIndx != CFE_TBL_NOT_FOUND)
+        -:  599:        {
+        -:  600:            /* Get pointer to Registry Record Entry to speed up processing */
+      136:  601:            RegRecPtr = &CFE_TBL_TaskData.Registry[RegIndx];
+        -:  602:
+        -:  603:            /* Search Access Descriptor Array for free Descriptor */
+      136:  604:            *TblHandlePtr = CFE_TBL_FindFreeHandle();
+        -:  605:
+        -:  606:            /* Check to make sure there was a handle available */
+      136:  607:            if (*TblHandlePtr == CFE_TBL_END_OF_LIST)
+        -:  608:            {
+        1:  609:                Status = CFE_TBL_ERR_HANDLES_FULL;
+        1:  610:                CFE_ES_WriteToSysLog("CFE_TBL:Share-No more free handles\n");
+        -:  611:            }
+        -:  612:            else
+        -:  613:            {
+        -:  614:                /* Initialize the Table Access Descriptor */
+      135:  615:                AccessDescPtr = &CFE_TBL_TaskData.Handles[*TblHandlePtr];
+        -:  616:
+      135:  617:                AccessDescPtr->AppId = ThisAppId;
+      135:  618:                AccessDescPtr->LockFlag = FALSE;
+      135:  619:                AccessDescPtr->Updated = FALSE;
+        -:  620:
+        -:  621:                /* Check current state of table in order to set Notification flags properly */
+      135:  622:                if (RegRecPtr->TableLoadedOnce)
+        -:  623:                {
+        3:  624:                    AccessDescPtr->Updated = TRUE;
+        -:  625:                }
+        -:  626:
+      135:  627:                AccessDescPtr->RegIndex = RegIndx;
+      135:  628:                AccessDescPtr->UsedFlag = TRUE;
+        -:  629:
+      135:  630:                AccessDescPtr->PrevLink = CFE_TBL_END_OF_LIST;             /* We are the new head of the list */
+      135:  631:                AccessDescPtr->NextLink = RegRecPtr->HeadOfAccessList;
+        -:  632:
+        -:  633:                /* Make sure the old head of the list now sees this as the head */
+      135:  634:                CFE_TBL_TaskData.Handles[RegRecPtr->HeadOfAccessList].PrevLink = *TblHandlePtr;
+        -:  635:
+        -:  636:                /* Make sure the Registry Record see this as the head of the list */
+      135:  637:                RegRecPtr->HeadOfAccessList = *TblHandlePtr;
+        -:  638:            }
+        -:  639:        }
+        -:  640:        else  /* Table could not be found in registry */
+        -:  641:        {
+        1:  642:            Status = CFE_TBL_ERR_INVALID_NAME;
+        -:  643:
+        1:  644:            CFE_ES_WriteToSysLog("CFE_TBL:Share-Table '%s' not found in Registry\n", TblName);
+        -:  645:        }
+        -:  646:
+      137:  647:        CFE_TBL_UnlockRegistry();
+        -:  648:    }
+        -:  649:    else  /* Application ID was invalid */
+        -:  650:    {
+        2:  651:        CFE_ES_WriteToSysLog("CFE_TBL:Share-Bad AppId(%d)\n", ThisAppId);
+        -:  652:    }
+        -:  653:
+        -:  654:    /* On Error conditions, notify ground of screw up */
+      139:  655:    if (Status < 0)
+        -:  656:    {
+        -:  657:        /* Translate AppID of caller into App Name */
+        4:  658:        CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
+        -:  659:
+        4:  660:        CFE_EVS_SendEventWithAppID(CFE_TBL_SHARE_ERR_EID,
+        -:  661:                                   CFE_EVS_ERROR,
+        -:  662:                                   CFE_TBL_TaskData.TableTaskAppId,
+        -:  663:                                   "%s Failed to Share '%s', Status=0x%08X",
+        -:  664:                                   AppName, TblName, Status);
+        -:  665:    }
+        -:  666:
+      139:  667:    return Status;
+        -:  668:}   /* End of CFE_TBL_Share() */
+        -:  669:
+        -:  670:
+        -:  671:/*******************************************************************
+        -:  672:**
+        -:  673:** CFE_TBL_Unregister() -- Unregister a previously registered
+        -:  674:**                         table and free associated resources
+        -:  675:**
+        -:  676:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -:  677:********************************************************************/
+        -:  678:
+       18:  679:int32 CFE_TBL_Unregister ( CFE_TBL_Handle_t TblHandle )
+        -:  680:{
+        -:  681:    int32   Status;
+        -:  682:    uint32  ThisAppId;
+       18:  683:    CFE_TBL_RegistryRec_t *RegRecPtr = NULL;
+       18:  684:    CFE_TBL_AccessDescriptor_t *AccessDescPtr = NULL;
+       18:  685:    char    AppName[OS_MAX_API_NAME] = {"UNKNOWN"};
+        -:  686:
+        -:  687:    /* Verify that this application has the right to perform operation */
+       18:  688:    Status = CFE_TBL_ValidateAccess(TblHandle, &ThisAppId);
+        -:  689:
+       18:  690:    if (Status == CFE_SUCCESS)
+        -:  691:    {
+        -:  692:        /* Get a pointer to the relevant Access Descriptor */
+       17:  693:        AccessDescPtr = &CFE_TBL_TaskData.Handles[TblHandle];
+        -:  694:
+        -:  695:        /* Get a pointer to the relevant entry in the registry */
+       17:  696:        RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
+        -:  697:
+        -:  698:        /* Verify that the application unregistering the table owns the table */
+       17:  699:        if (RegRecPtr->OwnerAppId == ThisAppId)
+        -:  700:        {
+        -:  701:            /* Mark table as free, although, technically, it isn't free until the */
+        -:  702:            /* linked list of Access Descriptors has no links in it.              */
+        -:  703:            /* NOTE: Allocated memory is freed when all Access Links have been    */
+        -:  704:            /*       removed.  This allows Applications to continue to use the    */
+        -:  705:            /*       data until they acknowledge that the table has been removed. */
+       13:  706:            RegRecPtr->OwnerAppId = (uint32)CFE_TBL_NOT_OWNED;
+        -:  707:
+        -:  708:            /* Remove Table Name */
+       13:  709:            RegRecPtr->Name[0] = '\0';
+        -:  710:        }
+        -:  711:
+        -:  712:        /* Remove the Access Descriptor Link from linked list */
+        -:  713:        /* NOTE: If this removes the last access link, then   */
+        -:  714:        /*       memory buffers are set free as well.         */
+       17:  715:        CFE_TBL_RemoveAccessLink(TblHandle);
+        -:  716:    }
+        -:  717:    else
+        -:  718:    {
+        1:  719:        CFE_ES_WriteToSysLog("CFE_TBL:Unregister-App(%d) does not have access to Tbl Handle=%d\n",
+        -:  720:                             ThisAppId, TblHandle);
+        -:  721:    }
+        -:  722:
+        -:  723:    /* On Error conditions, notify ground of screw up */
+       18:  724:    if (Status < 0)
+        -:  725:    {
+        -:  726:        /* Translate AppID of caller into App Name */
+        1:  727:        CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
+        -:  728:
+        1:  729:        CFE_EVS_SendEventWithAppID(CFE_TBL_UNREGISTER_ERR_EID,
+        -:  730:                                   CFE_EVS_ERROR,
+        -:  731:                                   CFE_TBL_TaskData.TableTaskAppId,
+        -:  732:                                   "%s Failed to Unregister '?', Status=0x%08X",
+        -:  733:                                   AppName, Status);
+        -:  734:    }
+        -:  735:
+       18:  736:    return Status;
+        -:  737:}   /* End of CFE_TBL_Unregister() */
+        -:  738:
+        -:  739:
+        -:  740:/*******************************************************************
+        -:  741:**
+        -:  742:** CFE_TBL_Load() -- Load a specified table with data from the
+        -:  743:**                   specified source
+        -:  744:**
+        -:  745:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -:  746:********************************************************************/
+        -:  747:
+       23:  748:int32 CFE_TBL_Load( CFE_TBL_Handle_t TblHandle,
+        -:  749:                    CFE_TBL_SrcEnum_t SrcType,
+        -:  750:                    const void *SrcDataPtr )
+        -:  751:{
+        -:  752:    int32                       Status;
+        -:  753:    uint32                      ThisAppId;
+        -:  754:    CFE_TBL_LoadBuff_t         *WorkingBufferPtr;
+       23:  755:    CFE_TBL_RegistryRec_t      *RegRecPtr = NULL;
+        -:  756:    CFE_TBL_AccessDescriptor_t *AccessDescPtr;
+       23:  757:    char                        AppName[OS_MAX_API_NAME]={"UNKNOWN"};
+       23:  758:    uint16                      EventMsgType = CFE_EVS_INFORMATION;
+       23:  759:    boolean                     FirstTime = FALSE;
+        -:  760:
+        -:  761:
+        -:  762:    /* Initialize return pointer to NULL */
+       23:  763:    WorkingBufferPtr = NULL;
+        -:  764:
+        -:  765:    /* Verify access rights and get a valid Application ID for calling App */
+       23:  766:    Status = CFE_TBL_ValidateAccess(TblHandle, &ThisAppId);
+        -:  767:
+       23:  768:    if (Status == CFE_SUCCESS)
+        -:  769:    {
+        -:  770:        /* Get pointers to pertinent records in registry and handles */
+       21:  771:        AccessDescPtr = &CFE_TBL_TaskData.Handles[TblHandle];
+       21:  772:        RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
+        -:  773:
+        -:  774:        /* Check to see if this is a dump only table */
+       21:  775:        if (RegRecPtr->DumpOnly)
+        -:  776:        {
+        3:  777:            if ((RegRecPtr->UserDefAddr) && (!RegRecPtr->TableLoadedOnce))
+        -:  778:            {
+        -:  779:                /* The Application is allowed to call Load once when the address  */
+        -:  780:                /* of the dump only table is being defined by the application.    */
+        1:  781:                RegRecPtr->Buffers[0].BufferPtr = (void *)SrcDataPtr;
+        1:  782:                RegRecPtr->TableLoadedOnce = TRUE;
+        -:  783:
+        1:  784:                sprintf(RegRecPtr->Buffers[0].DataSource, "Addr 0x%08X", (int)SrcDataPtr);
+        1:  785:                RegRecPtr->Buffers[0].FileCreateTimeSecs = 0;
+        1:  786:                RegRecPtr->Buffers[0].FileCreateTimeSubSecs = 0;
+        -:  787:
+        1:  788:                CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_SUCCESS_INF_EID,
+        -:  789:                                           CFE_EVS_DEBUG,
+        -:  790:                                           CFE_TBL_TaskData.TableTaskAppId,
+        -:  791:                                           "Successfully loaded '%s' from '%s'",
+        -:  792:                                           RegRecPtr->Name,
+        1:  793:                                           RegRecPtr->Buffers[0].DataSource);
+        -:  794:            }
+        -:  795:            else
+        -:  796:            {
+        1:  797:                Status = CFE_TBL_ERR_DUMP_ONLY;
+        -:  798:
+        1:  799:                CFE_ES_WriteToSysLog("CFE_TBL:Load-App(%d) attempted to load Dump Only Tbl '%s'\n",
+        -:  800:                                     ThisAppId, RegRecPtr->Name);
+        -:  801:            }
+        -:  802:        }
+        -:  803:        else
+        -:  804:        {
+        -:  805:            /* Loads by an Application are not allowed if a table load is already in progress */
+       19:  806:            if (RegRecPtr->LoadInProgress != CFE_TBL_NO_LOAD_IN_PROGRESS)
+        -:  807:            {
+        1:  808:                Status = CFE_TBL_ERR_LOAD_IN_PROGRESS;
+        -:  809:
+        1:  810:                CFE_ES_WriteToSysLog("CFE_TBL:Load-Tbl Load already in progress for '%s'\n", RegRecPtr->Name);
+        -:  811:            }
+        -:  812:            else
+        -:  813:            {
+        -:  814:                /* Obtain a working buffer (either the table's dedicated buffer or one of the shared buffers) */
+       18:  815:                Status = CFE_TBL_GetWorkingBuffer(&WorkingBufferPtr, RegRecPtr, TRUE);
+        -:  816:
+       18:  817:                if (Status == CFE_SUCCESS)
+        -:  818:                {
+        -:  819:                    /* Perform appropriate update to working buffer */
+        -:  820:                    /* Determine whether the load is to occur from a file or from a block of memory */
+       17:  821:                    if (SrcType == CFE_TBL_SRC_FILE)
+        -:  822:                    {
+        -:  823:                        /* Load the data from the file into the specified buffer */
+       12:  824:                        Status = CFE_TBL_LoadFromFile(WorkingBufferPtr, RegRecPtr, (const char *)SrcDataPtr);
+        -:  825:
+       12:  826:                        if (Status < 0)
+        -:  827:                        {
+        1:  828:                            CFE_ES_WriteToSysLog("CFE_TBL:Load-App(%d) Fail to load Tbl '%s' from '%s' (Stat=0x%08X)\n",
+        -:  829:                                                 ThisAppId, RegRecPtr->Name, (const char *)SrcDataPtr, Status);
+        -:  830:                        }
+       11:  831:                        else if ((Status == CFE_TBL_WARN_PARTIAL_LOAD) && (!RegRecPtr->TableLoadedOnce))
+        -:  832:                        {
+        -:  833:                            /* Uninitialized tables cannot be loaded with partial table loads */
+        -:  834:                            /* Partial loads can only occur on previously loaded tables.      */
+        1:  835:                            Status = CFE_TBL_ERR_PARTIAL_LOAD;
+        -:  836:                        }
+        -:  837:                    }
+        5:  838:                    else if (SrcType == CFE_TBL_SRC_ADDRESS)
+        -:  839:                    {
+        -:  840:                        /* When the source is a block of memory, it is assumed to be a complete load */
+        4:  841:                        CFE_PSP_MemCpy(WorkingBufferPtr->BufferPtr,
+        -:  842:                                  (uint8 *)SrcDataPtr,
+        -:  843:                                  RegRecPtr->Size);
+        -:  844:
+        4:  845:                        sprintf(WorkingBufferPtr->DataSource, "Addr 0x%08X", (int)SrcDataPtr);
+        4:  846:                        WorkingBufferPtr->FileCreateTimeSecs = 0;
+        4:  847:                        WorkingBufferPtr->FileCreateTimeSubSecs = 0;
+        -:  848:
+        -:  849:                        /* Compute the CRC on the specified table buffer */
+        4:  850:                        WorkingBufferPtr->Crc = CFE_ES_CalculateCRC(WorkingBufferPtr->BufferPtr,
+        -:  851:                                                                    RegRecPtr->Size,
+        -:  852:                                                                    0,
+        -:  853:                                                                    CFE_ES_DEFAULT_CRC);
+        -:  854:                    }
+        -:  855:                    else
+        -:  856:                    {
+        1:  857:                        Status = CFE_TBL_ERR_ILLEGAL_SRC_TYPE;
+        1:  858:                        CFE_ES_WriteToSysLog("CFE_TBL:Load-App(%d) attempt to load from illegal source type=%d\n",
+        -:  859:                                             ThisAppId, SrcType);
+        -:  860:                    }
+        -:  861:
+        -:  862:                    /* If the data was successfully loaded, then validate its contents */
+       17:  863:                    if ((Status >= CFE_SUCCESS) && (RegRecPtr->ValidationFuncPtr != NULL))
+        -:  864:                    {
+       11:  865:                        Status = (RegRecPtr->ValidationFuncPtr)(WorkingBufferPtr->BufferPtr);
+        -:  866:
+       11:  867:                        if (Status > CFE_SUCCESS)
+        -:  868:                        {
+        1:  869:                            CFE_ES_WriteToSysLog("CFE_TBL:Load-App(%d) Validation func return code invalid (Stat=0x%08X) for '%s'\n",
+        -:  870:                                                 ThisAppId, Status, RegRecPtr->Name);
+        1:  871:                            Status = -1;
+        -:  872:                        }
+        -:  873:
+       11:  874:                        if (Status < 0)
+        -:  875:                        {
+        2:  876:                            CFE_ES_WriteToSysLog("CFE_TBL:Load-App(%d) reports load invalid (Stat=0x%08X) for '%s'\n",
+        -:  877:                                                 ThisAppId, Status, RegRecPtr->Name);
+        -:  878:
+        -:  879:                            /* Zero out the buffer to remove any bad data */
+        2:  880:                            CFE_PSP_MemSet(WorkingBufferPtr->BufferPtr, 0, RegRecPtr->Size);
+        -:  881:                        }
+        -:  882:                    }
+        -:  883:
+        -:  884:                    /* Perform the table update to complete the load */
+       17:  885:                    if (Status >= CFE_SUCCESS)
+        -:  886:                    {
+       12:  887:                        FirstTime = !RegRecPtr->TableLoadedOnce;
+        -:  888:
+        -:  889:                        /* If this is not the first load, then the data must be moved from the inactive buffer      */
+        -:  890:                        /* to the active buffer to complete the load.  First loads are done directly to the active. */
+       12:  891:                        if (!FirstTime)
+        -:  892:                        {
+        -:  893:                            /* Force the table update */
+        6:  894:                            RegRecPtr->LoadPending = TRUE;
+        -:  895:
+        6:  896:                            Status = CFE_TBL_UpdateInternal(TblHandle, RegRecPtr, AccessDescPtr);
+        -:  897:                        }
+        -:  898:                        else
+        -:  899:                        {
+        -:  900:                            /* On initial loads, make sure registry is given file/address of data source */
+        6:  901:                            strncpy(RegRecPtr->LastFileLoaded,
+        6:  902:                                    WorkingBufferPtr->DataSource,
+        -:  903:                                    OS_MAX_PATH_LEN);
+        -:  904:
+        6:  905:                            CFE_TBL_NotifyTblUsersOfUpdate(RegRecPtr);
+        -:  906:
+        -:  907:                            /* If the table is a critical table, update the appropriate CDS with the new data */
+        6:  908:                            if (RegRecPtr->CriticalTable == TRUE)
+        -:  909:                            {
+        3:  910:                                CFE_TBL_UpdateCriticalTblCDS(RegRecPtr);
+        -:  911:                            }
+        -:  912:
+        6:  913:                            Status = CFE_SUCCESS;
+        -:  914:                        }
+        -:  915:
+       12:  916:                        if (Status != CFE_SUCCESS)
+        -:  917:                        {
+        1:  918:                            CFE_ES_WriteToSysLog("CFE_TBL:Load-App(%d) fail to update '%s' (Stat=0x%08X)\n",
+        -:  919:                                                 ThisAppId, RegRecPtr->Name, Status);
+        -:  920:                        }
+        -:  921:                        else
+        -:  922:                        {
+        -:  923:                            /* The first time a table is loaded, the event message is DEBUG */
+        -:  924:                            /* to help eliminate a flood of events during a startup         */
+       11:  925:                            if (FirstTime)
+        -:  926:                            {
+        6:  927:                                EventMsgType = CFE_EVS_DEBUG;
+        -:  928:                            }
+        -:  929:
+       11:  930:                            CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_SUCCESS_INF_EID,
+        -:  931:                                                       EventMsgType,
+        -:  932:                                                       CFE_TBL_TaskData.TableTaskAppId,
+        -:  933:                                                       "Successfully loaded '%s' from '%s'",
+        -:  934:                                                       RegRecPtr->Name,
+        -:  935:                                                       RegRecPtr->LastFileLoaded);
+        -:  936:
+        -:  937:                            /* Save the index of the table for housekeeping telemetry */
+       11:  938:                            CFE_TBL_TaskData.LastTblUpdated = AccessDescPtr->RegIndex;
+        -:  939:                        }
+        -:  940:                    }
+        -:  941:                    else
+        -:  942:                    {
+        -:  943:                        /* The load has had a problem, free the working buffer for another attempt */
+        5:  944:                        if ((!RegRecPtr->DblBuffered) && (RegRecPtr->TableLoadedOnce == TRUE))
+        -:  945:                        {
+        -:  946:                            /* For single buffered tables, freeing entails resetting flag */
+        3:  947:                            CFE_TBL_TaskData.LoadBuffs[RegRecPtr->LoadInProgress].Taken = FALSE;
+        -:  948:                        }
+        -:  949:
+        -:  950:                        /* For double buffered tables, freeing buffer is simple */
+        5:  951:                        RegRecPtr->LoadInProgress = CFE_TBL_NO_LOAD_IN_PROGRESS;
+        -:  952:                    }
+        -:  953:                }
+        -:  954:                else
+        -:  955:                {
+        1:  956:                    CFE_ES_WriteToSysLog("CFE_TBL:Load-App(%d) Failed to get Working Buffer (Stat=0x%08X)\n",
+        -:  957:                                         ThisAppId, Status);
+        -:  958:                }
+        -:  959:            }
+        -:  960:        }
+        -:  961:    }
+        -:  962:    else
+        -:  963:    {
+        2:  964:        CFE_ES_WriteToSysLog("CFE_TBL:Load-App(%d) does not have access to Tbl Handle=%d\n",
+        -:  965:                             ThisAppId, TblHandle);
+        -:  966:    }
+        -:  967:
+        -:  968:    /* On Error conditions, notify ground of screw up */
+       23:  969:    if (Status < 0)
+        -:  970:    {
+        -:  971:        /* Translate AppID of caller into App Name */
+       10:  972:        CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
+        -:  973:
+       10:  974:        if (RegRecPtr == NULL)
+        -:  975:        {
+        2:  976:            CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_ERR_EID,
+        -:  977:                                       CFE_EVS_ERROR,
+        -:  978:                                       CFE_TBL_TaskData.TableTaskAppId,
+        -:  979:                                       "%s Failed to Load '?', Status=0x%08X",
+        -:  980:                                       AppName, Status);
+        -:  981:        }
+        -:  982:        else
+        -:  983:        {
+        8:  984:            if (SrcType == CFE_TBL_SRC_ADDRESS)
+        -:  985:            {
+        4:  986:                CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_ERR_EID,
+        -:  987:                                           CFE_EVS_ERROR,
+        -:  988:                                           CFE_TBL_TaskData.TableTaskAppId,
+        -:  989:                                           "%s Failed to Load '%s' from Addr 0x%08X, Status=0x%08X",
+        -:  990:                                           AppName, RegRecPtr->Name, SrcDataPtr, Status);
+        -:  991:            }
+        4:  992:            else if (SrcType == CFE_TBL_SRC_FILE)
+        -:  993:            {
+        3:  994:                CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_ERR_EID,
+        -:  995:                                           CFE_EVS_ERROR,
+        -:  996:                                           CFE_TBL_TaskData.TableTaskAppId,
+        -:  997:                                           "%s Failed to Load '%s' from '%s', Status=0x%08X",
+        -:  998:                                           AppName, RegRecPtr->Name, (const char *)SrcDataPtr, Status);
+        -:  999:            }
+        -: 1000:            else
+        -: 1001:            {
+        1: 1002:                CFE_EVS_SendEventWithAppID(CFE_TBL_LOAD_TYPE_ERR_EID,
+        -: 1003:                                           CFE_EVS_ERROR,
+        -: 1004:                                           CFE_TBL_TaskData.TableTaskAppId,
+        -: 1005:                                           "%s Failed to Load '%s' (Invalid Source Type)",
+        -: 1006:                                           AppName, RegRecPtr->Name);
+        -: 1007:            }
+        -: 1008:        }
+        -: 1009:    }
+        -: 1010:
+       23: 1011:    return Status;
+        -: 1012:}   /* End of CFE_TBL_Load() */
+        -: 1013:
+        -: 1014:
+        -: 1015:/*******************************************************************
+        -: 1016:**
+        -: 1017:** CFE_TBL_Update() -- Update contents of table if an update
+        -: 1018:**                     is pending
+        -: 1019:**
+        -: 1020:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1021:********************************************************************/
+        -: 1022:
+        4: 1023:int32 CFE_TBL_Update( CFE_TBL_Handle_t TblHandle )
+        -: 1024:{
+        -: 1025:    int32                       Status;
+        -: 1026:    uint32                      ThisAppId;
+        4: 1027:    CFE_TBL_RegistryRec_t      *RegRecPtr=NULL;
+        4: 1028:    CFE_TBL_AccessDescriptor_t *AccessDescPtr=NULL;
+        4: 1029:    char                        AppName[OS_MAX_API_NAME]={"UNKNOWN"};
+        -: 1030:
+        -: 1031:    /* Verify access rights and get a valid Application ID for calling App */
+        4: 1032:    Status = CFE_TBL_ValidateAccess(TblHandle, &ThisAppId);
+        -: 1033:
+        4: 1034:    if (Status == CFE_SUCCESS)
+        -: 1035:    {
+        -: 1036:        /* Get pointers to pertinent records in registry and handles */
+        3: 1037:        AccessDescPtr = &CFE_TBL_TaskData.Handles[TblHandle];
+        3: 1038:        RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
+        -: 1039:
+        3: 1040:        Status = CFE_TBL_UpdateInternal(TblHandle, RegRecPtr, AccessDescPtr);
+        -: 1041:
+        3: 1042:        if (Status != CFE_SUCCESS)
+        -: 1043:        {
+        2: 1044:            CFE_ES_WriteToSysLog("CFE_TBL:Update-App(%d) fail to update Tbl '%s' (Stat=0x%08X)\n",
+        -: 1045:                                 ThisAppId, RegRecPtr->Name, Status);
+        -: 1046:        }
+        -: 1047:    }
+        -: 1048:    else
+        -: 1049:    {
+        1: 1050:        CFE_ES_WriteToSysLog("CFE_TBL:Update-App(%d) does not have access to Tbl Handle=%d\n", ThisAppId, TblHandle);
+        -: 1051:    }
+        -: 1052:
+        4: 1053:    if (Status != CFE_TBL_ERR_BAD_APP_ID)
+        -: 1054:    {
+        -: 1055:        /* Translate AppID of caller into App Name */
+        4: 1056:        CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
+        -: 1057:    }
+        -: 1058:
+        -: 1059:    /* On Error conditions, notify ground of screw up */
+        4: 1060:    if (Status < 0)
+        -: 1061:    {
+        1: 1062:        if (RegRecPtr != NULL)
+        -: 1063:        {
+    #####: 1064:            CFE_EVS_SendEventWithAppID(CFE_TBL_UPDATE_ERR_EID,
+        -: 1065:                                       CFE_EVS_ERROR,
+        -: 1066:                                       CFE_TBL_TaskData.TableTaskAppId,
+        -: 1067:                                       "%s Failed to Update '%s', Status=0x%08X",
+        -: 1068:                                       AppName, RegRecPtr->Name, Status);
+        -: 1069:        }
+        -: 1070:        else
+        -: 1071:        {
+        1: 1072:            CFE_EVS_SendEventWithAppID(CFE_TBL_UPDATE_ERR_EID,
+        -: 1073:                                       CFE_EVS_ERROR,
+        -: 1074:                                       CFE_TBL_TaskData.TableTaskAppId,
+        -: 1075:                                       "%s Failed to Update '?', Status=0x%08X",
+        -: 1076:                                       AppName, Status);
+        -: 1077:        }
+        -: 1078:    }
+        -: 1079:    else
+        -: 1080:    {
+        -: 1081:        /* If there was a warning (ie - Table is currently locked), then do not issue a message */
+        3: 1082:        if (Status == CFE_SUCCESS)
+        -: 1083:        {
+        1: 1084:            CFE_EVS_SendEventWithAppID(CFE_TBL_UPDATE_SUCCESS_INF_EID,
+        -: 1085:                                       CFE_EVS_INFORMATION,
+        -: 1086:                                       CFE_TBL_TaskData.TableTaskAppId,
+        -: 1087:                                       "%s Successfully Updated '%s'",
+        -: 1088:                                       AppName, RegRecPtr->Name);
+        -: 1089:
+        -: 1090:            /* Save the index of the table for housekeeping telemetry */
+        1: 1091:            CFE_TBL_TaskData.LastTblUpdated = AccessDescPtr->RegIndex;
+        -: 1092:        }
+        -: 1093:    }
+        -: 1094:
+        4: 1095:    return Status;
+        -: 1096:}   /* End of CFE_TBL_Update() */
+        -: 1097:
+        -: 1098:
+        -: 1099:/*******************************************************************
+        -: 1100:**
+        -: 1101:** CFE_TBL_GetAddress() -- Obtain the current address of the
+        -: 1102:**                         contents of the specified table
+        -: 1103:**
+        -: 1104:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1105:********************************************************************/
+        -: 1106:
+       11: 1107:int32 CFE_TBL_GetAddress( void **TblPtr,
+        -: 1108:                          CFE_TBL_Handle_t TblHandle )
+        -: 1109:{
+       11: 1110:    int32   Status = CFE_SUCCESS;
+        -: 1111:    uint32  ThisAppId;
+        -: 1112:
+        -: 1113:    /* Assume failure at returning the table address */
+       11: 1114:    *TblPtr = NULL;
+        -: 1115:
+        -: 1116:    /* Validate the calling application's AppID */
+       11: 1117:    Status = CFE_TBL_ValidateAppID(&ThisAppId);
+        -: 1118:
+       11: 1119:    if (Status == CFE_SUCCESS)
+        -: 1120:    {
+       10: 1121:        Status = CFE_TBL_GetAddressInternal(TblPtr, TblHandle, ThisAppId);
+        -: 1122:
+        -: 1123:        /* NOTE: GetAddressInternal calls GetNextNotification which may not */
+        -: 1124:        /*       be equal to CFE_SUCCESS and still not be an error.         */
+        -: 1125:        /*       Therefore, a write to the SysLog is unnecessary.           */
+        -: 1126:    }
+        -: 1127:    else
+        -: 1128:    {
+        1: 1129:        CFE_ES_WriteToSysLog("CFE_TBL:GetAddress-Bad AppId=%d\n", ThisAppId);
+        -: 1130:    }
+        -: 1131:
+       11: 1132:    return Status;
+        -: 1133:}   /* End of CFE_TBL_GetAddress() */
+        -: 1134:
+        -: 1135:/*******************************************************************
+        -: 1136:**
+        -: 1137:** CFE_TBL_ReleaseAddress() -- Release previously obtained pointer
+        -: 1138:**                          to the contents of the specified table
+        -: 1139:**
+        -: 1140:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1141:********************************************************************/
+        -: 1142:
+        8: 1143:int32 CFE_TBL_ReleaseAddress( CFE_TBL_Handle_t TblHandle )
+        -: 1144:{
+        -: 1145:    int32   Status;
+        -: 1146:    uint32  ThisAppId;
+        -: 1147:
+        -: 1148:    /* Verify that this application has the right to perform operation */
+        8: 1149:    Status = CFE_TBL_ValidateAccess(TblHandle, &ThisAppId);
+        -: 1150:
+        8: 1151:    if (Status == CFE_SUCCESS)
+        -: 1152:    {
+        -: 1153:        /* Clear the lock flag */
+        7: 1154:        CFE_TBL_TaskData.Handles[TblHandle].LockFlag = FALSE;
+        -: 1155:
+        -: 1156:        /* Return any pending warning or info status indicators */
+        7: 1157:        Status = CFE_TBL_GetNextNotification(TblHandle);
+        -: 1158:
+        -: 1159:        /* NOTE: GetNextNotification may not return CFE_SUCCESS  */
+        -: 1160:        /*       and still not be an error.                      */
+        -: 1161:        /*       Therefore, a write to the SysLog is unnecessary.*/
+        -: 1162:    }
+        -: 1163:    else
+        -: 1164:    {
+        1: 1165:        CFE_ES_WriteToSysLog("CFE_TBL:ReleaseAddress-App(%d) does not have access to Tbl Handle=%d\n",
+        -: 1166:                             ThisAppId, TblHandle);
+        -: 1167:    }
+        -: 1168:
+        8: 1169:    return Status;
+        -: 1170:}   /* End of CFE_TBL_ReleaseAddress() */
+        -: 1171:
+        -: 1172:/*******************************************************************
+        -: 1173:**
+        -: 1174:** CFE_TBL_GetAddresses() -- Obtain the current addresses of the contents of a collection of tables.
+        -: 1175:**                           If an addsses.  Failure return codes
+        -: 1176:**                           only apply to the first table that was unsuccessful.
+        -: 1177:**
+        -: 1178:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1179:********************************************************************/
+        -: 1180:
+        2: 1181:int32 CFE_TBL_GetAddresses( void **TblPtrs[],
+        -: 1182:                            uint16 NumTables,
+        -: 1183:                            const CFE_TBL_Handle_t TblHandles[] )
+        -: 1184:{
+        -: 1185:    uint16  i;
+        2: 1186:    int32   Status = CFE_SUCCESS;
+        -: 1187:    uint32  ThisAppId;
+        -: 1188:
+        -: 1189:    /* Assume failure at returning the table addresses */
+        6: 1190:    for (i=0; i<NumTables; i++)
+        -: 1191:    {
+        4: 1192:        *TblPtrs[i] = NULL;
+        -: 1193:    }
+        -: 1194:
+        -: 1195:    /* Validate the calling application's AppID */
+        2: 1196:    Status = CFE_TBL_ValidateAppID(&ThisAppId);
+        -: 1197:
+        2: 1198:    if (Status == CFE_SUCCESS)
+        -: 1199:    {
+        3: 1200:        for (i=0; i<NumTables; i++)
+        -: 1201:        {
+        -: 1202:            /* Continue to get the return status until one returns something other than CFE_SUCCESS */
+        2: 1203:            if (Status == CFE_SUCCESS)
+        -: 1204:            {
+        1: 1205:                Status = CFE_TBL_GetAddressInternal(TblPtrs[i], TblHandles[i], ThisAppId);
+        -: 1206:            }
+        -: 1207:            else
+        -: 1208:            {
+        -: 1209:                /* Don't bother getting the status of other tables once one has returned */
+        -: 1210:                /* a non CFE_SUCCESS value.                                              */
+        1: 1211:                CFE_TBL_GetAddressInternal(TblPtrs[i], TblHandles[i], ThisAppId);
+        -: 1212:            }
+        -: 1213:        }
+        -: 1214:    }
+        -: 1215:    else
+        -: 1216:    {
+        1: 1217:        CFE_ES_WriteToSysLog("CFE_TBL:GetAddresses-Bad AppId=%d\n", ThisAppId);
+        -: 1218:    }
+        -: 1219:
+        2: 1220:    return Status;
+        -: 1221:}   /* End of CFE_TBL_GetAddresses() */
+        -: 1222:
+        -: 1223:/*******************************************************************
+        -: 1224:**
+        -: 1225:** CFE_TBL_ReleaseAddresses() -- Release previously obtained
+        -: 1226:**             pointers to the contents of the specified tables
+        -: 1227:**
+        -: 1228:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1229:********************************************************************/
+        -: 1230:
+        1: 1231:int32 CFE_TBL_ReleaseAddresses( uint16 NumTables,
+        -: 1232:                                const CFE_TBL_Handle_t TblHandles[] )
+        -: 1233:{
+        1: 1234:    int32   Status = CFE_SUCCESS;
+        -: 1235:    uint16  i;
+        -: 1236:
+        3: 1237:    for (i=0; i<NumTables; i++)
+        -: 1238:    {
+        -: 1239:        /* Continue to get the return status until one returns something other than CFE_SUCCESS */
+        2: 1240:        if (Status == CFE_SUCCESS)
+        -: 1241:        {
+        1: 1242:            Status = CFE_TBL_ReleaseAddress(TblHandles[i]);
+        -: 1243:        }
+        -: 1244:        else
+        -: 1245:        {
+        -: 1246:            /* Don't bother getting the status of other tables once one has returned */
+        -: 1247:            /* a non CFE_SUCCESS value.                                              */
+        1: 1248:            CFE_TBL_ReleaseAddress(TblHandles[i]);
+        -: 1249:        }
+        -: 1250:    }
+        -: 1251:
+        1: 1252:    return Status;
+        -: 1253:}   /* End of CFE_TBL_ReleaseAddresses() */
+        -: 1254:
+        -: 1255:
+        -: 1256:/*******************************************************************
+        -: 1257:**
+        -: 1258:** CFE_TBL_Validate() -- Validate a table image for the specified table
+        -: 1259:**
+        -: 1260:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1261:********************************************************************/
+        -: 1262:
+       12: 1263:int32 CFE_TBL_Validate( CFE_TBL_Handle_t TblHandle )
+        -: 1264:{
+       12: 1265:    int32                       Status = CFE_SUCCESS;
+        -: 1266:    uint32                      ThisAppId;
+        -: 1267:    CFE_TBL_RegistryRec_t      *RegRecPtr;
+        -: 1268:    CFE_TBL_AccessDescriptor_t *AccessDescPtr;
+       12: 1269:    char                        AppName[OS_MAX_API_NAME]={"UNKNWON"};
+        -: 1270:
+        -: 1271:    /* Verify that this application has the right to perform operation */
+       12: 1272:    Status = CFE_TBL_ValidateAccess(TblHandle, &ThisAppId);
+        -: 1273:
+       12: 1274:    if (Status == CFE_SUCCESS)
+        -: 1275:    {
+        -: 1276:        /* Get pointers to pertinent records in registry and handles */
+       11: 1277:        AccessDescPtr = &CFE_TBL_TaskData.Handles[TblHandle];
+       11: 1278:        RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
+        -: 1279:
+       11: 1280:        CFE_ES_GetAppName(AppName, ThisAppId, OS_MAX_API_NAME);
+        -: 1281:
+        -: 1282:        /* Identify the image to be validated, starting with the Inactive Buffer */
+       11: 1283:        if (RegRecPtr->ValidateInactiveIndex != CFE_TBL_NO_VALIDATION_PENDING)
+        -: 1284:        {
+        -: 1285:            /* Identify whether the Inactive Buffer is a shared buffer or a dedicated one */
+        5: 1286:            if (RegRecPtr->DblBuffered)
+        -: 1287:            {
+        -: 1288:                /* Call the Application's Validation function for the Inactive Buffer */
+        2: 1289:                Status = (RegRecPtr->ValidationFuncPtr)(RegRecPtr->Buffers[(1U-RegRecPtr->ActiveBufferIndex)].BufferPtr);
+        -: 1290:
+        -: 1291:                /* Allow buffer to be activated after passing validation */
+        2: 1292:                if (Status == CFE_SUCCESS)
+        -: 1293:                {
+        1: 1294:                    RegRecPtr->Buffers[(1U-RegRecPtr->ActiveBufferIndex)].Validated = TRUE;
+        -: 1295:                }
+        -: 1296:            }
+        -: 1297:            else
+        -: 1298:            {
+        -: 1299:                /* Call the Application's Validation function for the appropriate shared buffer */
+        6: 1300:                Status = (RegRecPtr->ValidationFuncPtr)
+        3: 1301:                          (CFE_TBL_TaskData.LoadBuffs[RegRecPtr->LoadInProgress].BufferPtr);
+        -: 1302:
+        -: 1303:                /* Allow buffer to be activated after passing validation */
+        3: 1304:                if (Status == CFE_SUCCESS)
+        -: 1305:                {
+        1: 1306:                    CFE_TBL_TaskData.LoadBuffs[RegRecPtr->LoadInProgress].Validated = TRUE;
+        -: 1307:                }
+        -: 1308:            }
+        -: 1309:
+        5: 1310:            if (Status == CFE_SUCCESS)
+        -: 1311:            {
+        2: 1312:                CFE_EVS_SendEventWithAppID(CFE_TBL_VALIDATION_INF_EID,
+        -: 1313:                                           CFE_EVS_INFORMATION,
+        -: 1314:                                           CFE_TBL_TaskData.TableTaskAppId,
+        -: 1315:                                           "%s validation successful for Inactive '%s'",
+        -: 1316:                                           AppName, RegRecPtr->Name);
+        -: 1317:            }
+        -: 1318:            else
+        -: 1319:            {
+        3: 1320:                CFE_EVS_SendEventWithAppID(CFE_TBL_VALIDATION_ERR_EID,
+        -: 1321:                                           CFE_EVS_ERROR,
+        -: 1322:                                           CFE_TBL_TaskData.TableTaskAppId,
+        -: 1323:                                           "%s validation failed for Inactive '%s', Status=0x%08X",
+        -: 1324:                                           AppName, RegRecPtr->Name, Status);
+        -: 1325:
+        3: 1326:                if (Status > CFE_SUCCESS)
+        -: 1327:                {
+        1: 1328:                    CFE_ES_WriteToSysLog("CFE_TBL:Validate-App(%d) Validation func return code invalid (Stat=0x%08X) for '%s'\n",
+        -: 1329:                                         CFE_TBL_TaskData.TableTaskAppId, Status, RegRecPtr->Name);
+        -: 1330:                }
+        -: 1331:            }
+        -: 1332:
+        -: 1333:            /* Save the result of the Validation function for the Table Services Task */
+        5: 1334:            CFE_TBL_TaskData.ValidationResults[RegRecPtr->ValidateInactiveIndex].Result = Status;
+        -: 1335:
+        -: 1336:            /* Once validation is complete, set flags to indicate response is ready */
+        5: 1337:            CFE_TBL_TaskData.ValidationResults[RegRecPtr->ValidateInactiveIndex].State = CFE_TBL_VALIDATION_PERFORMED;
+        5: 1338:            RegRecPtr->ValidateInactiveIndex = CFE_TBL_NO_VALIDATION_PENDING;
+        -: 1339:
+        -: 1340:            /* Since the validation was successfully performed (although maybe not a successful result) */
+        -: 1341:            /* return a success status */
+        5: 1342:            Status = CFE_SUCCESS;
+        -: 1343:        }
+        6: 1344:        else if (RegRecPtr->ValidateActiveIndex != CFE_TBL_NO_VALIDATION_PENDING)
+        -: 1345:        {
+        -: 1346:            /* Perform validation on the currently active table buffer */
+        -: 1347:            /* Identify whether the Active Buffer is a shared buffer or a dedicated one */
+        5: 1348:            if (RegRecPtr->DblBuffered)
+        -: 1349:            {
+        -: 1350:                /* Call the Application's Validation function for the Dedicated Active Buffer */
+        2: 1351:                Status = (RegRecPtr->ValidationFuncPtr)(RegRecPtr->Buffers[RegRecPtr->ActiveBufferIndex].BufferPtr);
+        -: 1352:            }
+        -: 1353:            else
+        -: 1354:            {
+        -: 1355:                /* Call the Application's Validation function for the static buffer */
+        3: 1356:                Status = (RegRecPtr->ValidationFuncPtr)(RegRecPtr->Buffers[0].BufferPtr);
+        -: 1357:            }
+        -: 1358:
+        5: 1359:            if (Status == CFE_SUCCESS)
+        -: 1360:            {
+        2: 1361:                CFE_EVS_SendEventWithAppID(CFE_TBL_VALIDATION_INF_EID,
+        -: 1362:                                           CFE_EVS_INFORMATION,
+        -: 1363:                                           CFE_TBL_TaskData.TableTaskAppId,
+        -: 1364:                                           "%s validation successful for Active '%s'",
+        -: 1365:                                           AppName, RegRecPtr->Name);
+        -: 1366:            }
+        -: 1367:            else
+        -: 1368:            {
+        3: 1369:                CFE_EVS_SendEventWithAppID(CFE_TBL_VALIDATION_ERR_EID,
+        -: 1370:                                           CFE_EVS_ERROR,
+        -: 1371:                                           CFE_TBL_TaskData.TableTaskAppId,
+        -: 1372:                                           "%s validation failed for Active '%s', Status=0x%08X",
+        -: 1373:                                           AppName, RegRecPtr->Name, Status);
+        -: 1374:
+        3: 1375:                if (Status > CFE_SUCCESS)
+        -: 1376:                {
+        1: 1377:                    CFE_ES_WriteToSysLog("CFE_TBL:Validate-App(%d) Validation func return code invalid (Stat=0x%08X) for '%s'\n",
+        -: 1378:                                         CFE_TBL_TaskData.TableTaskAppId, Status, RegRecPtr->Name);
+        -: 1379:                }
+        -: 1380:            }
+        -: 1381:
+        -: 1382:            /* Save the result of the Validation function for the Table Services Task */
+        5: 1383:            CFE_TBL_TaskData.ValidationResults[RegRecPtr->ValidateActiveIndex].Result = Status;
+        -: 1384:
+        -: 1385:            /* Once validation is complete, reset the flags */
+        5: 1386:            CFE_TBL_TaskData.ValidationResults[RegRecPtr->ValidateActiveIndex].State = CFE_TBL_VALIDATION_PERFORMED;
+        5: 1387:            RegRecPtr->ValidateActiveIndex = CFE_TBL_NO_VALIDATION_PENDING;
+        -: 1388:
+        -: 1389:            /* Since the validation was successfully performed (although maybe not a successful result) */
+        -: 1390:            /* return a success status */
+        5: 1391:            Status = CFE_SUCCESS;
+        -: 1392:        }
+        -: 1393:        else
+        -: 1394:        {
+        1: 1395:            Status = CFE_TBL_INFO_NO_VALIDATION_PENDING;
+        -: 1396:        }
+        -: 1397:    }
+        -: 1398:    else
+        -: 1399:    {
+        1: 1400:        CFE_ES_WriteToSysLog("CFE_TBL:Validate-App(%d) does not have access to Tbl Handle=%d\n",
+        -: 1401:                             ThisAppId, TblHandle);
+        -: 1402:    }
+        -: 1403:
+       12: 1404:    return Status;
+        -: 1405:}   /* End of CFE_TBL_Validate() */
+        -: 1406:
+        -: 1407:
+        -: 1408:/*******************************************************************
+        -: 1409:**
+        -: 1410:** CFE_TBL_Manage() -- Perform standard table maintenance on the
+        -: 1411:**                     specified table
+        -: 1412:**
+        -: 1413:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1414:********************************************************************/
+        -: 1415:
+       14: 1416:int32 CFE_TBL_Manage( CFE_TBL_Handle_t TblHandle )
+        -: 1417:{
+       14: 1418:    int32   Status = CFE_SUCCESS;
+       14: 1419:    boolean FinishedManaging = FALSE;
+        -: 1420:
+       52: 1421:    while (!FinishedManaging)
+        -: 1422:    {
+        -: 1423:        /* Determine if the table has a validation or update that needs to be performed */
+       24: 1424:        Status = CFE_TBL_GetStatus(TblHandle);
+        -: 1425:
+       24: 1426:        if (Status == CFE_TBL_INFO_VALIDATION_PENDING)
+        -: 1427:        {
+        -: 1428:            /* Validate the specified Table */
+       10: 1429:            Status = CFE_TBL_Validate(TblHandle);
+        -: 1430:
+       10: 1431:            if (Status != CFE_SUCCESS)
+        -: 1432:            {
+        -: 1433:                /* If an error occurred during Validate, then do not perform any more managing */
+    #####: 1434:                FinishedManaging = TRUE;
+        -: 1435:            }
+        -: 1436:        }
+       14: 1437:        else if (Status == CFE_TBL_INFO_DUMP_PENDING)
+        -: 1438:        {
+        -: 1439:            /* Dump the specified Table */
+        1: 1440:            Status = CFE_TBL_DumpToBuffer(TblHandle);
+        -: 1441:
+        -: 1442:            /* After a Dump, always assume we are done (Dumps are on DumpOnly tables and cannot be "Updated") */
+        1: 1443:            FinishedManaging = TRUE;
+        -: 1444:        }
+       13: 1445:        else if (Status == CFE_TBL_INFO_UPDATE_PENDING)
+        -: 1446:        {
+        -: 1447:            /* Update the specified Table */
+        2: 1448:            Status = CFE_TBL_Update(TblHandle);
+        -: 1449:
+        -: 1450:            /* If the update performed nominally, let the caller know the table has changed */
+        2: 1451:            if (Status == CFE_SUCCESS)
+        -: 1452:            {
+        1: 1453:                Status = CFE_TBL_INFO_UPDATED;
+        -: 1454:            }
+        -: 1455:
+        -: 1456:            /* After an Update, always assume we are done and return Update Status */
+        2: 1457:            FinishedManaging = TRUE;
+        -: 1458:        }
+        -: 1459:        else
+        -: 1460:        {
+       11: 1461:            FinishedManaging = TRUE;
+        -: 1462:        }
+        -: 1463:    }
+        -: 1464:
+       14: 1465:    return Status;
+        -: 1466:}   /* End of CFE_TBL_Manage() */
+        -: 1467:
+        -: 1468:
+        -: 1469:/*******************************************************************
+        -: 1470:**
+        -: 1471:** CFE_TBL_GetStatus() -- Obtain pending action status for specified table
+        -: 1472:**
+        -: 1473:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1474:********************************************************************/
+        -: 1475:
+       26: 1476:int32 CFE_TBL_GetStatus( CFE_TBL_Handle_t TblHandle )
+        -: 1477:{
+       26: 1478:    int32                       Status = CFE_SUCCESS;
+        -: 1479:    uint32                      ThisAppId;
+        -: 1480:    CFE_TBL_RegistryRec_t      *RegRecPtr;
+        -: 1481:    CFE_TBL_AccessDescriptor_t *AccessDescPtr;
+        -: 1482:
+        -: 1483:    /* Verify that this application has the right to perform operation */
+       26: 1484:    Status = CFE_TBL_ValidateAccess(TblHandle, &ThisAppId);
+        -: 1485:
+       26: 1486:    if (Status == CFE_SUCCESS)
+        -: 1487:    {
+        -: 1488:        /* Get pointers to pertinent records in registry and handles */
+       25: 1489:        AccessDescPtr = &CFE_TBL_TaskData.Handles[TblHandle];
+       25: 1490:        RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
+        -: 1491:
+        -: 1492:        /* Perform validations prior to performing any updates */
+       25: 1493:        if (RegRecPtr->LoadPending)
+        -: 1494:        {
+        2: 1495:            Status = CFE_TBL_INFO_UPDATE_PENDING;
+        -: 1496:        }
+       51: 1497:        else if ((RegRecPtr->ValidateActiveIndex != CFE_TBL_NO_VALIDATION_PENDING) ||
+       18: 1498:                 (RegRecPtr->ValidateInactiveIndex != CFE_TBL_NO_VALIDATION_PENDING))
+        -: 1499:        {
+       10: 1500:            Status = CFE_TBL_INFO_VALIDATION_PENDING;
+        -: 1501:        }
+       13: 1502:        else if (RegRecPtr->DumpControlIndex != CFE_TBL_NO_DUMP_PENDING)
+        -: 1503:        {
+        2: 1504:            Status = CFE_TBL_INFO_DUMP_PENDING;
+        -: 1505:        }
+        -: 1506:    }
+        -: 1507:    else
+        -: 1508:    {
+        1: 1509:        CFE_ES_WriteToSysLog("CFE_TBL:GetStatus-App(%d) does not have access to Tbl Handle=%d\n",
+        -: 1510:                             ThisAppId, TblHandle);
+        -: 1511:    }
+        -: 1512:
+       26: 1513:    return Status;
+        -: 1514:}   /* End of CFE_TBL_GetStatus() */
+        -: 1515:
+        -: 1516:
+        -: 1517:/*******************************************************************
+        -: 1518:**
+        -: 1519:** CFE_TBL_GetInfo() -- Obtain characteristics/information for specified table
+        -: 1520:**
+        -: 1521:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1522:********************************************************************/
+        -: 1523:
+        4: 1524:int32 CFE_TBL_GetInfo( CFE_TBL_Info_t *TblInfoPtr, const char *TblName )
+        -: 1525:{
+        4: 1526:    int32                    Status = CFE_SUCCESS;
+        4: 1527:    int16                    RegIndx = CFE_TBL_NOT_FOUND;
+        4: 1528:    int32                    NumAccessDescriptors = 0;
+        -: 1529:    CFE_TBL_RegistryRec_t   *RegRecPtr;
+        -: 1530:    CFE_TBL_Handle_t         HandleIterator;
+        -: 1531:
+        4: 1532:    RegIndx = CFE_TBL_FindTableInRegistry(TblName);
+        -: 1533:
+        -: 1534:    /* If we found the table, then extract the information from the Registry */
+        4: 1535:    if (RegIndx != CFE_TBL_NOT_FOUND)
+        -: 1536:    {
+        -: 1537:        /* Get pointer to Registry Record Entry to speed up processing */
+        3: 1538:        RegRecPtr = &CFE_TBL_TaskData.Registry[RegIndx];
+        -: 1539:
+        -: 1540:        /* Return table characteristics */
+        3: 1541:        TblInfoPtr->Size        = RegRecPtr->Size;
+        3: 1542:        TblInfoPtr->DblBuffered = RegRecPtr->DblBuffered;
+        3: 1543:        TblInfoPtr->DumpOnly    = RegRecPtr->DumpOnly;
+        3: 1544:        TblInfoPtr->UserDefAddr = RegRecPtr->UserDefAddr;
+        3: 1545:        TblInfoPtr->TableLoadedOnce = RegRecPtr->TableLoadedOnce;
+        -: 1546:
+        -: 1547:        /* Return information on last load and update */
+        3: 1548:        TblInfoPtr->TimeOfLastUpdate = RegRecPtr->TimeOfLastUpdate;
+        3: 1549:        TblInfoPtr->FileCreateTimeSecs = RegRecPtr->Buffers[RegRecPtr->ActiveBufferIndex].FileCreateTimeSecs;
+        3: 1550:        TblInfoPtr->FileCreateTimeSubSecs = RegRecPtr->Buffers[RegRecPtr->ActiveBufferIndex].FileCreateTimeSubSecs;
+        3: 1551:        TblInfoPtr->Crc = RegRecPtr->Buffers[RegRecPtr->ActiveBufferIndex].Crc;
+        3: 1552:        strncpy(TblInfoPtr->LastFileLoaded, RegRecPtr->LastFileLoaded, OS_MAX_PATH_LEN);
+        -: 1553:
+        -: 1554:        /* Count the number of Access Descriptors to determine the number of users */
+        3: 1555:        HandleIterator = RegRecPtr->HeadOfAccessList;
+       10: 1556:        while (HandleIterator != CFE_TBL_END_OF_LIST)
+        -: 1557:        {
+        4: 1558:            NumAccessDescriptors++;
+        4: 1559:            HandleIterator = CFE_TBL_TaskData.Handles[HandleIterator].NextLink;
+        -: 1560:        }
+        -: 1561:
+        3: 1562:        TblInfoPtr->NumUsers = NumAccessDescriptors;
+        -: 1563:
+        3: 1564:        TblInfoPtr->Critical = RegRecPtr->CriticalTable;
+        -: 1565:    }
+        -: 1566:    else
+        -: 1567:    {
+        1: 1568:        Status = CFE_TBL_ERR_INVALID_NAME;
+        -: 1569:    }
+        -: 1570:
+        4: 1571:    return Status;
+        -: 1572:}   /* End of CFE_TBL_GetInfo() */
+        -: 1573:
+        -: 1574:/*******************************************************************
+        -: 1575:**
+        -: 1576:** CFE_TBL_DumpToBuffer - Copy Dump Only table to buffer for later dump to file by table services
+        -: 1577:**
+        -: 1578:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1579:********************************************************************/
+        -: 1580:
+        1: 1581:int32 CFE_TBL_DumpToBuffer( CFE_TBL_Handle_t TblHandle )
+        -: 1582:{
+        1: 1583:    int32                       Status = CFE_SUCCESS;
+        1: 1584:    CFE_TBL_AccessDescriptor_t *AccessDescPtr = NULL;
+        1: 1585:    CFE_TBL_RegistryRec_t      *RegRecPtr = NULL;
+        1: 1586:    CFE_TBL_DumpControl_t      *DumpCtrlPtr = NULL;
+        -: 1587:    CFE_TIME_SysTime_t          DumpTime;
+        -: 1588:
+        -: 1589:    /* Make sure the table has been requested to be dumped */
+        1: 1590:    Status = CFE_TBL_GetStatus(TblHandle);
+        1: 1591:    if (Status == CFE_TBL_INFO_DUMP_PENDING)
+        -: 1592:    {
+        1: 1593:        AccessDescPtr = &CFE_TBL_TaskData.Handles[TblHandle];
+        1: 1594:        RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
+        1: 1595:        DumpCtrlPtr = &CFE_TBL_TaskData.DumpControlBlocks[RegRecPtr->DumpControlIndex];
+        -: 1596:
+        -: 1597:        /* Copy the contents of the active buffer to the assigned dump buffer */
+        1: 1598:        CFE_PSP_MemCpy(DumpCtrlPtr->DumpBufferPtr->BufferPtr, RegRecPtr->Buffers[0].BufferPtr, DumpCtrlPtr->Size);
+        -: 1599:
+        -: 1600:        /* Save the current time so that the header in the dump file can have the correct time */
+        1: 1601:        DumpTime = CFE_TIME_GetTime();
+        1: 1602:        DumpCtrlPtr->DumpBufferPtr->FileCreateTimeSecs = DumpTime.Seconds;
+        1: 1603:        DumpCtrlPtr->DumpBufferPtr->FileCreateTimeSubSecs = DumpTime.Subseconds;
+        -: 1604:
+        -: 1605:        /* Disassociate the dump request from the table */
+        1: 1606:        RegRecPtr->DumpControlIndex = CFE_TBL_NO_DUMP_PENDING;
+        -: 1607:
+        -: 1608:        /* Notify the Table Services Application that the dump buffer is ready to be written to a file */
+        1: 1609:        DumpCtrlPtr->State = CFE_TBL_DUMP_PERFORMED;
+        -: 1610:
+        1: 1611:        Status = CFE_SUCCESS;
+        -: 1612:    }
+        -: 1613:
+        1: 1614:    return Status;
+        -: 1615:}   /* End of CFE_TBL_DumpToBuffer() */
+        -: 1616:
+        -: 1617:
+        -: 1618:/*******************************************************************
+        -: 1619:**
+        -: 1620:** CFE_TBL_Modified - Notify TBL Services that the contents of the table has been modified by the application
+        -: 1621:**
+        -: 1622:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1623:********************************************************************/
+        -: 1624:
+        3: 1625:int32 CFE_TBL_Modified( CFE_TBL_Handle_t TblHandle )
+        -: 1626:{
+        3: 1627:    int32                       Status = CFE_SUCCESS;
+        3: 1628:    CFE_TBL_AccessDescriptor_t *AccessDescPtr = NULL;
+        3: 1629:    CFE_TBL_RegistryRec_t      *RegRecPtr = NULL;
+        -: 1630:    CFE_TBL_Handle_t            AccessIterator;
+        -: 1631:    uint32                      ThisAppId;
+        3: 1632:    uint32                      FilenameLen = 0;
+        -: 1633:
+        -: 1634:    /* Verify that this application has the right to perform operation */
+        3: 1635:    Status = CFE_TBL_ValidateAccess(TblHandle, &ThisAppId);
+        -: 1636:
+        3: 1637:    if (Status == CFE_SUCCESS)
+        -: 1638:    {
+        -: 1639:        /* Get pointers to pertinent records in registry and handles */
+        2: 1640:        AccessDescPtr = &CFE_TBL_TaskData.Handles[TblHandle];
+        2: 1641:        RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
+        -: 1642:
+        -: 1643:        /* If the table is a critical table, update the appropriate CDS with the new data */
+        2: 1644:        if (RegRecPtr->CriticalTable == TRUE)
+        -: 1645:        {
+        1: 1646:            CFE_TBL_UpdateCriticalTblCDS(RegRecPtr);
+        -: 1647:        }
+        -: 1648:
+        -: 1649:        /* Keep a record of change for the ground operators reference */
+        2: 1650:        RegRecPtr->TimeOfLastUpdate = CFE_TIME_GetTime();
+        2: 1651:        RegRecPtr->LastFileLoaded[OS_MAX_PATH_LEN-1] = '\0';
+        -: 1652:
+        -: 1653:        /* Update CRC on contents of table */
+        4: 1654:        RegRecPtr->Buffers[RegRecPtr->ActiveBufferIndex].Crc =
+        2: 1655:            CFE_ES_CalculateCRC(RegRecPtr->Buffers[RegRecPtr->ActiveBufferIndex].BufferPtr,
+        -: 1656:                                RegRecPtr->Size,
+        -: 1657:                                0,
+        -: 1658:                                CFE_ES_DEFAULT_CRC);
+        -: 1659:
+        2: 1660:        FilenameLen = strlen(RegRecPtr->LastFileLoaded);
+        2: 1661:        if (FilenameLen < (OS_MAX_PATH_LEN-4))
+        -: 1662:        {
+        1: 1663:            strncpy(&RegRecPtr->LastFileLoaded[FilenameLen], "(*)", 4);
+        -: 1664:        }
+        -: 1665:        else
+        -: 1666:        {
+        1: 1667:            strncpy(&RegRecPtr->LastFileLoaded[(OS_MAX_PATH_LEN-4)], "(*)", 4);
+        -: 1668:        }
+        -: 1669:
+        2: 1670:        AccessIterator = RegRecPtr->HeadOfAccessList;
+        6: 1671:        while (AccessIterator != CFE_TBL_END_OF_LIST)
+        -: 1672:        {
+        -: 1673:            /* Only notify *OTHER* applications that the contents have changed */
+        2: 1674:            if (CFE_TBL_TaskData.Handles[AccessIterator].AppId != ThisAppId)
+        -: 1675:            {
+    #####: 1676:                CFE_TBL_TaskData.Handles[AccessIterator].Updated = TRUE;
+        -: 1677:            }
+        -: 1678:
+        2: 1679:            AccessIterator = CFE_TBL_TaskData.Handles[AccessIterator].NextLink;
+        -: 1680:        }
+        -: 1681:    }
+        -: 1682:    else
+        -: 1683:    {
+        1: 1684:        CFE_ES_WriteToSysLog("CFE_TBL:Modified-App(%d) does not have access to Tbl Handle=%d\n",
+        -: 1685:                             ThisAppId, TblHandle);
+        -: 1686:    }
+        -: 1687:
+        -: 1688:
+        3: 1689:    return Status;
+        -: 1690:}
+        -: 1691:
+        -: 1692:
+        -: 1693:/*******************************************************************
+        -: 1694:**
+        -: 1695:** CFE_TBL_NotifyByMessage - Instruct TBL Services to notify calling
+        -: 1696:**                           application whenever the specified table
+        -: 1697:**                           requires management.
+        -: 1698:**
+        -: 1699:** NOTE: For complete prolog information, see 'cfe_tbl.h'
+        -: 1700:********************************************************************/
+        -: 1701:
+        2: 1702:int32 CFE_TBL_NotifyByMessage(CFE_TBL_Handle_t TblHandle, uint32 MsgId, uint16 CommandCode, uint32 Parameter)
+        -: 1703:{
+        2: 1704:    int32                       Status = CFE_SUCCESS;
+        2: 1705:    CFE_TBL_AccessDescriptor_t *AccessDescPtr = NULL;
+        2: 1706:    CFE_TBL_RegistryRec_t      *RegRecPtr = NULL;
+        -: 1707:    uint32                      ThisAppId;
+        -: 1708:
+        -: 1709:    /* Verify that this application has the right to perform operation */
+        2: 1710:    Status = CFE_TBL_ValidateAccess(TblHandle, &ThisAppId);
+        -: 1711:
+        2: 1712:    if (Status == CFE_SUCCESS)
+        -: 1713:    {
+        -: 1714:        /* Get pointers to pertinent records in registry and handles */
+        2: 1715:        AccessDescPtr = &CFE_TBL_TaskData.Handles[TblHandle];
+        2: 1716:        RegRecPtr = &CFE_TBL_TaskData.Registry[AccessDescPtr->RegIndex];
+        -: 1717:
+        -: 1718:        /* Verify that the calling application is the table owner */
+        2: 1719:        if (RegRecPtr->OwnerAppId == ThisAppId)
+        -: 1720:        {
+        1: 1721:            RegRecPtr->NotificationMsgId = MsgId;
+        1: 1722:            RegRecPtr->NotificationCC = CommandCode;
+        1: 1723:            RegRecPtr->NotificationParam = Parameter;
+        1: 1724:            RegRecPtr->NotifyByMsg = TRUE;
+        -: 1725:        }
+        -: 1726:        else
+        -: 1727:        {
+        1: 1728:            Status = CFE_TBL_ERR_NO_ACCESS;
+        1: 1729:            CFE_ES_WriteToSysLog("CFE_TBL:NotifyByMsg-App(%d) does not own Tbl Handle=%d\n",
+        -: 1730:                                 ThisAppId, TblHandle);
+        -: 1731:        }
+        -: 1732:    }
+        -: 1733:
+        2: 1734:    return Status;
+        -: 1735:}
+        -: 1736:
+        -: 1737:/************************/
+        -: 1738:/*  End of File Comment */
+        -: 1739:/************************/
+        -: 1740:

@@ -1,0 +1,762 @@
+cFE ES Unit Test Output File
+
+
+PASSED  [cFE.ES.01.001] CFE_ES_Main - Normal startup - Power on - Power cycle
+-----
+PASSED  [cFE.ES.01.002] CFE_ES_Main - Normal startup - Power on - Special command
+-----
+PASSED  [cFE.ES.01.003] CFE_ES_Main - Normal startup - Power on - other
+-----
+PASSED  [cFE.ES.01.004] CFE_ES_SetupResetVariables - HW Special Command Processor reset
+-----
+PASSED  [cFE.ES.01.005] CFE_ES_SetupResetVariables - HW Special Command Processor Reset - Exceeded maximum processor resets
+-----
+PASSED  [cFE.ES.02.001] CFE_ES_Main - Mutex create failure
+-----
+PASSED  [cFE.ES.02.002] CFE_ES_Main - Semaphore create failure
+-----
+PASSED  [cFE.ES.02.003] CFE_ES_SetupResetVariables - Maximum processor resets
+-----
+PASSED  [cFE.ES.02.004] CFE_ES_SetupResetVariables - Exceeded maximum processor resets
+-----
+PASSED  [cFE.ES.02.005] CFE_ES_SetupResetVariables - Get reset area error
+-----
+PASSED  [cFE.ES.02.006] CFE_ES_SetupResetVariables - Reset area too small
+-----
+PASSED  [cFE.ES.02.007] CFE_ES_InitializeFileSystems - Power on reset; error creating volatile (RAM) volume
+-----
+PASSED  [cFE.ES.02.008] CFE_ES_InitializeFileSystems - Processor reset; error reformatting volatile (RAM) volume
+-----
+PASSED  [cFE.ES.02.009] CFE_ES_InitializeFileSystems - Processor reset; cannot get memory for volatile disk
+-----
+PASSED  [cFE.ES.02.010] CFE_ES_InitializeFileSystems - Processor reset; truncate free block count
+-----
+PASSED  [cFE.ES.02.011] CFE_ES_InitializeFileSystems - Processor reset; error removing volatile (RAM) volume
+-----
+PASSED  [cFE.ES.02.012] CFE_ES_InitializeFileSystems - Processor reset; error unmounting volatile (RAM) volume
+-----
+PASSED  [cFE.ES.02.013] CFE_ES_InitializeFileSystems - Initialize file systems; successful
+-----
+PASSED  [cFE.ES.02.014] CFE_ES_InitializeFileSystems - Processor reset; error remounting volatile (RAM) volume
+-----
+PASSED  [cFE.ES.02.015] CFE_ES_InitializeFileSystems - Processor reset; error determining blocks free on volume
+-----
+PASSED  [cFE.ES.02.016] CFE_ES_CreateObjects - Record used error
+-----
+PASSED  [cFE.ES.02.017] CFE_ES_CreateObjects - Error returned when calling function
+-----
+PASSED  [cFE.ES.02.018] CFE_ES_CreateObjects - Error creating core application
+-----
+PASSED  [cFE.ES.02.019] CFE_ES_CreateObjects - No free application slots available
+-----
+PASSED  [cFE.ES.02.020] CFE_ES_CreateObjects - Bad function pointer
+-----
+PASSED  [cFE.ES.03.001] CFE_ES_StartApplications - Line too long
+-----
+PASSED  [cFE.ES.03.002] CFE_ES_StartApplications - Error reading startup file
+-----
+PASSED  [cFE.ES.03.003] CFE_ES_StartApplications - End of file reached
+-----
+PASSED  [cFE.ES.03.004] CFE_ES_StartApplications - Can't open ES application startup file
+-----
+PASSED  [cFE.ES.03.005] CFE_ES_StartApplications - Start application; successful
+-----
+PASSED  [cFE.ES.03.006] CFE_ES_ParseFileEntry - Unimplemented CFE driver type
+-----
+PASSED  [cFE.ES.03.007] CFE_ES_ParseFileEntry - Unknown entry type
+-----
+PASSED  [cFE.ES.03.008] CFE_ES_ParseFileEntry - Invalid file entry
+-----
+PASSED  [cFE.ES.03.009] CFE_ES_AppCreate - Task create failure
+-----
+PASSED  [cFE.ES.03.010] CFE_ES_AppCreate - Application load/create; successful
+-----
+PASSED  [cFE.ES.03.011] CFE_ES_AppCreate - Decompression failure
+-----
+PASSED  [cFE.ES.03.012] CFE_ES_AppCreate - Decompression; successful
+-----
+PASSED  [cFE.ES.03.013] CFE_ES_AppCreate - File name extraction failure
+-----
+PASSED  [cFE.ES.03.014] CFE_ES_AppCreate - File load failure
+-----
+PASSED  [cFE.ES.03.015] CFE_ES_AppCreate - Entry point symbol lookup failure
+-----
+PASSED  [cFE.ES.03.016] CFE_ES_AppCreate - Application file name too long
+-----
+PASSED  [cFE.ES.03.017] CFE_ES_AppCreate - Application file name + path too long
+-----
+PASSED  [cFE.ES.03.018] CFE_ES_LoadLibrary - Load shared library initialization failure
+-----
+PASSED  [cFE.ES.03.019] CFE_ES_LoadLibrary - Decompress library; successful
+-----
+PASSED  [cFE.ES.03.020] CFE_ES_LoadLibrary - Unable to decompress library
+-----
+PASSED  [cFE.ES.03.021] CFE_ES_LoadLibrary - Unable to extract file name from path
+-----
+PASSED  [cFE.ES.03.022] CFE_ES_LoadLibrary - Unable to extract file name from path; file name too long
+-----
+PASSED  [cFE.ES.03.023] CFE_ES_LoadLibrary - Library path + file name too long
+-----
+PASSED  [cFE.ES.03.024] CFE_ES_LoadLibrary - Load shared library failure
+-----
+PASSED  [cFE.ES.03.025] CFE_ES_LoadLibrary - Could not find library initialization symbol
+-----
+PASSED  [cFE.ES.03.026] CFE_ES_LoadLibrary - No free library slots
+-----
+PASSED  [cFE.ES.03.027] CFE_ES_ScanAppTable - Waiting; process control request
+-----
+PASSED  [cFE.ES.03.028] CFE_ES_ScanAppTable - Decrement timer
+-----
+PASSED  [cFE.ES.03.029] CFE_ES_ScanAppTable - Stopped; process control request
+-----
+PASSED  [cFE.ES.03.030] CFE_ES_ProcessControlRequest - Unknown state (default)
+-----
+PASSED  [cFE.ES.03.031] CFE_ES_ProcessControlRequest - Exit application; successful
+-----
+PASSED  [cFE.ES.03.032] CFE_ES_ProcessControlRequest - Exit application failure
+-----
+PASSED  [cFE.ES.03.033] CFE_ES_ProcessControlRequest - Stop application failure
+-----
+PASSED  [cFE.ES.03.034] CFE_ES_ProcessControlRequest - Restart application failure; CleanUpApp error
+-----
+PASSED  [cFE.ES.03.035] CFE_ES_ProcessControlRequest - Restart application failure; AppCreate error
+-----
+PASSED  [cFE.ES.03.036] CFE_ES_ProcessControlRequest - Reload application failure; CleanUpApp error
+-----
+PASSED  [cFE.ES.03.037] CFE_ES_ProcessControlRequest - Reload application failure; AppCreate error
+-----
+PASSED  [cFE.ES.03.038] CFE_ES_ProcessControlRequest - Exit application on error; successful
+-----
+PASSED  [cFE.ES.03.039] CFE_ES_ProcessControlRequest - Exit application on error failure
+-----
+PASSED  [cFE.ES.03.040] CFE_ES_ProcessControlRequest - Stop application; successful
+-----
+PASSED  [cFE.ES.03.041] CFE_ES_ProcessControlRequest - Restart application; successful
+-----
+PASSED  [cFE.ES.03.042] CFE_ES_ProcessControlRequest - Reload application; successful
+-----
+PASSED  [cFE.ES.03.043] CFE_ES_ProcessControlRequest - Invalid state
+-----
+PASSED  [cFE.ES.03.044] CFE_ES_ListResourcesDebug - List resources
+-----
+PASSED  [cFE.ES.03.045] CFE_ES_GetAppInfo - Get application information; successful
+-----
+PASSED  [cFE.ES.03.046] CFE_ES_GetAppInfo - Null application information pointer
+-----
+PASSED  [cFE.ES.03.047] CFE_ES_GetAppInfo - Application ID not active
+-----
+PASSED  [cFE.ES.03.048] CFE_ES_GetAppInfo - Application ID exceeds maximum
+-----
+PASSED  [cFE.ES.03.049] CFE_ES_GetAppInfo - Module not found
+-----
+PASSED  [cFE.ES.03.050] CFE_ES_CleanUpApp - Task OS delete and close failure
+-----
+PASSED  [cFE.ES.03.051] CFE_ES_CleanUpApp - Task mutex delete failure
+-----
+PASSED  [cFE.ES.03.052] CFE_ES_CleanUpApp - Module unload failure
+-----
+PASSED  [cFE.ES.03.053] CFE_ES_CleanUpApp - EVS application cleanup failure
+-----
+PASSED  [cFE.ES.03.056] CFE_ES_CleanupTaskResources - Mutex delete failure
+-----
+PASSED  [cFE.ES.03.057] CFE_ES_CleanupTaskResources - Binary semaphore delete failure
+-----
+PASSED  [cFE.ES.03.058] CFE_ES_CleanupTaskResources - Counting semaphore failure
+-----
+PASSED  [cFE.ES.03.059] CFE_ES_CleanupTaskResources - Queue delete failure
+-----
+PASSED  [cFE.ES.03.060] CFE_ES_CleanupTaskResources - Timer delete failure
+-----
+PASSED  [cFE.ES.03.061] CFE_ES_CleanupTaskResources - File close failure
+-----
+PASSED  [cFE.ES.03.062] CFE_ES_CleanupTaskResources - Task delete failure
+-----
+PASSED  [cFE.ES.03.063] CFE_ES_CleanupTaskResources - Clean up task OS resources; successful
+-----
+PASSED  [cFE.ES.04.001] CFE_ES_WriteToERLog - Log entries exceeded; no description; valid context size
+-----
+PASSED  [cFE.ES.04.002] CFE_ES_WriteToERLog - Log entries at maximum; description; oversized context
+-----
+PASSED  [cFE.ES.04.003] CFE_ES_WriteToERLog - No log entry rollover; no description; no context
+-----
+PASSED  [cFE.ES.05.001] CFE_ES_ShellOutputCommand - Invalid ES command
+-----
+PASSED  [cFE.ES.05.002] CFE_ES_ShellOutputCommand - Send OS command
+-----
+PASSED  [cFE.ES.05.003] CFE_ES_ShellOutputCommand - Send ES list applications command
+-----
+PASSED  [cFE.ES.05.004] CFE_ES_ShellOutputCommand - Send ES list tasks command
+-----
+PASSED  [cFE.ES.05.005] CFE_ES_ShellOutputCommand - Send ES list resources command
+-----
+PASSED  [cFE.ES.05.006] CFE_ES_ShellOutputCommand - OS command; OS lseek failure
+-----
+PASSED  [cFE.ES.05.007] CFE_ES_ShellOutputCommand - Multiple packets to send down
+-----
+PASSED  [cFE.ES.05.008] CFE_ES_ShellOutputCommand - ES command; OS create failure
+-----
+PASSED  [cFE.ES.05.009] CFE_ES_ShellOutputCommand - ES command; OS lseek failed
+-----
+PASSED  [cFE.ES.06.001] CFE_ES_TaskMain - Command pipe error
+-----
+PASSED  [cFE.ES.06.002] CFE_ES_TaskMain - Task initialization fail
+-----
+PASSED  [cFE.ES.06.003] CFE_ES_TaskInit - Checksum fail
+-----
+PASSED  [cFE.ES.06.004] CFE_ES_TaskInit - Checksum success
+-----
+PASSED  [cFE.ES.06.005] CFE_ES_TaskInit - Register application fail
+-----
+PASSED  [cFE.ES.06.006] CFE_ES_TaskInit - EVS register fail
+-----
+PASSED  [cFE.ES.06.007] CFE_ES_TaskInit - SB pipe create fail
+-----
+PASSED  [cFE.ES.06.008] CFE_ES_TaskInit - HK packet subscribe fail
+-----
+PASSED  [cFE.ES.06.009] CFE_ES_TaskInit - Ground command subscribe fail
+-----
+PASSED  [cFE.ES.06.010] CFE_ES_TaskInit - Initialization event send fail
+-----
+PASSED  [cFE.ES.06.011] CFE_ES_TaskInit - Version event send fail
+-----
+PASSED  [cFE.ES.06.012] CFE_ES_HousekeepingCmd - HK packet - get heap successful
+-----
+PASSED  [cFE.ES.06.013] CFE_ES_HousekeepingCmd - HK packet - get heap fail
+-----
+PASSED  [cFE.ES.06.014] CFE_ES_NoopCmd - No-op
+-----
+PASSED  [cFE.ES.06.015] CFE_ES_ResetCmd - Reset counters
+-----
+PASSED  [cFE.ES.06.016] CFE_ES_RestartCmd - Restart cFE
+-----
+PASSED  [cFE.ES.06.017] CFE_ES_RestartCmd - Invalid restart type
+-----
+PASSED  [cFE.ES.06.018] CFE_ES_ShellCmd - Shell command fail
+-----
+PASSED  [cFE.ES.06.019] CFE_ES_ShellCmd - Shell command success
+-----
+PASSED  [cFE.ES.06.020] CFE_ES_StartAppCmd - Start application from file name
+-----
+PASSED  [cFE.ES.06.021] CFE_ES_StartAppCmd - Start application from file name fail
+-----
+PASSED  [cFE.ES.06.022] CFE_ES_StartAppCmd - Invalid file name
+-----
+PASSED  [cFE.ES.06.023] CFE_ES_StartAppCmd - Invalid exception action
+-----
+PASSED  [cFE.ES.06.024] CFE_ES_StartAppCmd - Stack size too small
+-----
+PASSED  [cFE.ES.06.025] CFE_ES_StartAppCmd - Priority is too large
+-----
+PASSED  [cFE.ES.06.026] CFE_ES_StopAppCmd - Stop application initiated
+-----
+PASSED  [cFE.ES.06.027] CFE_ES_StopAppCmd - Stop application failed
+-----
+PASSED  [cFE.ES.06.028] CFE_ES_StopAppCmd - Stop application bad name
+-----
+PASSED  [cFE.ES.06.029] CFE_ES_RestartAppCmd - Restart application initiated
+-----
+PASSED  [cFE.ES.06.030] CFE_ES_RestartAppCmd - Restart application bad name
+-----
+PASSED  [cFE.ES.06.031] CFE_ES_RestartAppCmd - Restart application failed
+-----
+PASSED  [cFE.ES.06.032] CFE_ES_ReloadAppCmd - Reload application initiated
+-----
+PASSED  [cFE.ES.06.033] CFE_ES_ReloadAppCmd - Reload application bad name
+-----
+PASSED  [cFE.ES.06.034] CFE_ES_ReloadAppCmd - Reload application failed
+-----
+PASSED  [cFE.ES.06.035] CFE_ES_QueryOneCmd - Query application - success
+-----
+PASSED  [cFE.ES.06.036] CFE_ES_QueryOneCmd - Query application - SB send message fail
+-----
+PASSED  [cFE.ES.06.037] CFE_ES_QueryOneCmd - Query application - bad application name
+-----
+PASSED  [cFE.ES.06.038] CFE_ES_QueryAllCmd - Query all applications - success
+-----
+PASSED  [cFE.ES.06.039] CFE_ES_QueryAllCmd - Query all applications - null file name
+-----
+PASSED  [cFE.ES.06.040] CFE_ES_QueryAllCmd - Write application information file fail; write header
+-----
+PASSED  [cFE.ES.06.041] CFE_ES_QueryAllCmd - Write application information file fail; task write
+-----
+PASSED  [cFE.ES.06.042] CFE_ES_QueryAllCmd - Write application information file fail; OS create
+-----
+PASSED  [cFE.ES.06.043] CFE_ES_QueryAllTasksCmd - Task information file written
+-----
+PASSED  [cFE.ES.06.044] CFE_ES_QueryAllTasksCmd - Task information file write fail; write header
+-----
+PASSED  [cFE.ES.06.045] CFE_ES_QueryAllTasksCmd - Task information file write fail; task write
+-----
+PASSED  [cFE.ES.06.046] CFE_ES_QueryAllTasksCmd - Task information file write fail; OS create
+-----
+PASSED  [cFE.ES.06.047] CFE_ES_ClearSyslogCmd - Clear ES log data
+-----
+PASSED  [cFE.ES.06.048] CFE_ES_OverWriteSyslogCmd - Overwrite system log received
+-----
+PASSED  [cFE.ES.06.049] CFE_ES_OverWriteSyslogCmd - Overwrite system log using invalid mode
+-----
+PASSED  [cFE.ES.06.050] CFE_ES_WriteSyslogCmd - Write system log; success
+-----
+PASSED  [cFE.ES.06.051] CFE_ES_WriteSyslogCmd - Write system log; null file name
+-----
+PASSED  [cFE.ES.06.052] CFE_ES_WriteSyslogCmd - Write system log; OS create
+-----
+PASSED  [cFE.ES.06.053] CFE_ES_WriteSyslogCmd - Write system log; OS write
+-----
+PASSED  [cFE.ES.06.054] CFE_ES_WriteSyslogCmd - Write system log; write header
+-----
+PASSED  [cFE.ES.06.055] CFE_ES_ClearERlogCmd - Clear E&R log
+-----
+PASSED  [cFE.ES.06.056] CFE_ES_WriteERlogCmd - Write E&R log; success
+-----
+PASSED  [cFE.ES.06.057] CFE_ES_WriteERlogCmd - Write E&R log; OS create
+-----
+PASSED  [cFE.ES.06.058] CFE_ES_WriteERlogCmd - Write E&R log; OS write
+-----
+PASSED  [cFE.ES.06.059] CFE_ES_WriteERlogCmd - Write E&R log; write header
+-----
+PASSED  [cFE.ES.06.060] CFE_ES_WriteERlogCmd - Write E&R log; reset area
+-----
+PASSED  [cFE.ES.06.061] CFE_ES_ClearERlogCmd - Packet length error
+-----
+PASSED  [cFE.ES.06.062] CFE_ES_ResetPRCountCmd - Set processor reset count to zero
+-----
+PASSED  [cFE.ES.06.063] CFE_ES_SetMaxPRCountCmd - Set maximum processor reset count
+-----
+PASSED  [cFE.ES.06.064] CFE_ES_DeleteCDSCmd - Delete from CDS; error
+-----
+PASSED  [cFE.ES.06.065] CFE_ES_DeleteCDSCmd - Delete from CDS; wrong type
+-----
+PASSED  [cFE.ES.06.066] CFE_ES_DeleteCDSCmd - Delete from CDS; success
+-----
+PASSED  [cFE.ES.06.067] CFE_ES_DeleteCDSCmd - Delete from CDS; owner active
+-----
+PASSED  [cFE.ES.06.068] CFE_ES_DeleteCDSCmd - Delete from CDS; not found
+-----
+PASSED  [cFE.ES.06.069] CFE_ES_DumpCDSRegCmd - Dump CDS; success
+-----
+PASSED  [cFE.ES.06.070] CFE_ES_DumpCDSRegCmd - Dump CDS; write header
+-----
+PASSED  [cFE.ES.06.071] CFE_ES_DumpCDSRegCmd - Dump CDS; OS create
+-----
+PASSED  [cFE.ES.06.072] CFE_ES_DumpCDSRegCmd - Dump CDS; OS write
+-----
+PASSED  [cFE.ES.06.073] CFE_ES_TlmPoolStatsCmd - Telemetry pool; bad handle
+-----
+PASSED  [cFE.ES.06.074] CFE_ES_TlmPoolStatsCmd - Telemetry pool; success
+-----
+PASSED  [cFE.ES.06.075] CFE_ES_TaskPipe - Invalid ground command
+-----
+PASSED  [cFE.ES.07.001] CFE_ES_SetupPerfVariables - Idle data collection
+-----
+PASSED  [cFE.ES.07.002] CFE_ES_PerfStartDataCmd - Collect performance data; mode START
+-----
+PASSED  [cFE.ES.07.003] CFE_ES_PerfStartDataCmd - Collect performance data; mode CENTER
+-----
+PASSED  [cFE.ES.07.004] CFE_ES_PerfStartDataCmd - Collect performance data; mode END
+-----
+PASSED  [cFE.ES.07.005] CFE_ES_PerfStartDataCmd - Trigger mode out of range (high)
+-----
+PASSED  [cFE.ES.07.006] CFE_ES_PerfStartDataCmd - Trigger mode out of range (low)
+-----
+PASSED  [cFE.ES.07.007] CFE_ES_PerfStartDataCmd - Cannot collect performance data; write in progress
+-----
+PASSED  [cFE.ES.07.008] CFE_ES_PerfStartDataCmd - Start collecting performance data
+-----
+PASSED  [cFE.ES.07.009] CFE_ES_PerfStopDataCmd - Stop collecting performance data
+-----
+PASSED  [cFE.ES.07.010] CFE_ES_PerfStopDataCmd - Stop performance data command; OS create fail
+-----
+PASSED  [cFE.ES.07.011] CFE_ES_PerfStopDataCmd - Stop performance data command; OS task create fail
+-----
+PASSED  [cFE.ES.07.012] CFE_ES_PerfStopDataCmd - Stop collecting performance data (non-default file name)
+-----
+PASSED  [cFE.ES.07.013] CFE_ES_PerfStopDataCmd - Stop performance data command ignored
+-----
+PASSED  [cFE.ES.07.014] CFE_ES_PerfSetFilterMaskCmd - Performance filter mask command error; index out of range
+-----
+PASSED  [cFE.ES.07.015] CFE_ES_PerfSetFilterMaskCmd - Set performance filter mask command received
+-----
+PASSED  [cFE.ES.07.016] CFE_ES_PerfSetTriggerMaskCmd - Set performance trigger mask command received; minimum index
+-----
+PASSED  [cFE.ES.07.017] CFE_ES_PerfSetTriggerMaskCmd - Set performance trigger mask command received; maximum index
+-----
+PASSED  [cFE.ES.07.018] CFE_ES_PerfSetTriggerMaskCmd - Performance trigger mask command error; index out of range
+-----
+PASSED  [cFE.ES.07.019] CFE_ES_PerfLogDump - Performance log dump; success
+-----
+PASSED  [cFE.ES.07.020] CFE_ES_PerfLogDump - Performance log dump; OS create & write failed
+-----
+PASSED  [cFE.ES.07.021] CFE_ES_PerfLogAdd - Invalid performance marker
+-----
+PASSED  [cFE.ES.07.022] CFE_ES_PerfLogAdd - Triggered; START
+-----
+PASSED  [cFE.ES.07.023] CFE_ES_PerfLogAdd - Triggered; CENTER
+-----
+PASSED  [cFE.ES.07.024] CFE_ES_PerfLogAdd - Triggered; END
+-----
+PASSED  [cFE.ES.08.001] CFE_ES_ResetCFE - Processor reset
+-----
+PASSED  [cFE.ES.08.002] CFE_ES_GetResetType - Get reset type successful
+-----
+PASSED  [cFE.ES.08.003] CFE_ES_ResetCFE - Power on reset
+-----
+PASSED  [cFE.ES.08.004] CFE_ES_ResetCFE - Bad reset type
+-----
+PASSED  [cFE.ES.08.005] CFE_ES_RestartApp - Bad application ID
+-----
+PASSED  [cFE.ES.08.006] CFE_ES_RestartApp - Application ID too large
+-----
+PASSED  [cFE.ES.08.007] CFE_ES_ReloadApp - Bad application ID
+-----
+PASSED  [cFE.ES.08.008] CFE_ES_DeleteApp - Bad application ID
+-----
+PASSED  [cFE.ES.08.009] CFE_ES_ExitApp - Application initialization error
+-----
+PASSED  [cFE.ES.08.010] CFE_ES_ExitApp - Application runtime error
+-----
+PASSED  [cFE.ES.08.011] CFE_ES_ExitApp - Application exit error
+-----
+PASSED  [cFE.ES.08.012] CFE_ES_RunLoop - Request to run application
+-----
+PASSED  [cFE.ES.08.013] CFE_ES_RunLoop - Request to stop running application
+-----
+PASSED  [cFE.ES.08.014] CFE_ES_RunLoop - Request to exit application
+-----
+PASSED  [cFE.ES.08.015] CFE_ES_RunLoop - Bad internal application ID
+-----
+PASSED  [cFE.ES.08.016] CFE_ES_RunLoop - Invalid run status
+-----
+PASSED  [cFE.ES.08.017] CFE_ES_RunLoop - Status change from initializing to run
+-----
+PASSED  [cFE.ES.08.018] CFE_ES_RegisterApp - Application registration successful
+-----
+PASSED  [cFE.ES.08.019] CFE_ES_GetAppID - Get application ID by name successful
+-----
+PASSED  [cFE.ES.08.020] CFE_ES_GetAppName - Get application name by ID; bad application ID
+-----
+PASSED  [cFE.ES.08.021] CFE_ES_GetAppName - Get application name by ID; ID out of range
+-----
+PASSED  [cFE.ES.08.022] CFE_ES_GetAppName - Get application name by ID successful
+-----
+PASSED  [cFE.ES.08.023] CFE_ES_GetTaskInfo - Get task info by ID successful
+-----
+PASSED  [cFE.ES.08.024] CFE_ES_GetTaskInfo - Get task info by ID; parent application not active
+-----
+PASSED  [cFE.ES.08.025] CFE_ES_GetTaskInfo - Get task info by ID; task not active
+-----
+PASSED  [cFE.ES.08.026] CFE_ES_GetTaskInfo - Get task info by ID; invalid task ID
+-----
+PASSED  [cFE.ES.08.027] CFE_ES_ChildTaskCreate - Bad application ID
+-----
+PASSED  [cFE.ES.08.028] CFE_ES_ChildTaskCreate - OS task create failed
+-----
+PASSED  [cFE.ES.08.029] CFE_ES_ChildTaskCreate - Task ID null
+-----
+PASSED  [cFE.ES.08.030] CFE_ES_ChildTaskCreate - Task name null
+-----
+PASSED  [cFE.ES.08.031] CFE_ES_ChildTaskCreate - Task name and ID null
+-----
+PASSED  [cFE.ES.08.032] CFE_ES_ChildTaskCreate - Function pointer null
+-----
+PASSED  [cFE.ES.08.033] CFE_ES_CreateChildTask - Cannot call from a child task
+-----
+PASSED  [cFE.ES.08.034] CFE_ES_CreateChildTask - Create child task successful
+-----
+PASSED  [cFE.ES.08.035] CFE_ES_DeleteChildTask - Task ID not in use
+-----
+PASSED  [cFE.ES.08.036] CFE_ES_DeleteChildTask - Task ID belongs to a main task
+-----
+PASSED  [cFE.ES.08.037] CFE_ES_DeleteChildTask - Delete child task successful
+-----
+PASSED  [cFE.ES.08.038] CFE_ES_DeleteChildTask - OS task delete failure
+-----
+PASSED  [cFE.ES.08.039] CFE_ES_DeleteChildTask - Task ID too large
+-----
+PASSED  [cFE.ES.08.040] CFE_ES_ExitChildTask - Exit child task successful
+-----
+PASSED  [cFE.ES.08.041] CFE_ES_ExitChildTask - Cannot call from a cFE application main task
+-----
+PASSED  [cFE.ES.08.042] CFE_ES_ExitChildTask - Error calling CFE_ES_GetAppID
+-----
+PASSED  [cFE.ES.08.043] CFE_ES_RegisterChildTask - OS task register failed
+-----
+PASSED  [cFE.ES.08.044] CFE_ES_RegisterChildTask - Register child task successful
+-----
+PASSED  [cFE.ES.08.045] CFE_ES_WriteToSysLog - Add message to log that must be truncated
+-----
+PASSED  [cFE.ES.08.046] CFE_ES_RegisterDriver - *Not implemented* Register driver successful
+-----
+PASSED  [cFE.ES.08.047] CFE_ES_UnloadDriver - *Not implemented* Unload driver successful
+-----
+PASSED  [cFE.ES.08.048] CFE_ES_CalculateCRC - *Not implemented* CRC-8 algorithm
+-----
+PASSED  [cFE.ES.08.049] CFE_ES_CalculateCRC - CRC-16 algorithm
+-----
+PASSED  [cFE.ES.08.050] CFE_ES_CalculateCRC - *Not implemented* CRC-32 algorithm
+-----
+PASSED  [cFE.ES.08.051] CFE_ES_RegisterCDS - Writing to BSP CDS failure
+-----
+PASSED  [cFE.ES.08.052] CFE_ES_RegisterCDS - Register CDS successful
+-----
+PASSED  [cFE.ES.08.053] CFE_ES_RegisterCDS - Retrieve existing CDS
+-----
+PASSED  [cFE.ES.08.054] CFE_ES_RegisterCDS - Get CDS of same name, but new size
+-----
+PASSED  [cFE.ES.08.055] CFE_ES_RegisterCDS - Invalid name size
+-----
+PASSED  [cFE.ES.08.056] CFE_ES_RegisterCDS - No memory pool available
+-----
+PASSED  [cFE.ES.08.057] CFE_ES_RegisterCDS - Block size zero
+-----
+PASSED  [cFE.ES.08.058] CFE_ES_RegisterCDS - No available entries
+-----
+PASSED  [cFE.ES.08.059] CFE_ES_RegisterCDS - Bad application ID
+-----
+PASSED  [cFE.ES.08.060] CFE_ES_RegisterCDS - Register CDS successful (set up for copy test)
+-----
+PASSED  [cFE.ES.08.061] CFE_ES_CopyToCDS - Copy to CDS successful
+-----
+PASSED  [cFE.ES.08.062] CFE_ES_RestoreFromCDS - Restore from CDS successful
+-----
+PASSED  [cFE.ES.08.063] CFE_ES_LockSharedData - Mutex take error
+-----
+PASSED  [cFE.ES.08.064] CFE_ES_UnlockSharedData - Mutex release error
+-----
+PASSED  [cFE.ES.08.065] CFE_ES_RegisterGenCounter - Register counter successful
+-----
+PASSED  [cFE.ES.08.066] CFE_ES_RegisterGenCounter - Attempt to register an existing counter
+-----
+PASSED  [cFE.ES.08.067] CFE_ES_RegisterGenCounter - Register maximum number of counters
+-----
+PASSED  [cFE.ES.08.068] CFE_ES_RegisterGenCounter - Maximum number of counters exceeded
+-----
+PASSED  [cFE.ES.08.069] CFE_ES_GetGenCounterIDByName - Cannot get counter that does not exist
+-----
+PASSED  [cFE.ES.08.070] CFE_ES_GetGenCounterIDByName - Get generic counter ID successful
+-----
+PASSED  [cFE.ES.08.071] CFE_ES_DeleteGenCounter - Cannot delete counter that does not exist
+-----
+PASSED  [cFE.ES.08.072] CFE_ES_DeleteGenCounter - Successful
+-----
+PASSED  [cFE.ES.08.073] CFE_ES_RegisterGenCounter - Register counter; back to maximum number
+-----
+PASSED  [cFE.ES.08.074] CFE_ES_IncrementGenCounter - Bad counter ID
+-----
+PASSED  [cFE.ES.08.075] CFE_ES_IncrementGenCounter - Increment counter successful
+-----
+PASSED  [cFE.ES.08.076] CFE_ES_GetGenCount - Bad counter ID
+-----
+PASSED  [cFE.ES.08.077] CFE_ES_GetGenCount - Get counter value successful
+-----
+PASSED  [cFE.ES.08.078] CFE_ES_SetGenCount - Bad counter ID
+-----
+PASSED  [cFE.ES.08.079] CFE_ES_SetGenCount - Set counter value successful
+-----
+PASSED  [cFE.ES.08.080] CFE_ES_SetGenCount - Check value for counter set
+-----
+PASSED  [cFE.ES.08.081] CFE_ES_ProcessCoreException - Cannot restart a non-running application
+-----
+PASSED  [cFE.ES.08.082] CFE_ES_ProcessCoreException - Processor reset with no application restart
+-----
+PASSED  [cFE.ES.08.083] CFE_ES_ProcessCoreException - Power on reset with no application restart
+-----
+PASSED  [cFE.ES.08.084] CFE_ES_WaitForStartupSync - Transition from initializing to running and release semaphore
+-----
+PASSED  [cFE.ES.08.085] CFE_ES_WaitForStartupSync - Semaphore already released
+-----
+PASSED  [cFE.ES.08.086] CFE_ES_WaitForStartupSync - Wait on semaphore
+-----
+PASSED  [cFE.ES.09.001] CFE_ES_CDS_ValidateAppID - Bad app ID
+-----
+PASSED  [cFE.ES.09.002] CFE_ES_RebuildCDS - Second read from CDS bad
+-----
+PASSED  [cFE.ES.09.003] CFE_ES_InitCDSRegistry - Failed to write registry size
+-----
+PASSED  [cFE.ES.09.004] CFE_ES_CDS_EarlyInit - Initialization successful
+-----
+PASSED  [cFE.ES.09.005] CFE_ES_CDS_EarlyInit - Unrecoverable read error
+-----
+PASSED  [cFE.ES.09.006] CFE_ES_CDS_EarlyInit - CDS size less than minimum
+-----
+PASSED  [cFE.ES.09.007] CFE_ES_CDS_EarlyInit - Unable to obtain CDS size
+-----
+PASSED  [cFE.ES.09.008] CFE_ES_CDS_EarlyInit - Rebuilding not possible; create new CDS
+-----
+PASSED  [cFE.ES.09.009] CFE_ES_ValidateCDS - CDS read (second call) failed
+-----
+PASSED  [cFE.ES.09.010] CFE_ES_ValidateCDS - Reading from CDS failed end check
+-----
+PASSED  [cFE.ES.09.011] CFE_ES_ValidateCDS - CDS read (first call) failed
+-----
+PASSED  [cFE.ES.09.012] CFE_ES_InitializeCDS - Clear CDS failed
+-----
+PASSED  [cFE.ES.09.013] CFE_ES_InitializeCDS - CDS write (second call) failed
+-----
+PASSED  [cFE.ES.09.014] CFE_ES_InitializeCDS - CDS write (third call) failed
+-----
+PASSED  [cFE.ES.09.015] CFE_ES_RebuildCDS - Registry too large to recover
+-----
+PASSED  [cFE.ES.09.016] CFE_ES_RebuildCDS - CDS rebuild successful
+-----
+PASSED  [cFE.ES.09.017] CFE_ES_RebuildCDS - CDS registry unreadable
+-----
+PASSED  [cFE.ES.09.018] CFE_ES_DeleteCDS - CDS registry write failed
+-----
+PASSED  [cFE.ES.09.019] CFE_ES_DeleteCDS - Owner application still active
+-----
+PASSED  [cFE.ES.10.001] CFE_ES_CreateCDSPool - CDS pool size too small
+-----
+PASSED  [cFE.ES.10.002] CFE_ES_RebuildCDSPool - CDS pool size too small
+-----
+PASSED  [cFE.ES.10.003] CFE_ES_RebuildCDSPool - CDS block unused
+-----
+PASSED  [cFE.ES.10.004] CFE_ES_RebuildCDSPool - Error reading CDS
+-----
+PASSED  [cFE.ES.10.005] CFE_ES_RebuildCDSPool - Error writing CDS
+-----
+PASSED  [cFE.ES.10.006] CFE_ES_RebuildCDSPool - CDS block not used before
+-----
+PASSED  [cFE.ES.10.007] CFE_ES_RebuildCDSPool - Invalid block descriptor
+-----
+PASSED  [cFE.ES.10.008] CFE_ES_CreateCDSPool - Create with zero offset; successful
+-----
+PASSED  [cFE.ES.10.009] CFE_ES_GetCDSBlock - Block size error
+-----
+PASSED  [cFE.ES.10.010] CFE_ES_PutCDSBlock - Invalid block descriptor
+-----
+PASSED  [cFE.ES.10.011] CFE_ES_CreateCDSPool - Create with non-zero offset; successful
+-----
+PASSED  [cFE.ES.10.012] CFE_ES_GetCDSBlock - Get a CDS block; successful
+-----
+PASSED  [cFE.ES.10.013] CFE_ES_PutCDSBlock - Return a CDS block; successful
+-----
+PASSED  [cFE.ES.10.014] CFE_ES_GetCDSBlock - Error reading CDS
+-----
+PASSED  [cFE.ES.10.015] CFE_ES_GetCDSBlock - Error writing CDS
+-----
+PASSED  [cFE.ES.10.016] CFE_ES_GetCDSBlock - Block size too large
+-----
+PASSED  [cFE.ES.10.017] CFE_ES_PutCDSBlock - Invalid CDS handle
+-----
+PASSED  [cFE.ES.10.018] CFE_ES_PutCDSBlock - Error reading CDS
+-----
+PASSED  [cFE.ES.10.019] CFE_ES_PutCDSBlock - Invalid block descriptor
+-----
+PASSED  [cFE.ES.10.020] CFE_ES_PutCDSBlock - Invalid memory handle
+-----
+PASSED  [cFE.ES.10.021] CFE_ES_PutCDSBlock - Error writing CDS
+-----
+PASSED  [cFE.ES.10.022] CFE_ES_CDSBlockWrite - Invalid memory handle
+-----
+PASSED  [cFE.ES.10.023] CFE_ES_CDSBlockWrite - Actual size too large
+-----
+PASSED  [cFE.ES.10.024] CFE_ES_CDSBlockWrite - Invalid CDS block
+-----
+PASSED  [cFE.ES.10.025] CFE_ES_CDSBlockWrite - Error writing block descriptor to CDS
+-----
+PASSED  [cFE.ES.10.026] CFE_ES_CDSBlockWrite - Error writing new data to CDS
+-----
+PASSED  [cFE.ES.10.027] CFE_ES_CDSBlockWrite - Error reading CDS
+-----
+PASSED  [cFE.ES.10.028] CFE_ES_CDSBlockRead - Invalid memory handle
+-----
+PASSED  [cFE.ES.10.029] CFE_ES_CDSBlockRead - Actual size too large
+-----
+PASSED  [cFE.ES.10.030] CFE_ES_CDSBlockRead - Invalid CDS block
+-----
+PASSED  [cFE.ES.10.031] CFE_ES_CDSBlockRead - CRC doesn't match
+-----
+PASSED  [cFE.ES.10.032] CFE_ES_CDSBlockRead - Error reading block descriptor from CDS
+-----
+PASSED  [cFE.ES.10.033] CFE_ES_CDSBlockRead - Error reading block data from CDS
+-----
+PASSED  [cFE.ES.11.001] CFE_ES_PoolCreateNoSem - Pool size too small
+-----
+PASSED  [cFE.ES.11.002] CFE_ES_PoolCreateNoSem - Memory pool create; successful
+-----
+PASSED  [cFE.ES.11.003] CFE_ES_PoolCreate - Pool size too small
+-----
+PASSED  [cFE.ES.11.004] CFE_ES_PoolCreate - Create memory pool (using mutex) [1]; successful
+-----
+PASSED  [cFE.ES.11.005] CFE_ES_GetPoolBuf - Allocate pool buffer [1]; successful
+-----
+PASSED  [cFE.ES.11.006] CFE_ES_GetPoolBufInfo - Get pool buffer size; successful
+-----
+PASSED  [cFE.ES.11.007] CFE_ES_PutPoolBuf - Return buffer to the memory pool; successful
+-----
+PASSED  [cFE.ES.11.008] CFE_ES_GetPoolBuf - Allocate pool buffer [2]; successful
+-----
+PASSED  [cFE.ES.11.009] CFE_ES_PutPoolBuf - Return buffer to the second memory pool; successful
+-----
+PASSED  [cFE.ES.11.010] CFE_ES_ValidateHandle - Invalid handle; not on 32-bit boundary
+-----
+PASSED  [cFE.ES.11.011] CFE_ES_ValidateHandle - Invalid handle; bad memory address
+-----
+PASSED  [cFE.ES.11.012] CFE_ES_ValidateHandle - Invalid handle; not pool start address
+-----
+PASSED  [cFE.ES.11.013] CFE_ES_GetPoolBuf - Invalid handle; not pool start address
+-----
+PASSED  [cFE.ES.11.014] CFE_ES_GetMemPoolStats - Invalid handle; not pool start address
+-----
+PASSED  [cFE.ES.11.015] CFE_ES_ValidateHandle - Invalid handle; pool size not multiple of 4 bytes
+-----
+PASSED  [cFE.ES.11.016] CFE_ES_GetPoolBuf - Requested pool size too large
+-----
+PASSED  [cFE.ES.11.017] CFE_ES_GetPoolBufInfo - Invalid memory pool handle
+-----
+PASSED  [cFE.ES.11.018] CFE_ES_PutPoolBuf - Invalid memory pool handle or memory block
+-----
+PASSED  [cFE.ES.11.019] CFE_ES_PoolCreateEx - Number of block sizes exceeds maximum
+-----
+PASSED  [cFE.ES.11.020] CFE_ES_PoolCreateEx - Memory pool size too small (default block size)
+-----
+PASSED  [cFE.ES.11.021] CFE_ES_PoolCreateEx - Memory pool address not 32-bit aligned
+-----
+PASSED  [cFE.ES.11.022] CFE_ES_PoolCreateEx - Invalid mutex option
+-----
+PASSED  [cFE.ES.11.023] CFE_ES_PoolCreateEx - Memory pool size too small (block size specified)
+-----
+PASSED  [cFE.ES.11.024] CFE_ES_PoolCreate - Create memory pool (using mutex) [2]; successful
+-----
+PASSED  [cFE.ES.11.025] CFE_ES_GetPoolBuf - Allocate pool buffer [3]; successful
+-----
+PASSED  [cFE.ES.11.026] CFE_ES_GetPoolBufInfo - Invalid memory pool handle; unallocated block
+-----
+PASSED  [cFE.ES.11.027] CFE_ES_PutPoolBuf - Deallocate an unallocated block
+-----
+PASSED  [cFE.ES.11.028] CFE_ES_GetPoolBufInfo - Invalid memory pool handle; check bit pattern
+-----
+PASSED  [cFE.ES.11.029] CFE_ES_PutPoolBuf - Invalid/corrupted memory descriptor
+-----
+PASSED  [cFE.ES.11.030] CFE_ES_PoolCreate - Create memory pool (using mutex) [3]; successful
+-----
+PASSED  [cFE.ES.11.031] CFE_ES_GetPoolBuf - Allocate pool buffer [4]; successful
+-----
+PASSED  [cFE.ES.11.032] CFE_ES_PutPoolBuf - Pool buffer size exceeds maximum
+-----
+PASSED  [cFE.ES.11.033] CFE_ES_GetPoolBuf - Pool buffer size exceeds maximum
+-----
+PASSED  [cFE.ES.11.034] CFE_ES_ValidateHandle - NULL handle
+-----
+PASSED  [cFE.ES.11.035] CFE_ES_PutPoolBuf - NULL memory handle
+-----
+PASSED  [cFE.ES.11.036] CFE_ES_GetPoolBuf - NULL memory handle
+-----
+PASSED  [cFE.ES.11.037] CFE_ES_GetPoolBufInfo - NULL memory handle
+-----
+
+ut_cfe_es PASSED 372 tests.
+ut_cfe_es FAILED 0 tests.
+
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_es_start.c'        98.54%  206
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_es_perf.c'        100.00%  156
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_es_erlog.c'       100.00%  29
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_es_cds.c'         100.00%  200
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_es_api.c'          98.25%  515
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_es_apps.c'        100.00%  449
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_es_cds_mempool.c' 100.00%  224
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_esmempool.c'      100.00%  206
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_es_shell.c'       100.00%  136
+gcov: 'cfe/fsw/cfe-core/src/es/cfe_es_task.c'         99.36%  628
+

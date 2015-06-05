@@ -1,0 +1,1398 @@
+cFE TBL Unit Test Output File
+
+
+Begin Test Task Init
+
+  CFE_ES_PerfLogAdd called: EntryExit = 0
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_EVS_Register called
+  CFE_SB_CreatePipe called
+  CFE_SB_Subscribe called: subscribed to msg 6156
+  CFE_SB_Subscribe called: subscribed to msg 6148
+  CFE_EVS_SendEvent: 1, 2 - cFE TBL Initialized.  cFE Version 0.0.0.0
+  CFE_ES_PerfLogAdd called: EntryExit = 1
+  CFE_ES_PerfLogAdd called: EntryExit = 0
+  CFE_EVS_SendEvent: 50, 3 - Invalid message ID -- ID = 0x0000
+  CFE_ES_PerfLogAdd called: EntryExit = 1
+  CFE_ES_PerfLogAdd called: EntryExit = 0
+  TBL:Error reading cmd pipe,RC=0xCA000001
+
+PASSED  [cFE.TBL.01.001] CFE_TBL_TaskMain - Success
+-----
+  CFE_ES_PerfLogAdd called: EntryExit = 0
+  CFE_ES_RegisterApp called: -1
+  TBL:Call to CFE_ES_RegisterApp Failed:RC=0xFFFFFFFF
+
+  TBL:Application Init Failed,RC=0xFFFFFFFF
+
+  CFE_ES_PerfLogAdd called: EntryExit = 1
+PASSED  [cFE.TBL.01.002] CFE_TBL_TaskMain - Application register fail
+-----
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_EVS_Register called
+  CFE_SB_CreatePipe called
+  CFE_SB_Subscribe called: subscribed to msg 6156
+  CFE_SB_Subscribe called: subscribed to msg 6148
+  CFE_EVS_SendEvent: 1, 2 - cFE TBL Initialized.  cFE Version 0.0.0.0
+PASSED  [cFE.TBL.01.003] CFE_TBL_TaskInit - Success
+-----
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_EVS_Register called
+  CFE_SB_CreatePipe called: -2
+  TBL:Error creating cmd pipe:RC=0xFFFFFFFE
+
+PASSED  [cFE.TBL.01.004] CFE_TBL_TaskInit - Create pipe fail
+-----
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_EVS_Register called
+  CFE_SB_CreatePipe called
+  CFE_SB_Subscribe called: -3
+  TBL:Error subscribing to HK Request:RC=0xFFFFFFFD
+
+PASSED  [cFE.TBL.01.005] CFE_TBL_TaskInit - Housekeeping request subscribe fail
+-----
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_EVS_Register called
+  CFE_SB_CreatePipe called
+  CFE_SB_Subscribe called: subscribed to msg 6156
+  CFE_SB_Subscribe called: -4
+  TBL:Error subscribing to gnd cmds:RC=0xFFFFFFFC
+
+PASSED  [cFE.TBL.01.006] CFE_TBL_TaskInit - Ground command subscribe fail
+-----
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_EVS_Register called
+  CFE_SB_CreatePipe called
+  CFE_SB_Subscribe called: subscribed to msg 6156
+  CFE_SB_Subscribe called: subscribed to msg 6148
+  TBL:Error sending init event:RC=0xFFFFFFFB
+
+PASSED  [cFE.TBL.01.007] CFE_TBL_TaskInit - Send initialization event fail
+-----
+  CFE_ES_RegisterApp called: SUCCESS
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_EVS_Register called: -6
+  TBL:Call to CFE_EVS_Register Failed:RC=0xFFFFFFFA
+
+PASSED  [cFE.TBL.01.008] CFE_TBL_TaskInit - EVS register fail
+-----
+  CFE_EVS_SendEvent: 10, 2 - No-op command. cFE Version 0.0.0.0
+PASSED  [cFE.TBL.01.009] CFE_TBL_TaskPipe - Valid command (no-op) - success
+-----
+  CFE_EVS_SendEvent: 52, 3 - Invalid msg length -- ID = 0x1804, CC = 0, Len = 7 (!= 8)
+PASSED  [cFE.TBL.01.010] CFE_TBL_TaskPipe - Invalid message length
+-----
+  CFE_EVS_SendEvent: 51, 3 - Invalid command code -- ID = 0x1804, CC = 103
+PASSED  [cFE.TBL.01.011] CFE_TBL_TaskPipe - Invalid command code
+-----
+Begin Test Init Data
+
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+PASSED  [cFE.TBL.02.001] CFE_TBL_SearchCmdHndlrTbl - Initialize data
+-----
+Begin Test Search Command Handler Table
+
+PASSED  [cFE.TBL.03.001] CFE_TBL_SearchCmdHndlrTbl - Found matching message ID and command code
+-----
+PASSED  [cFE.TBL.03.002] CFE_TBL_SearchCmdHndlrTbl - Message is not a command message with specific command code
+-----
+PASSED  [cFE.TBL.03.003] CFE_TBL_SearchCmdHndlrTbl - Message ID matches, command code must does not match
+-----
+PASSED  [cFE.TBL.03.004] CFE_TBL_SearchCmdHndlrTbl - Message ID does not match
+-----
+Begin Test Delete CDS Command
+
+  CFE_EVS_SendEvent: 82, 3 - '0' found in Table Registry. CDS cannot be deleted until table is unregistered
+PASSED  [cFE.TBL.04.001] CFE_TBL_DeleteCDSCmd - Table name found in table registry
+-----
+  CFE_EVS_SendEvent: 84, 3 - Table '-1' is not found in Critical Table Registry
+PASSED  [cFE.TBL.04.002] CFE_TBL_DeleteCDSCmd - Table not found in critical table registry
+-----
+  CFE_EVS_SendEvent: 83, 3 - Table '159' is in Critical Table Registry but CDS is not tagged as a table
+PASSED  [cFE.TBL.04.003] CFE_TBL_DeleteCDSCmd - Table is in critical table registry but CDS is not tagged as a table
+-----
+  CFE_EVS_SendEvent: 87, 3 - CDS '159' owning app is still active
+PASSED  [cFE.TBL.04.004] CFE_TBL_DeleteCDSCmd - CDS owning application is still active
+-----
+  CFE_EVS_SendEvent: 85, 3 - Unable to locate '159' in CDS Registry
+PASSED  [cFE.TBL.04.005] CFE_TBL_DeleteCDSCmd - Unable to locate table in CDS registry
+-----
+  CFE_EVS_SendEvent: 86, 3 - Error while deleting '159' from CDS, See SysLog.(Err=0xFFFFFFFF)
+PASSED  [cFE.TBL.04.006] CFE_TBL_DeleteCDSCmd - Error while deleting table from CDS
+-----
+  CFE_EVS_SendEvent: 38, 2 - Successfully removed '159' from CDS
+PASSED  [cFE.TBL.04.007] CFE_TBL_DeleteCDSCmd - Successfully removed table from CDS
+-----
+Begin Test Telemetry Registry Command
+
+  CFE_EVS_SendEvent: 18, 1 - Table Registry entry for '0' will be telemetered
+PASSED  [cFE.TBL.05.001] CFE_TBL_TlmRegCmd - Table registry entry for telemetry does exist
+-----
+  CFE_EVS_SendEvent: 57, 3 - Unable to locate '129' in Table Registry
+PASSED  [cFE.TBL.05.002] CFE_TBL_TlmRegCmd - Table registry entry for telemetry doesn't exist
+-----
+Begin Test Abort Load Command
+
+  CFE_EVS_SendEvent: 21, 2 - Table Load Aborted for '0'
+PASSED  [cFE.TBL.06.001] CFE_TBL_AbortLoadCmd - Table registry entry exists & load in progress
+-----
+  CFE_EVS_SendEvent: 69, 3 - Cannot abort load of '0'. No load started.
+PASSED  [cFE.TBL.06.002] CFE_TBL_AbortLoadCmd - Table registry entry exists but no load in progress
+-----
+  CFE_EVS_SendEvent: 57, 3 - Unable to locate '129' in Table Registry
+PASSED  [cFE.TBL.06.003] CFE_TBL_AbortLoadCmd - Table registry entry doesn't exist
+-----
+Begin Test Activate Command
+
+  CFE_EVS_SendEvent: 78, 3 - Illegal attempt to activate dump-only table '0'
+PASSED  [cFE.TBL.07.001] CFE_TBL_ActivateCmd - Table registry exists, but dump-only table attempted to load
+-----
+  CFE_EVS_SendEvent: 81, 3 - Cannot activate table '0'. Inactive image not Validated
+PASSED  [cFE.TBL.07.002] CFE_TBL_ActivateCmd - Table registry exists, not a dump-only tbl, and a load in progress: Table is double-buffered
+-----
+  CFE_EVS_SendEvent: 17, 1 - Tbl Services notifying App that '0' has a load pending
+PASSED  [cFE.TBL.07.003] CFE_TBL_ActivateCmd - Table registry exists, not a dump-only tbl, and a load in progress: Table isn't double-buffered
+-----
+  CFE_EVS_SendEvent: 70, 3 - Cannot activate table '0'. No Inactive image available
+PASSED  [cFE.TBL.07.004] CFE_TBL_ActivateCmd - Table registry exists, not a dump-only tbl, no load in progress
+-----
+  CFE_EVS_SendEvent: 57, 3 - Unable to locate '129' in Table Registry
+PASSED  [cFE.TBL.07.005] CFE_TBL_ActivateCmd - Table registry entry doesn't exist
+-----
+Begin Test Dump to File
+
+  OS_open called: (SUCCESS)
+  OS_close called: 1 (SUCCESS)
+  OS_creat called: 1; call to open filename (FAILURE)
+  CFE_EVS_SendEvent: 62, 3 - Error creating dump file 'filename', Status=0xFFFFFFFF
+PASSED  [cFE.TBL.08.001] CFE_TBL_DumpToFile - Error creating dump file
+-----
+  OS_open called: (SUCCESS)
+  OS_close called: 2 (SUCCESS)
+  OS_creat called: 2; call to open filename (SUCCESS)
+  CFE_EVS_SendEvent: 63, 3 - Error writing cFE File Header to 'filename', Status=0x0000003F
+  OS_close called: 2 (SUCCESS)
+PASSED  [cFE.TBL.08.002] CFE_TBL_DumpToFile - Error writing cFE file header
+-----
+  OS_open called: (SUCCESS)
+  OS_close called: 3 (SUCCESS)
+  OS_creat called: 3; call to open filename (SUCCESS)
+  CFE_FS_WriteHeader called: 3; Table Dump Image
+  CFE_EVS_SendEvent: 64, 3 - Error writing Tbl image File Header to 'filename', Status=0x00000033
+  OS_close called: 3 (SUCCESS)
+PASSED  [cFE.TBL.08.003] CFE_TBL_DumpToFile - Error writing cFE file header
+-----
+  OS_open called: (SUCCESS)
+  OS_close called: 4 (SUCCESS)
+  OS_creat called: 4; call to open filename (SUCCESS)
+  CFE_FS_WriteHeader called: 4; Table Dump Image
+  OS_write called: 4 (SUCCESS)
+  CFE_EVS_SendEvent: 65, 3 - Error writing Tbl image to 'filename', Status=0x00000008
+  OS_close called: 4 (SUCCESS)
+PASSED  [cFE.TBL.08.004] CFE_TBL_DumpToFile - Error writing cFE file header
+-----
+  OS_open called: (FAILURE)
+  OS_creat called: 5; call to open filename (SUCCESS)
+  CFE_FS_WriteHeader called: 5; Table Dump Image
+  OS_write called: 5 (SUCCESS)
+  OS_write called: 5 (SUCCESS)
+  CFE_EVS_SendEvent: 14, 2 - Successfully dumped Table 'tablename' to 'filename'
+  OS_close called: 5 (SUCCESS)
+PASSED  [cFE.TBL.08.005] CFE_TBL_DumpToFile - File created and data dumped
+-----
+  OS_open called: (SUCCESS)
+  OS_close called: 5 (SUCCESS)
+  OS_creat called: 6; call to open filename (SUCCESS)
+  CFE_FS_WriteHeader called: 6; Table Dump Image
+  OS_write called: 6 (SUCCESS)
+  OS_write called: 6 (SUCCESS)
+  CFE_EVS_SendEvent: 13, 2 - Successfully overwrote 'filename' with Table 'tablename'
+  OS_close called: 6 (SUCCESS)
+PASSED  [cFE.TBL.08.006] CFE_TBL_DumpToFile - File existed previously => data overwritten
+-----
+Begin Test Reset Command
+
+  CFE_EVS_SendEvent: 11, 1 - Reset Counters command
+PASSED  [cFE.TBL.09.001] CFE_TBL_ResetCmd - Function run and completed
+-----
+Begin Test Validate Command
+
+  CFE_EVS_SendEvent: 57, 3 - Unable to locate '129' in Table Registry
+PASSED  [cFE.TBL.10.001] CFE_TBL_ValidateCmd - Table registry entry doesn't exist
+-----
+  CFE_EVS_SendEvent: 67, 3 - Too many Table Validations have been requested
+PASSED  [cFE.TBL.10.002] CFE_TBL_ValidateCmd - Active buffer with data: too many table validations have been requested
+-----
+  CFE_EVS_SendEvent: 23, 2 - Tbl Services assumes '0' is valid. No Validation Function has been registered
+PASSED  [cFE.TBL.10.003] CFE_TBL_ValidateCmd - Active buffer with data: No validation function pointer
+-----
+  CFE_EVS_SendEvent: 16, 1 - Tbl Services issued validation request for '0'
+PASSED  [cFE.TBL.10.004] CFE_TBL_ValidateCmd - Active buffer with data: validation function pointer and active table flag
+-----
+  CFE_EVS_SendEvent: 16, 1 - Tbl Services issued validation request for '0'
+PASSED  [cFE.TBL.10.005] CFE_TBL_ValidateCmd - Inactive buffer: double buffered table : validation function pointer
+-----
+  CFE_EVS_SendEvent: 16, 1 - Tbl Services issued validation request for '0'
+PASSED  [cFE.TBL.10.006] CFE_TBL_ValidateCmd - Inactive buffer: single buffered table with load in progress: validation function pointer
+-----
+  CFE_EVS_SendEvent: 66, 3 - No Inactive Buffer for Table '0' present
+PASSED  [cFE.TBL.10.007] CFE_TBL_ValidateCmd - Inactive buffer: single buffered table with load in progress
+-----
+  CFE_EVS_SendEvent: 80, 3 - Cmd for Table '0' had illegal buffer parameter (0x0000FFFF)
+PASSED  [cFE.TBL.10.008] CFE_TBL_ValidateCmd - Illegal buffer
+-----
+Begin Test No-Op Command
+
+  CFE_EVS_SendEvent: 10, 2 - No-op command. cFE Version 0.0.0.0
+PASSED  [cFE.TBL.11.001] CFE_TBL_NoopCmd - Function run and completed
+-----
+Begin Test Get Table Registry Command
+
+PASSED  [cFE.TBL.12.001] CFE_TBL_GetTblRegData - Double buffered table
+-----
+PASSED  [cFE.TBL.12.002] CFE_TBL_GetTblRegData - Single buffered table - inactive buffer
+-----
+PASSED  [cFE.TBL.12.003] CFE_TBL_GetTblRegData - No inactive buffer
+-----
+Begin Test Get Housekeeping Data
+
+PASSED  [cFE.TBL.13.001] CFE_TBL_GetHkData - Raise load pending table count
+-----
+PASSED  [cFE.TBL.13.002] CFE_TBL_GetHkData - Lower free shared buffer count
+-----
+PASSED  [cFE.TBL.13.003] CFE_TBL_GetHkData - ValPtr result CFE_SUCCESS
+-----
+PASSED  [cFE.TBL.13.004] CFE_TBL_GetHkData - ValPtr result != CFE_SUCCESS
+-----
+Begin Test Dump Register Command
+
+  OS_open called: (SUCCESS)
+  OS_close called: 6 (SUCCESS)
+  OS_creat called: 7; call to open /ram/cfe_tbl_reg.log (FAILURE)
+  CFE_EVS_SendEvent: 62, 3 - Error creating dump file '/ram/cfe_tbl_reg.log', Status=0xFFFFFFFF
+PASSED  [cFE.TBL.14.001] CFE_TBL_DumpRegCmd - Error creating dump file
+-----
+  OS_open called: (SUCCESS)
+  OS_close called: 7 (SUCCESS)
+  OS_creat called: 8; call to open /ram/cfe_tbl_reg.log (SUCCESS)
+  CFE_EVS_SendEvent: 63, 3 - Error writing cFE File Header to '/ram/cfe_tbl_reg.log', Status=0x0000003F
+  OS_close called: 8 (SUCCESS)
+PASSED  [cFE.TBL.14.002] CFE_TBL_DumpRegCmd - Error writing cFE File header
+-----
+  OS_open called: (FAILURE)
+  OS_creat called: 9; call to open /ram/cfe_tbl_reg.log (SUCCESS)
+  CFE_FS_WriteHeader called: 9; Table Registry
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  OS_write called: 9 (SUCCESS)
+  CFE_EVS_SendEvent: 22, 1 - Successfully dumped Table Registry to '/ram/cfe_tbl_reg.log':Size=20384,Entries=127
+  OS_close called: 9 (SUCCESS)
+PASSED  [cFE.TBL.14.003] CFE_TBL_DumpRegCmd - Table is owned, file didn't exist previously: successfully dumped table
+-----
+  OS_open called: (SUCCESS)
+  OS_close called: 8 (SUCCESS)
+  OS_creat called: 10; call to open /ram/cfe_tbl_reg.log (SUCCESS)
+  CFE_FS_WriteHeader called: 10; Table Registry
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  OS_write called: 10 (SUCCESS)
+  CFE_EVS_SendEvent: 15, 1 - Successfully overwrote '/ram/cfe_tbl_reg.log' with Table Registry:Size=20384,Entries=127
+  OS_close called: 10 (SUCCESS)
+PASSED  [cFE.TBL.14.004] CFE_TBL_DumpRegCmd - File did exist previously: successfully overwritten table
+-----
+  OS_open called: (SUCCESS)
+  OS_close called: 9 (SUCCESS)
+  OS_creat called: 11; call to open /ram/cfe_tbl_reg.log (SUCCESS)
+  CFE_FS_WriteHeader called: 11; Table Registry
+  CFE_EVS_SendEvent: 68, 3 - Error writing Registry to '/ram/cfe_tbl_reg.log', Status=0x0000009F
+  OS_close called: 11 (SUCCESS)
+PASSED  [cFE.TBL.14.005] CFE_TBL_DumpRegCmd - Table is not owned, OS_write fails: Error writing Registry
+-----
+Begin Test Dump Command
+
+  CFE_EVS_SendEvent: 57, 3 - Unable to locate '129' in Table Registry
+PASSED  [cFE.TBL.15.001] CFE_TBL_DumpCmd - Table registry entry doesn't exist
+-----
+  CFE_SB_InitMsg called: initialized msg 0
+  CFE_SB_TimeStampMsg called
+  CFE_EVS_SendEvent: 89, 3 - Manage Notification Pkt Error(MsgId=0xCA00000C, CC=0x811603C, Param=0xBF9DE3AA, Status=0x00000026)
+PASSED  [cFE.TBL.15.002] CFE_TBL_DumpCmd - Active buffer, pointer created, validation passes, is a dump only table, no dump already in progress, got working buffer
+-----
+  CFE_TBL:GetWorkingBuffer-All shared buffers are locked
+
+  CFE_EVS_SendEvent: 60, 3 - No working buffers available for table 'DumpCmdTest'
+PASSED  [cFE.TBL.15.003] CFE_TBL_DumpCmd - Active buffer, pointer created, is a dump only table, no dump already in progress, fails to get a working buffer: No working buffers available
+-----
+  CFE_EVS_SendEvent: 76, 3 - Too many Dump Only Table Dumps have been requested
+PASSED  [cFE.TBL.15.004] CFE_TBL_DumpCmd - Active buffer, pointer created, is dump only table, fails to find a free dump control block: too many dump only table dumps have been requested
+-----
+  CFE_EVS_SendEvent: 77, 3 - A dump for 'DumpCmdTest' is already pending
+PASSED  [cFE.TBL.15.005] CFE_TBL_DumpCmd - Inactive buffer, double-buffered, dump already in progress: dump is already pending
+-----
+  OS_open called: (SUCCESS)
+  OS_close called: 10 (SUCCESS)
+  OS_creat called: 12; call to open  (SUCCESS)
+  CFE_FS_WriteHeader called: 12; Table Dump Image
+  OS_write called: 12 (SUCCESS)
+  OS_write called: 12 (SUCCESS)
+  CFE_EVS_SendEvent: 13, 2 - Successfully overwrote '' with Table 'DumpCmdTest'
+  OS_close called: 12 (SUCCESS)
+PASSED  [cFE.TBL.15.006] CFE_TBL_DumpCmd - Inactive buffer, single-buffered, pointer created, is a dump only table
+-----
+  CFE_EVS_SendEvent: 66, 3 - No Inactive Buffer for Table 'DumpCmdTest' present
+PASSED  [cFE.TBL.15.007] CFE_TBL_DumpCmd - Inactive buffer, single-buffered: no inactive buffer for table
+-----
+  CFE_EVS_SendEvent: 80, 3 - Cmd for Table 'DumpCmdTest' had illegal buffer parameter (0x00000002)
+PASSED  [cFE.TBL.15.008] CFE_TBL_DumpCmd - Illegal buffer parameter
+-----
+Begin Test Load Command
+
+  OS_open called: (FAILURE)
+  CFE_EVS_SendEvent: 53, 3 - Unable to open file 'LoadFileName' for table load, Status = 0xFFFFFFFF
+PASSED  [cFE.TBL.16.001] CFE_TBL_LoadCmd - Unable to open file
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 11; FS header description
+  CFE_EVS_SendEvent: 57, 3 - Unable to locate '0' in Table Registry
+  OS_close called: 11 (SUCCESS)
+PASSED  [cFE.TBL.16.002] CFE_TBL_LoadCmd - Table registry entry doesn't exist
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 12; FS header description
+  CFE_EVS_SendEvent: 79, 3 - Attempted to load DUMP-ONLY table '0' from 'LoadFileName'
+  OS_close called: 12 (SUCCESS)
+PASSED  [cFE.TBL.16.003] CFE_TBL_LoadCmd - Attempting to load a dump only table
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 13; FS header description
+  CFE_EVS_SendEvent: 88, 3 - Attempted to load table '0' while previous load is still pending
+  OS_close called: 13 (SUCCESS)
+PASSED  [cFE.TBL.16.004] CFE_TBL_LoadCmd - Attempting to load a table with load already pending
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 14; FS header description
+  CFE_EVS_SendEvent: 75, 3 - File 'LoadFileName' has more data than Tbl Hdr indicates (52)
+  OS_close called: 14 (SUCCESS)
+PASSED  [cFE.TBL.16.005] CFE_TBL_LoadCmd - There is more data than the file indicates
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 15; FS header description
+  CFE_EVS_SendEvent: 12, 2 - Successful load of 'LoadFileName' into '0' working buffer
+  OS_close called: 15 (SUCCESS)
+PASSED  [cFE.TBL.16.006] CFE_TBL_LoadCmd - Successful load
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 16; FS header description
+  CFE_EVS_SendEvent: 71, 3 - Incomplete load of 'LoadFileName' into '0' working buffer
+  OS_close called: 16 (SUCCESS)
+PASSED  [cFE.TBL.16.007] CFE_TBL_LoadCmd - Incomplete load of file into the working buffer
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 17; FS header description
+  CFE_TBL:GetWorkingBuffer-All shared buffers are locked
+
+  CFE_EVS_SendEvent: 60, 3 - No working buffers available for table '0'
+  OS_close called: 17 (SUCCESS)
+PASSED  [cFE.TBL.16.008] CFE_TBL_LoadCmd - No working buffers available
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 18; FS header description
+  CFE_EVS_SendEvent: 72, 3 - Cannot load 'LoadFileName' (52) at offset 0 in '0' (51)
+  OS_close called: 18 (SUCCESS)
+PASSED  [cFE.TBL.16.009] CFE_TBL_LoadCmd - Table header indicates data beyond size of the table
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 19; FS header description
+  CFE_EVS_SendEvent: 73, 3 - Table Hdr in 'LoadFileName' indicates no data in file
+  OS_close called: 19 (SUCCESS)
+PASSED  [cFE.TBL.16.010] CFE_TBL_LoadCmd - Table header indicates no data in file
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 20; FS header description
+  CFE_EVS_SendEvent: 74, 3 - 'LoadFileName' has partial load for uninitialized table '0'
+  OS_close called: 20 (SUCCESS)
+PASSED  [cFE.TBL.16.011] CFE_TBL_LoadCmd - File has partial load for uninitialized table
+-----
+Begin Test Housekeeping Command
+
+  CFE_SB_TimeStampMsg called
+  CFE_EVS_SendEvent: 56, 3 - Unable to send Hk Packet (Status=0xFFFFFFFF)
+  CFE_SB_TimeStampMsg called
+  CFE_EVS_SendEvent: 50, 3 - Invalid message ID -- ID = 0x080C
+  OS_open called: (SUCCESS)
+  OS_close called: 21 (SUCCESS)
+  OS_creat called: 13; call to open  (SUCCESS)
+  CFE_FS_WriteHeader called: 13; Table Dump Image
+  OS_write called: 13 (SUCCESS)
+  OS_write called: 13 (SUCCESS)
+  CFE_EVS_SendEvent: 13, 2 - Successfully overwrote '' with Table 'housekeepingtest'
+  OS_close called: 13 (SUCCESS)
+  OS_open called: (SUCCESS)
+  CFE_TBL:HkCmd-Unable to update timestamp in dump file ''
+
+  OS_close called: 22 (SUCCESS)
+PASSED  [cFE.TBL.17.001] CFE_TBL_HousekeepingCmd - Able to open dump file
+-----
+  CFE_SB_TimeStampMsg called
+  CFE_EVS_SendEvent: 50, 3 - Invalid message ID -- ID = 0x0804
+  CFE_SB_TimeStampMsg called
+  CFE_EVS_SendEvent: 50, 3 - Invalid message ID -- ID = 0x080C
+  OS_open called: (FAILURE)
+  OS_creat called: 14; call to open  (SUCCESS)
+  CFE_FS_WriteHeader called: 14; Table Dump Image
+  OS_write called: 14 (SUCCESS)
+  OS_write called: 14 (SUCCESS)
+  CFE_EVS_SendEvent: 14, 2 - Successfully dumped Table 'housekeepingtest' to ''
+  OS_close called: 14 (SUCCESS)
+  OS_open called: (FAILURE)
+  CFE_TBL:HkCmd-Unable to open dump file '' to update timestamp
+
+PASSED  [cFE.TBL.17.002] CFE_TBL_HousekeepingCmd - Unable to open dump file
+-----
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_ES_PoolCreate called
+Begin Test Register
+
+  CFE_TBL:ValidateAppID-GetAppID failed (Stat=0xC4000001)
+
+  CFE_TBL:Register-Bad AppId(1)
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register '', Status=0xC4000001
+PASSED  [cFE.TBL.18.001] CFE_TBL_Register - Invalid application ID
+-----
+  CFE_TBL:ValidateAppID-AppId=32 > Max Apps (32)
+
+  CFE_TBL:Register-Bad AppId(32)
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register '', Status=0xCC00000A
+PASSED  [cFE.TBL.18.002] CFE_TBL_Register - Application ID > maximum allowed
+-----
+  CFE_TBL:Register-Table Name (AAAAAAAAAAAAAAAAA) is too long
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'AAAAAAAAAAAAAAA', Status=0xCC000002
+PASSED  [cFE.TBL.18.003] CFE_TBL_Register - Table name too long
+-----
+  CFE_TBL:Register-Table Name () is zero length
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register '', Status=0xCC000002
+PASSED  [cFE.TBL.18.004] CFE_TBL_Register - Table name too short
+-----
+  CFE_TBL:Register-Table UT_Table1 has size of zero
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xCC000003
+PASSED  [cFE.TBL.18.005] CFE_TBL_Register - Size of table = 0
+-----
+  CFE_TBL:Register-Single Buffered Table 'UT_Table1' has size 16385 > 16384
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xCC000003
+PASSED  [cFE.TBL.18.006] CFE_TBL_Register - Table size too large
+-----
+  CFE_TBL:Register-Dbl Buffered Table 'UT_Table1' has size 16385 > 16384
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xCC000003
+PASSED  [cFE.TBL.18.007] CFE_TBL_Register - Double-buffered table size too large
+-----
+  CFE_TBL:Register-User Def tbl 'UT_Table1' cannot be dbl buff, load/dump or critical
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xCC000025
+PASSED  [cFE.TBL.18.008] CFE_TBL_Register - Invalid table option combination (CFE_TBL_OPT_USR_DEF_ADDR | CFE_TBL_OPT_DBL_BUFFER)
+-----
+  CFE_TBL:Register-User Def tbl 'UT_Table1' cannot be dbl buff, load/dump or critical
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xCC000025
+PASSED  [cFE.TBL.18.009] CFE_TBL_Register - Invalid table option combination (CFE_TBL_OPT_USR_DEF_ADDR | CFE_TBL_OPT_LOAD_DUMP)
+-----
+  CFE_TBL:Register-User Def tbl 'UT_Table1' cannot be dbl buff, load/dump or critical
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xCC000025
+PASSED  [cFE.TBL.18.010] CFE_TBL_Register - Invalid table option combination (CFE_TBL_OPT_USR_DEF_ADDR | CFE_TBL_OPT_CRITICAL)
+-----
+  CFE_TBL:Register-Dump Only tbl 'UT_Table1' cannot be double buffered or critical
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xCC000025
+PASSED  [cFE.TBL.18.011] CFE_TBL_Register - Invalid table option combination (CFE_TBL_OPT_DUMP_ONLY | CFE_TBL_OPT_DBL_BUFFER)
+-----
+  CFE_TBL:Register-1st Buf Alloc GetPool fail Stat=0xC4000007 MemPoolHndl=0x00000000
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xC4000007
+PASSED  [cFE.TBL.18.012] CFE_TBL_Register - Memory handle error
+-----
+  CFE_TBL:Register-1st Buf Alloc GetPool fail Stat=0xC4000008 MemPoolHndl=0x00000000
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xC4000008
+PASSED  [cFE.TBL.18.013] CFE_TBL_Register - Memory block size error
+-----
+  CFE_TBL:Register-2nd Buf Alloc GetPool fail Stat=0xC4000008 MemPoolHndl=0x00000000
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xC4000008
+PASSED  [cFE.TBL.18.014] CFE_TBL_Register - Memory block size error (for second buffer)
+-----
+PASSED  [cFE.TBL.18.015] CFE_TBL_Register - Get a double buffered table - successful
+-----
+  CFE_TBL:Register-App(2) Registering Duplicate Table 'ut_cfe_tbl.UT_Table1' owned by App(1)
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xCC00000D
+PASSED  [cFE.TBL.18.016] CFE_TBL_Register - Table owned by another application
+-----
+  CFE_TBL:Register-Attempt to register existing table ('ut_cfe_tbl.UT_Table1') with different size(12!=8)
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table1', Status=0xCC00000C
+PASSED  [cFE.TBL.18.017] CFE_TBL_Register - Table size mismatch
+-----
+PASSED  [cFE.TBL.18.018] CFE_TBL_Register - Table with same size and name (setup)
+-----
+PASSED  [cFE.TBL.18.019] CFE_TBL_Register - Table with same size and name
+-----
+PASSED  [cFE.TBL.18.020] CFE_TBL_Unregister - Table with same size and name (cleanup)
+-----
+PASSED  [cFE.TBL.18.021] CFE_TBL_Register - Register single buffered table
+-----
+PASSED  [cFE.TBL.18.022] CFE_TBL_Unregister - Register single buffered table (cleanup)
+-----
+PASSED  [cFE.TBL.18.023] CFE_TBL_Register - Register single buffered dump-only table
+-----
+PASSED  [cFE.TBL.18.024] CFE_TBL_Unregister - Register single buffered dump-only table (cleanup)
+-----
+PASSED  [cFE.TBL.18.025] CFE_TBL_Register - Register user defined address table
+-----
+PASSED  [cFE.TBL.18.026] CFE_TBL_Unregister - Register user defined address table (cleanup)
+-----
+PASSED  [cFE.TBL.18.027] CFE_TBL_Register - Register critical table
+-----
+PASSED  [cFE.TBL.18.028] CFE_TBL_Unregister - Register critical table (cleanup)
+-----
+PASSED  [cFE.TBL.18.029] CFE_TBL_Register - Register critical table that already has an allocated CDS
+-----
+PASSED  [cFE.TBL.18.030] CFE_TBL_Unregister - Register critical table that already has an allocated CDS (cleanup)
+-----
+  CFE_TBL:Register-Failed to recover 'ut_cfe_tbl.UT_Table1' from CDS (ErrCode=0xC4000007)
+
+PASSED  [cFE.TBL.18.031] CFE_TBL_Register - Register critical table that already has an allocated CDS but fails recovery
+-----
+PASSED  [cFE.TBL.18.032] CFE_TBL_Unregister - Register critical table that already has an allocated CDS but fails recovery (cleanup)
+-----
+  CFE_TBL:Register-Failed to recover 'ut_cfe_tbl.UT_Table1' info from CDS TblReg
+
+PASSED  [cFE.TBL.18.033] CFE_TBL_Register - Register Critical table that already has an allocated CDS but no critical table registry entry
+-----
+PASSED  [cFE.TBL.18.034] CFE_TBL_Unregister - Register Critical table that already has an allocated CDS but no critical table registry entry (cleanup)
+-----
+  CFE_TBL:Register-Failed to find a free Crit Tbl Reg Rec for 'ut_cfe_tbl.UT_Table1'
+
+PASSED  [cFE.TBL.18.035] CFE_TBL_Register - Register Critical table but no critical table registry entry is free
+-----
+PASSED  [cFE.TBL.18.036] CFE_TBL_Unregister - Register Critical table but no critical table registry entry is free (cleanup)
+-----
+  CFE_TBL:Register-Failed to register 'UNKNOWN.UT_Table1' as a CDS (ErrCode=0xC4000011)
+
+PASSED  [cFE.TBL.18.037] CFE_TBL_Register - Register critical table when CDS registry is full
+-----
+PASSED  [cFE.TBL.18.038] CFE_TBL_Register - Registry full (setup)
+-----
+  CFE_TBL:Register-Registry full
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table129', Status=0xCC000006
+PASSED  [cFE.TBL.18.039] CFE_TBL_Register - Registry full
+-----
+PASSED  [cFE.TBL.18.040] CFE_TBL_Unregister - Registry full (cleanup)
+-----
+PASSED  [cFE.TBL.18.041] CFE_TBL_Share - No available handles (setup)
+-----
+  CFE_TBL:Register-No more free handles
+
+  CFE_EVS_SendEvent from app 10: 90, 3 - ut_cfe_tbl Failed to Register 'ut_cfe_tbl.UT_Table128', Status=0xCC00000B
+PASSED  [cFE.TBL.18.042] CFE_TBL_Register - No available handles
+-----
+Begin Test Share
+
+  CFE_TBL:ValidateAppID-GetAppID failed (Stat=0xC4000001)
+
+  CFE_TBL:Share-Bad AppId(1)
+
+  CFE_EVS_SendEvent from app 10: 91, 3 - ut_cfe_tbl Failed to Share 'ut_cfe_tbl.UT_Table2', Status=0xC4000001
+PASSED  [cFE.TBL.19.001] CFE_TBL_Share - Invalid application ID
+-----
+  CFE_TBL:ValidateAppID-AppId=32 > Max Apps (32)
+
+  CFE_TBL:Share-Bad AppId(32)
+
+  CFE_EVS_SendEvent from app 10: 91, 3 - ut_cfe_tbl Failed to Share 'ut_cfe_tbl.UT_Table2', Status=0xCC00000A
+PASSED  [cFE.TBL.19.002] CFE_TBL_Share - Application ID > maximum allowed
+-----
+  CFE_TBL:Share-Table 'ut_cfe_tbl.NOT_Table2' not found in Registry
+
+  CFE_EVS_SendEvent from app 10: 91, 3 - ut_cfe_tbl Failed to Share 'ut_cfe_tbl.NOT_Table2', Status=0xCC000002
+PASSED  [cFE.TBL.19.003] CFE_TBL_Share - Table name not in registry
+-----
+  CFE_TBL:Share-No more free handles
+
+  CFE_EVS_SendEvent from app 10: 91, 3 - ut_cfe_tbl Failed to Share 'ut_cfe_tbl.UT_Table3', Status=0xCC00000B
+PASSED  [cFE.TBL.19.004] CFE_TBL_Share - No available table handles
+-----
+PASSED  [cFE.TBL.19.005] CFE_TBL_Unregister - Free handles
+-----
+PASSED  [cFE.TBL.19.006] CFE_TBL_Unregister - PutPoolBuf error
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 23; FS header description
+  OS_close called: 23 (SUCCESS)
+  CFE_EVS_SendEvent from app 10: 35, 1 - Successfully loaded 'ut_cfe_tbl.UT_Table4' from 'TblSrcFileName.dat'
+PASSED  [cFE.TBL.19.007] CFE_TBL_Load - First load of a table - successful
+-----
+PASSED  [cFE.TBL.19.008] CFE_TBL_Share - Share of table that has not been loaded - successful
+-----
+PASSED  [cFE.TBL.19.009] CFE_TBL_Share - Share of table that has been loaded - successful
+-----
+Begin Test Unregister
+
+  CFE_TBL:ValidateHandle-Table Handle=256 is > 256
+
+  CFE_TBL:ValidateAccess-Invalid Tbl Handle=256
+
+  CFE_TBL:Unregister-App(1) does not have access to Tbl Handle=256
+
+  CFE_EVS_SendEvent from app 10: 92, 3 - ut_cfe_tbl Failed to Unregister '?', Status=0xCC000001
+PASSED  [cFE.TBL.20.001] CFE_TBL_Unregister - Invalid handle
+-----
+PASSED  [cFE.TBL.20.002] CFE_TBL_Unregister - Unregister shared table to make it unowned
+-----
+PASSED  [cFE.TBL.20.003] CFE_TBL_Unregister - Unregister unowned table
+-----
+Begin Test Notify by Message
+
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_ES_PoolCreate called
+PASSED  [cFE.TBL.21.001] CFE_TBL_Register - Notify by message (setup)
+-----
+PASSED  [cFE.TBL.21.002] CFE_TBL_NotifyByMessage - Notify - success
+-----
+  CFE_TBL:NotifyByMsg-App(1) does not own Tbl Handle=0
+
+PASSED  [cFE.TBL.21.003] CFE_TBL_NotifyByMessage - Notify - no access
+-----
+Begin Test Load
+
+PASSED  [cFE.TBL.22.001] CFE_TBL_Register - Load setup - single buffered table
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 24; Test description
+  OS_close called: 24 (SUCCESS)
+  CFE_EVS_SendEvent from app 10: 93, 3 - ut_cfe_tbl Failed to Load 'ut_cfe_tbl.UT_Table1' from 'TblSrcFileName.dat', Status=0xCC000023
+PASSED  [cFE.TBL.22.002] CFE_TBL_Load - Attempt to perform partial INITIAL load
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 25; Test description
+  OS_close called: 25 (SUCCESS)
+  CFE_TBL:Load-App(1) Fail to load Tbl 'ut_cfe_tbl.UT_Table1' from 'TblSrcFileName.dat' (Stat=0xCC000020)
+
+  CFE_EVS_SendEvent from app 10: 93, 3 - ut_cfe_tbl Failed to Load 'ut_cfe_tbl.UT_Table1' from 'TblSrcFileName.dat', Status=0xCC000020
+PASSED  [cFE.TBL.22.003] CFE_TBL_Load - File data incompatible with table
+-----
+  CFE_EVS_SendEvent from app 10: 35, 1 - Successfully loaded 'ut_cfe_tbl.UT_Table1' from 'Addr 0xBF9E8B2C'
+PASSED  [cFE.TBL.22.004] CFE_TBL_Load - Perform load from memory
+-----
+  CFE_TBL:Load-App(1) attempt to load from illegal source type=99
+
+  CFE_EVS_SendEvent from app 10: 94, 3 - ut_cfe_tbl Failed to Load 'ut_cfe_tbl.UT_Table1' (Invalid Source Type)
+PASSED  [cFE.TBL.22.005] CFE_TBL_Load - Attempt to load from illegal source type
+-----
+  CFE_TBL:Load-App(1) reports load invalid (Stat=0xFFFFFFFF) for 'ut_cfe_tbl.UT_Table1'
+
+  CFE_EVS_SendEvent from app 10: 93, 3 - ut_cfe_tbl Failed to Load 'ut_cfe_tbl.UT_Table1' from Addr 0xBF9E8B2C, Status=0xFFFFFFFF
+PASSED  [cFE.TBL.22.006] CFE_TBL_Load - Fail validation function on table load (negative return code)
+-----
+  CFE_TBL:Load-App(1) Validation func return code invalid (Stat=0x00000001) for 'ut_cfe_tbl.UT_Table1'
+
+  CFE_TBL:Load-App(1) reports load invalid (Stat=0xFFFFFFFF) for 'ut_cfe_tbl.UT_Table1'
+
+  CFE_EVS_SendEvent from app 10: 93, 3 - ut_cfe_tbl Failed to Load 'ut_cfe_tbl.UT_Table1' from Addr 0xBF9E8B2C, Status=0xFFFFFFFF
+PASSED  [cFE.TBL.22.007] CFE_TBL_Load - Fail validation function on table load (positive return code)
+-----
+  CFE_TBL:ValidateHandle-Table Handle=256 is > 256
+
+  CFE_TBL:ValidateAccess-Invalid Tbl Handle=256
+
+  CFE_TBL:Load-App(1) does not have access to Tbl Handle=256
+
+  CFE_EVS_SendEvent from app 10: 93, 3 - ut_cfe_tbl Failed to Load '?', Status=0xCC000001
+PASSED  [cFE.TBL.22.008] CFE_TBL_Load - Attempt to load table with bad handle
+-----
+PASSED  [cFE.TBL.22.009] CFE_TBL_Register - Attempt to load a dump-only table (setup)
+-----
+  CFE_TBL:Load-App(1) attempted to load Dump Only Tbl 'ut_cfe_tbl.UT_Table2'
+
+  CFE_EVS_SendEvent from app 10: 93, 3 - ut_cfe_tbl Failed to Load 'ut_cfe_tbl.UT_Table2' from Addr 0xBF9E8B2C, Status=0xCC000010
+PASSED  [cFE.TBL.22.010] CFE_TBL_Load - Attempt to load a dump-only table
+-----
+PASSED  [cFE.TBL.22.011] CFE_TBL_Register - Specify table address for a user defined table
+-----
+  CFE_EVS_SendEvent from app 10: 35, 1 - Successfully loaded 'ut_cfe_tbl.UT_Table3' from 'Addr 0xBF9E8B2C'
+PASSED  [cFE.TBL.22.012] CFE_TBL_Load - Specify table address for a user defined table
+-----
+PASSED  [cFE.TBL.22.013] CFE_TBL_Share - Attempt to load locked shared table (setup part 1)
+-----
+PASSED  [cFE.TBL.22.014] CFE_TBL_GetAddress - Attempt to load locked shared table (setup part 2)
+-----
+  CFE_TBL:UpdateInternal-Unable to update locked table Handle=0
+
+  CFE_TBL:Load-App(1) fail to update 'ut_cfe_tbl.UT_Table1' (Stat=0x4C000018)
+
+PASSED  [cFE.TBL.22.015] CFE_TBL_Load - Attempt to load locked shared table
+-----
+PASSED  [cFE.TBL.22.016] CFE_TBL_ReleaseAddress - Attempt to load locked shared table (cleanup)
+-----
+Begin Test Get Address
+
+  CFE_TBL:GetAddressInternal-App(3) does not have access to Tbl Handle=3
+
+PASSED  [cFE.TBL.23.001] CFE_TBL_GetAddress - Application does not have access to table
+-----
+  CFE_TBL:ValidateAppID-GetAppID failed (Stat=0xC4000001)
+
+  CFE_TBL:GetAddress-Bad AppId=3
+
+PASSED  [cFE.TBL.23.002] CFE_TBL_GetAddress - Invalid application ID
+-----
+  CFE_TBL:ValidateHandle-Table Handle=256 is > 256
+
+  CFE_TBL:GetAddressInternal-App(3) using invalid Tbl Handle=256
+
+PASSED  [cFE.TBL.23.003] CFE_TBL_GetAddress - Invalid table handle
+-----
+PASSED  [cFE.TBL.23.004] CFE_TBL_Unregister - Attempt to get address of unregistered table (setup)
+-----
+  CFE_TBL:GetAddressInternal-App(2) attempt to access unowned Tbl Handle=3
+
+PASSED  [cFE.TBL.23.005] CFE_TBL_GetAddress - Attempt to get address of unregistered table
+-----
+Begin Test Release Address
+
+PASSED  [cFE.TBL.24.001] CFE_TBL_Register - Attempt to release address with invalid application ID (setup)
+-----
+  CFE_TBL:ValidateAppID-GetAppID failed (Stat=0xC4000001)
+
+  CFE_TBL:ValidateAccess-Bad AppId=1
+
+  CFE_TBL:ReleaseAddress-App(1) does not have access to Tbl Handle=0
+
+PASSED  [cFE.TBL.24.002] CFE_TBL_GetAddress - Attempt to release address with invalid application ID
+-----
+Begin Test Get Addresses
+
+PASSED  [cFE.TBL.25.001] CFE_TBL_Register - CFE_TBL_GetAddresses setup - register a double buffered table
+-----
+PASSED  [cFE.TBL.25.002] CFE_TBL_GetAddresses - Get addresses of two tables (neither of which have been loaded)
+-----
+  CFE_TBL:ValidateAppID-AppId=32 > Max Apps (32)
+
+  CFE_TBL:GetAddresses-Bad AppId=32
+
+PASSED  [cFE.TBL.25.003] CFE_TBL_Validate - Attempt to get addresses of tables that application is not allowed to see
+-----
+Begin Test Release Addresses
+
+PASSED  [cFE.TBL.26.001] CFE_TBL_ReleaseAddresses - Release addresses of two tables (neither of which have been loaded)
+-----
+Begin Test Validate
+
+  CFE_TBL:ValidateAppID-AppId=32 > Max Apps (32)
+
+  CFE_TBL:ValidateAccess-Bad AppId=32
+
+  CFE_TBL:Validate-App(32) does not have access to Tbl Handle=0
+
+PASSED  [cFE.TBL.27.001] CFE_TBL_Validate - Attempt to validate table that application is not allowed to see
+-----
+PASSED  [cFE.TBL.27.002] CFE_TBL_Validate - Attempt to validate table when no validation is pending
+-----
+Begin Test Manage
+
+PASSED  [cFE.TBL.28.001] CFE_TBL_Manage - Manage table that doesn't need managing
+-----
+  CFE_TBL:Load-Tbl Load already in progress for 'ut_cfe_tbl.UT_Table1'
+
+  CFE_EVS_SendEvent from app 10: 93, 3 - ut_cfe_tbl Failed to Load 'ut_cfe_tbl.UT_Table1' from Addr 0xBF9E8B24, Status=0xCC000012
+PASSED  [cFE.TBL.28.002] CFE_TBL_Load - Attempt to load while a load is in progress
+-----
+  CFE_EVS_SendEvent from app 10: 96, 3 - ut_cfe_tbl validation failed for Inactive 'ut_cfe_tbl.UT_Table1', Status=0xFFFFFFFF
+PASSED  [cFE.TBL.28.003] CFE_TBL_Manage - Manage table that has a failed validation pending on inactive buffer (valid function return code)
+-----
+  CFE_EVS_SendEvent from app 10: 96, 3 - ut_cfe_tbl validation failed for Inactive 'ut_cfe_tbl.UT_Table1', Status=0x00000001
+  CFE_TBL:Validate-App(10) Validation func return code invalid (Stat=0x00000001) for 'ut_cfe_tbl.UT_Table1'
+
+PASSED  [cFE.TBL.28.004] CFE_TBL_Manage - Manage table that has a failed validation pending on inactive buffer (invalid function return code)
+-----
+  CFE_EVS_SendEvent from app 10: 36, 2 - ut_cfe_tbl validation successful for Inactive 'ut_cfe_tbl.UT_Table1'
+PASSED  [cFE.TBL.28.005] CFE_TBL_Manage - Manage table that has a successful validation pending on an inactive buffer
+-----
+  CFE_EVS_SendEvent from app 10: 96, 3 - ut_cfe_tbl validation failed for Active 'ut_cfe_tbl.UT_Table1', Status=0xFFFFFFFF
+PASSED  [cFE.TBL.28.006] CFE_TBL_Manage - Manage table that has an unsuccessful validation pending on an active buffer
+-----
+  CFE_EVS_SendEvent from app 10: 96, 3 - ut_cfe_tbl validation failed for Active 'ut_cfe_tbl.UT_Table1', Status=0x00000001
+  CFE_TBL:Validate-App(10) Validation func return code invalid (Stat=0x00000001) for 'ut_cfe_tbl.UT_Table1'
+
+PASSED  [cFE.TBL.28.007] CFE_TBL_Manage - Manage table that has an unsuccessful validation pending on an active buffer
+-----
+  CFE_EVS_SendEvent from app 10: 36, 2 - ut_cfe_tbl validation successful for Active 'ut_cfe_tbl.UT_Table1'
+PASSED  [cFE.TBL.28.008] CFE_TBL_Manage - Manage table that has a successful validation pending on an active buffer
+-----
+PASSED  [cFE.TBL.28.009] CFE_TBL_Share - Process an update request on a locked table (setup - part 1)
+-----
+PASSED  [cFE.TBL.28.010] CFE_TBL_GetAddress - Process an update request on a locked table (setup - part 2)
+-----
+  CFE_TBL:UpdateInternal-Unable to update locked table Handle=0
+
+  CFE_TBL:Update-App(1) fail to update Tbl 'ut_cfe_tbl.UT_Table1' (Stat=0x4C000018)
+
+PASSED  [cFE.TBL.28.011] CFE_TBL_Manage - Process an update request on a locked table
+-----
+PASSED  [cFE.TBL.28.012] CFE_TBL_ReleaseAddress - Release address to unlock shared table
+-----
+  CFE_EVS_SendEvent from app 10: 37, 2 - ut_cfe_tbl Successfully Updated 'ut_cfe_tbl.UT_Table1'
+PASSED  [cFE.TBL.28.013] CFE_TBL_Manage - Process an update request on a single buffered table
+-----
+  CFE_EVS_SendEvent from app 10: 96, 3 - ut_cfe_tbl validation failed for Inactive 'ut_cfe_tbl.UT_Table2', Status=0xFFFFFFFF
+PASSED  [cFE.TBL.28.014] CFE_TBL_Manage - Manage table that has a failed validation pending on an inactive buffer (double buffered)
+-----
+  CFE_EVS_SendEvent from app 10: 36, 2 - ut_cfe_tbl validation successful for Inactive 'ut_cfe_tbl.UT_Table2'
+PASSED  [cFE.TBL.28.015] CFE_TBL_Manage - Manage table that has a successful validation pending on an inactive buffer (double buffered)
+-----
+  CFE_EVS_SendEvent from app 10: 96, 3 - ut_cfe_tbl validation failed for Active 'ut_cfe_tbl.UT_Table2', Status=0xFFFFFFFF
+PASSED  [cFE.TBL.28.016] CFE_TBL_Manage - Manage table that has an unsuccessful validation pending on an active buffer (double buffered)
+-----
+  CFE_EVS_SendEvent from app 10: 36, 2 - ut_cfe_tbl validation successful for Active 'ut_cfe_tbl.UT_Table2'
+PASSED  [cFE.TBL.28.017] CFE_TBL_Manage - Manage table that has a successful validation pending on an active buffer (double buffered)
+-----
+PASSED  [cFE.TBL.28.018] CFE_TBL_Manage - Manage table that has a dump request pending
+-----
+Begin Test Update
+
+  CFE_TBL:ValidateAccess-App(2) no access to Tbl Handle=0 (Stat=0xCC000008)
+
+  CFE_TBL:Update-App(2) does not have access to Tbl Handle=0
+
+  CFE_EVS_SendEvent from app 10: 95, 3 - ut_cfe_tbl Failed to Update '?', Status=0xCC000008
+PASSED  [cFE.TBL.29.001] CFE_TBL_Update - Process an update on a single buffered table without privileges
+-----
+  CFE_TBL:Update-App(1) fail to update Tbl 'ut_cfe_tbl.UT_Table1' (Stat=0x4C000017)
+
+PASSED  [cFE.TBL.29.002] CFE_TBL_Update - Process an update on a single buffered table when no update is pending
+-----
+Begin Test Get Status
+
+  CFE_TBL:ValidateAppID-AppId=32 > Max Apps (32)
+
+  CFE_TBL:ValidateAccess-Bad AppId=32
+
+  CFE_TBL:GetStatus-App(32) does not have access to Tbl Handle=0
+
+PASSED  [cFE.TBL.30.001] CFE_TBL_GetStatus - Attempt to get status on a table that the application is not allowed to see
+-----
+Begin Test Get Info
+
+PASSED  [cFE.TBL.31.001] CFE_TBL_GetInfo - Get information on UT_Table1
+-----
+PASSED  [cFE.TBL.31.002] CFE_TBL_GetInfo - Get information on non-existent table
+-----
+Begin Test Table Modified
+
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_ES_PoolCreate called
+PASSED  [cFE.TBL.32.001] CFE_TBL_Register - Add TBL API for notifying table services that table has been updated by application (setup)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 26; FS header description
+  OS_close called: 26 (SUCCESS)
+  CFE_EVS_SendEvent from app 10: 35, 1 - Successfully loaded 'ut_cfe_tbl.UT_Table1' from 'MyInputFile'
+PASSED  [cFE.TBL.32.002] CFE_TBL_Modified - Add TBL API for notifying table services that table has been updated by application
+-----
+PASSED  [cFE.TBL.32.003] CFE_TBL_Register - Add TBL API for notifying table services that table has been updated by application (setup)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 27; FS header description
+  OS_close called: 27 (SUCCESS)
+  CFE_EVS_SendEvent from app 10: 35, 1 - Successfully loaded 'ut_cfe_tbl.UT_Table2' from 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+PASSED  [cFE.TBL.32.004] CFE_TBL_Modified - Add TBL API for notifying table services that table has been updated by application
+-----
+  CFE_TBL:ValidateHandle-Table Handle=-1 is for unused Table Handle
+
+  CFE_TBL:ValidateAccess-Invalid Tbl Handle=-1
+
+  CFE_TBL:Modified-App(1) does not have access to Tbl Handle=-1
+
+PASSED  [cFE.TBL.32.005] CFE_TBL_Modified - Invalid table handle
+-----
+Begin Test Internal
+
+PASSED  [cFE.TBL.33.001] CFE_TBL_Register - CFE_TBL_GetWorkingBuffer setup - register a double buffered table
+-----
+PASSED  [cFE.TBL.33.002] CFE_TBL_GetWorkingBuffer - Initial load of double buffered table
+-----
+  CFE_TBL:GetWorkBuf-Internal error taking WorkBuf Mutex (Status=0xFFFFFFFF)
+
+PASSED  [cFE.TBL.33.003] CFE_TBL_GetWorkingBuffer - Single buffered table has mutex sem take failure
+-----
+PASSED  [cFE.TBL.33.004] CFE_TBL_LoadFromFile - Filename too long
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 28; FS header description
+  OS_close called: 28 (SUCCESS)
+PASSED  [cFE.TBL.33.005] CFE_TBL_LoadFromFile - File content too large (according to header)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 29; FS header description
+  OS_close called: 29 (SUCCESS)
+PASSED  [cFE.TBL.33.006] CFE_TBL_LoadFromFile - File content too large (too much content)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 30; FS header description
+  OS_close called: 30 (SUCCESS)
+PASSED  [cFE.TBL.33.007] CFE_TBL_LoadFromFile - File content incomplete
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 31; FS header description
+  OS_close called: 31 (SUCCESS)
+PASSED  [cFE.TBL.33.008] CFE_TBL_LoadFromFile - File for wrong table
+-----
+  OS_open called: (FAILURE)
+PASSED  [cFE.TBL.33.009] CFE_TBL_LoadFromFile - OS open error
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 32; FS header description
+  OS_close called: 32 (SUCCESS)
+PASSED  [cFE.TBL.33.010] CFE_TBL_LoadFromFile - File too short warning
+-----
+  CFE_EVS_SendEvent from app 10: 54, 3 - Unable to read std header for 'MyTestInputFilename', Status = 0x0000003F
+PASSED  [cFE.TBL.33.011] CFE_TBL_ReadHeaders - Failure reading standard cFE file header
+-----
+  CFE_FS_ReadHeader called: 0; FS header description
+  CFE_EVS_SendEvent from app 10: 58, 3 - File 'MyTestInputFilename' is not a cFE file type, ContentType = 0x63464530
+PASSED  [cFE.TBL.33.012] CFE_TBL_ReadHeaders - Bad magic number in cFE standard header
+-----
+  CFE_FS_ReadHeader called: 0; FS header description
+  CFE_EVS_SendEvent from app 10: 59, 3 - File subtype for 'MyTestInputFilename' is wrong. Subtype = 0x00000007
+PASSED  [cFE.TBL.33.013] CFE_TBL_ReadHeaders - Wrong cFE file subType
+-----
+  CFE_FS_ReadHeader called: 0; FS header description
+  CFE_EVS_SendEvent from app 10: 55, 3 - Unable to read tbl header for 'MyTestInputFilename', Status = 0x00000033
+PASSED  [cFE.TBL.33.014] CFE_TBL_ReadHeaders - Failure reading cFE table header
+-----
+  CFE_TBL:RemoveAccessLink-PutPoolBuf[1] Fail Stat=0xC4000007, Hndl=0x00000000, Buf=0x00000000
+
+PASSED  [cFE.TBL.33.015] CFE_TBL_RemoveAccessLink - Fail to put back memory buffer for double buffered table
+-----
+  CFE_TBL:Registry mutex creation failed! RC=0xffffffff
+
+PASSED  [cFE.TBL.33.016] CFE_TBL_EarlyInit - Table registry mutex create failure
+-----
+  CFE_TBL:Working buffer mutex creation failed! RC=0xffffffff
+
+PASSED  [cFE.TBL.33.017] CFE_TBL_EarlyInit - Work buffer mutex create failure
+-----
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_ES_PoolCreate called
+  CFE_TBL:InitBuffers PoolCreate fail Status=0xC400000A
+
+PASSED  [cFE.TBL.33.018] CFE_TBL_EarlyInit - Memory pool create failure
+-----
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_ES_PoolCreate called
+  CFE_TBL:InitBuffers GetPoolBuf Fail Index=0, Status=0xC4000007
+
+PASSED  [cFE.TBL.33.019] CFE_TBL_EarlyInit - Get pool buffer failure
+-----
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_ES_PoolCreate called
+  CFE_TBL:EarlyInit-Failed to recover Critical Table Registry (Err=0xC400001A)
+
+PASSED  [cFE.TBL.33.020] CFE_TBL_EarlyInit - CDS already exists but restore fails
+-----
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_ES_PoolCreate called
+  CFE_TBL:EarlyInit-Failed to create Critical Table Registry (Err=0xC400FFFF)
+
+PASSED  [cFE.TBL.33.021] CFE_TBL_EarlyInit - No CDS available
+-----
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_ES_PoolCreate called
+  CFE_TBL:EarlyInit-Failed to save Critical Table Registry (Err=0xC4000007)
+
+PASSED  [cFE.TBL.33.022] CFE_TBL_EarlyInit - Fail to save critical table registry to CDS
+-----
+  CFE_SB_InitMsg called: initialized msg 2052
+  CFE_SB_InitMsg called: initialized msg 2060
+  CFE_ES_PoolCreate called
+PASSED  [cFE.TBL.33.023] CFE_TBL_EarlyInit - Reset (setup - part 1)
+-----
+PASSED  [cFE.TBL.33.024] CFE_TBL_Register - Critical single buffered table (setup - part 2)
+-----
+PASSED  [cFE.TBL.33.025] CFE_TBL_Register - Critical double buffered table (setup - part 3)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 33; FS header description
+  OS_close called: 33 (SUCCESS)
+  CFE_EVS_SendEvent from app 10: 35, 1 - Successfully loaded 'ut_cfe_tbl.UT_Table1' from 'TblSrcFileName.dat'
+PASSED  [cFE.TBL.33.026] CFE_TBL_Load - Critical single buffered table (setup - part 4)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 34; FS header description
+  OS_close called: 34 (SUCCESS)
+  CFE_EVS_SendEvent from app 10: 35, 2 - Successfully loaded 'ut_cfe_tbl.UT_Table1' from 'TblSrcFileName.dat'
+PASSED  [cFE.TBL.33.027] CFE_TBL_Load - Update CDS for single buffered table (setup - part 5)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 35; FS header description
+  OS_close called: 35 (SUCCESS)
+  CFE_EVS_SendEvent from app 10: 35, 1 - Successfully loaded 'ut_cfe_tbl.UT_Table2' from 'TblSrcFileName.dat'
+PASSED  [cFE.TBL.33.028] CFE_TBL_Load - Critical single buffered table (setup - part 6)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 36; FS header description
+  OS_close called: 36 (SUCCESS)
+  CFE_EVS_SendEvent from app 10: 35, 2 - Successfully loaded 'ut_cfe_tbl.UT_Table2' from 'TblSrcFileName.dat'
+PASSED  [cFE.TBL.33.029] CFE_TBL_Load - Update CDS for single buffered table (setup - part 7)
+-----
+  CFE_TBL:GetWorkingBuffer-Inactive Dbl Buff Locked for 'ut_cfe_tbl.UT_Table2' by AppId=1
+
+  CFE_TBL:Load-App(1) Failed to get Working Buffer (Stat=0xCC00000F)
+
+  CFE_EVS_SendEvent from app 10: 93, 3 - ut_cfe_tbl Failed to Load 'ut_cfe_tbl.UT_Table2' from 'TblSrcFileName.dat', Status=0xCC00000F
+PASSED  [cFE.TBL.33.030] CFE_TBL_Load - Both double buffered table buffers locked
+-----
+PASSED  [cFE.TBL.33.031] CFE_TBL_GetAddress - Error writing to CDS (setup - part 1)
+-----
+PASSED  [cFE.TBL.33.032] CFE_TBL_ReleaseAddress - Error writing to CDS (setup - part 2)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 37; FS header description
+  OS_close called: 37 (SUCCESS)
+  CFE_TBL:UpdateCritTbl-Unable to update Critical Table 'ut_cfe_tbl.UT_Table2' in CDS (Err=0xC4000007)
+
+  CFE_EVS_SendEvent from app 10: 35, 2 - Successfully loaded 'ut_cfe_tbl.UT_Table2' from 'TblSrcFileName.dat'
+PASSED  [cFE.TBL.33.033] CFE_TBL_Load - Error writing to CDS
+-----
+PASSED  [cFE.TBL.33.034] CFE_TBL_GetAddress - Error writing to CDS second time (setup - part 1)
+-----
+PASSED  [cFE.TBL.33.035] CFE_TBL_ReleaseAddress - Error writing to CDS second time (setup - part 2)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 38; FS header description
+  OS_close called: 38 (SUCCESS)
+  CFE_TBL:UpdateCritTbl-Unable to update Critical Table Registry in CDS (Err=0xC4000007)
+
+  CFE_EVS_SendEvent from app 10: 35, 2 - Successfully loaded 'ut_cfe_tbl.UT_Table2' from 'TblSrcFileName.dat'
+PASSED  [cFE.TBL.33.036] CFE_TBL_Load - Error writing to CDS (second time)
+-----
+PASSED  [cFE.TBL.33.037] CFE_TBL_GetAddress - Failure to find CDS handle in CDS registry (setup - part 1)
+-----
+PASSED  [cFE.TBL.33.038] CFE_TBL_ReleaseAddress - Failure to find CDS handle in CDS registry (setup - part 2)
+-----
+  OS_open called: (SUCCESS)
+  CFE_FS_ReadHeader called: 39; FS header description
+  OS_close called: 39 (SUCCESS)
+  CFE_TBL:UpdateCritTbl-Error finding 'ut_cfe_tbl.UT_Table2' in Critical Table Registry
+
+  CFE_EVS_SendEvent from app 10: 35, 2 - Successfully loaded 'ut_cfe_tbl.UT_Table2' from 'TblSrcFileName.dat'
+PASSED  [cFE.TBL.33.039] CFE_TBL_Load - Failure to find CDS handle in CDS registry
+-----
+PASSED  [cFE.TBL.33.040] CFE_TBL_Share - Unregister shared table (setup)
+-----
+PASSED  [cFE.TBL.33.041] CFE_TBL_Unregister - Unregister shared table
+-----
+  CFE_TBL:RemoveAccessLink-PutPoolBuf[0] Fail Stat=0xFFFFFFFF, Hndl=0x00000000, Buf=0x00000000
+
+  CFE_TBL:RemoveAccessLink-PutPoolBuf[0] Fail Stat=0xFFFFFFFF, Hndl=0x00000000, Buf=0x00000000
+
+  CFE_TBL:RemoveAccessLink-PutPoolBuf[1] Fail Stat=0xFFFFFFFF, Hndl=0x00000000, Buf=0x00000000
+
+PASSED  [cFE.TBL.33.042] CFE_TBL_CleanUpApp - Execute clean up - success
+-----
+  CFE_TBL:ValidateHandle-Table Handle=1 is for unused Table Handle
+
+  CFE_TBL:ValidateAccess-Invalid Tbl Handle=1
+
+  CFE_TBL:Load-App(1) does not have access to Tbl Handle=1
+
+  CFE_EVS_SendEvent from app 10: 93, 3 - ut_cfe_tbl Failed to Load '?', Status=0xCC000001
+PASSED  [cFE.TBL.33.043] CFE_TBL_Load - Attempt to use an invalid handle
+-----
+
+ut_cfe_tbl PASSED 239 tests.
+ut_cfe_tbl FAILED 0 tests.
+
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/tbl/cfe_tbl_task_cmds.c' 99.78%  450
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/tbl/cfe_tbl_api.c' 99.03%  518
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/tbl/cfe_tbl_internal.c' 100.00%  450
+gcov: '/mnt/hgfs/Projects/Repo_cFE/fsw/cfe-core/src/tbl/cfe_tbl_task.c' 100.00%  96
+
+
