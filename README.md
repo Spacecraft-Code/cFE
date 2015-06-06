@@ -1,5 +1,5 @@
 # coreflightexec
-NASA Core Flight Executive framework for embedded applications
+NASA Core Flight Executive (cFE) framework for embedded applications
 
 * source: http://opensource.gsfc.nasa.gov/projects/cfe/index.php
 * source: http://sourceforge.net/projects/coreflightexec/ (downloaded on 2015-06-04) [Last Update: 2014-12-12]
